@@ -22,9 +22,10 @@ data class Cinema(
     val logoUrl: String
 )
 
-data class ResponseMovie(
+data class GeneralResponse<T>(
     val success: Boolean,
-    val data: List<Movies>
+    val message: String,
+    val data: T
 )
 
 data class Movies(
