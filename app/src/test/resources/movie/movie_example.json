@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "data": [
+    {
+      "movie": {
+        "id": 200,
+        "title": "Arab Blues",
+        "description": "description Arab blues",
+        "trailer_url": "https://www.youtube.com/watch?v=MKAPlZOH1Xc",
+        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/ab-plakatpl-net-1_ec2187b97a.jpg",
+        "created_at": "2020-08-18T11:08:19.000000Z",
+        "updated_at": "2020-08-18T11:08:19.000000Z"
+      },
+      "cinemas": [
+        {
+          "id": 2,
+          "name": "Cinema City",
+          "website": "https://www.cinema-city.pl",
+          "logo_url": "https://www.cinema-city.pl/xmedia/img/10103/logo.svg",
+          "created_at": "2020-08-18T08:52:26.000000Z",
+          "updated_at": "2020-08-18T08:52:26.000000Z"
+        },
+        {
+          "id": 3,
+          "name": "Multikino",
+          "website": "https://multikino.pl",
+          "logo_url": "https://multikino.pl/assets/css/images/logo-multikino.svg",
+          "created_at": "2020-08-18T08:52:44.000000Z",
+          "updated_at": "2020-08-18T08:52:44.000000Z"
+        }
+      ]
+    },
+    {
+      "movie": {
+        "id": 205,
+        "title": "Incepcja (Hit za 14,90)",
+        "description": "description incepcja",
+        "trailer_url": "",
+        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/incepcja-plk.jpg",
+        "created_at": "2020-08-18T11:08:19.000000Z",
+        "updated_at": "2020-08-18T11:08:19.000000Z"
+      },
+      "cinemas": [
+        {
+          "id": 3,
+          "name": "Multikino",
+          "website": "https://multikino.pl",
+          "logo_url": "https://multikino.pl/assets/css/images/logo-multikino.svg",
+          "created_at": "2020-08-18T08:52:44.000000Z",
+          "updated_at": "2020-08-18T08:52:44.000000Z"
+        }
+      ]
+    }
+  ],
+  "message": "movies retrieved successfully."
+}
