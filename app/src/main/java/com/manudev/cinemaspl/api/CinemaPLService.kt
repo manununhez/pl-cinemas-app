@@ -1,11 +1,11 @@
 package com.manudev.cinemaspl.api
 
-import retrofit2.Call
+import androidx.lifecycle.LiveData
 import retrofit2.http.GET
 
 
 interface CinemaPLService {
     @GET("movies")
-    fun getMovies(): Call<ResponseMovie>
+    fun getMovies(): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
 
 }

@@ -1,30 +1,35 @@
-package com.manudev.cinemaspl
+package com.manudev.cinemaspl.api
 
-import com.manudev.cinemaspl.api.CinemaPLService
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.manudev.cinemaspl.util.LiveDataCallAdapterFactory
+import com.manudev.cinemaspl.util.getOrAwaitValue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.Okio
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
+@RunWith(JUnit4::class)
 class CinemaPLTestUsingMockServer {
+    @Rule
+    @JvmField
+    val instantExecutorRule = InstantTaskExecutorRule()
+
     @get:Rule
     val mockWebServer = MockWebServer()
 
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
 
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
     }
 
@@ -38,7 +43,7 @@ class CinemaPLTestUsingMockServer {
     fun getMovies() {
         enqueueResponse("movie/movie_example.json")
 
-        val response = cinemaPLService.getMovies().execute().body()!!
+        val response = (cinemaPLService.getMovies().getOrAwaitValue() as ApiSuccessResponse).body
 
         val movies = response.data
         assertThat(movies.size, `is`(2))

@@ -1,24 +1,24 @@
 package com.manudev.cinemaspl.api
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class Movie(
-    @Json(name = "id")
+    @SerializedName("id")
     val id: String,
     val title: String,
     val description: String,
-    @Json(name = "trailer_url")
+    @SerializedName("trailer_url")
     val trailerUrl: String,
-    @Json(name = "poster_url")
+    @SerializedName("poster_url")
     val posterUrl: String
 )
 
 data class Cinema(
-    @Json(name = "id")
+    @SerializedName("id")
     val id: String,
     val name: String,
     val website: String,
-    @Json(name = "logo_url")
+    @SerializedName("logo_url")
     val logoUrl: String
 )
 
