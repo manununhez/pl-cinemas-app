@@ -26,9 +26,7 @@ object TestUtil {
 
     fun createMovies() = GeneralResponse(true, "", listOf(Movies(createMovie(), createCinemas())))
 
-    fun createTestResponseSuccess() = GeneralResponse(true, "", "foo")
-
-    fun createTestResponseError() = GeneralResponse(false, "foo_error", "")
-    fun createTestResponseError2() = GeneralResponse(false, "", "foo_error_data")
+    fun createTestResponse(success: Boolean, message: String, data: String) =
+        GeneralResponse(success, message, data)
 
 }

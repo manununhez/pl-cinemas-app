@@ -10,6 +10,7 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.Okio
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,18 +28,18 @@ class CinemaPLTestUsingMockServer {
     val mockWebServer = MockWebServer()
 
 
-    private val retrofit by lazy {
-        Retrofit.Builder()
+    private lateinit var cinemaPLService: CinemaPLService
+
+
+    @Before
+    fun setUp() {
+        cinemaPLService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
+            .create(CinemaPLService::class.java)
     }
-
-    private val cinemaPLService by lazy {
-        retrofit.create(CinemaPLService::class.java)
-    }
-
 
     @Test
     fun getMovies() {
