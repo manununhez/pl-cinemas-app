@@ -23,7 +23,7 @@ import retrofit2.Response
  * @param <T> the type of the response object
 </T> */
 @Suppress("unused") // T is used in extending classes
-sealed class ApiResponse<in T> {
+sealed class ApiResponse<in T> { //For our type of api response, we added 'in' to apply generic T to subTypes only! See GeneralResponse<T> in model, dynamic data type
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(error.message ?: "unknown error")
@@ -32,15 +32,23 @@ sealed class ApiResponse<in T> {
         fun <T> create(response: Response<T>): ApiResponse<T> {
             return if (response.isSuccessful) {
                 val body = response.body()
-                if (body == null || response.code() == 204) {
+                return if (body == null || body == "") {
                     ApiEmptyResponse()
                 } else {
-                    val success = (body as GeneralResponse<T>).success
+                    val generalResponse = (body as GeneralResponse<T>)
+                    val success = generalResponse.success
+                    val data = generalResponse.data
+                    val message = generalResponse.message
+
                     if (success) {
                         ApiSuccessResponse(body)
                     } else {
-                        val errorMsg = (body as GeneralResponse<T>).message
-                        ApiErrorResponse(errorMsg ?: "unknown error")
+                        val errorMsg = if (message.isEmpty()) {
+                            (data as String)
+                        } else {
+                            message
+                        }
+                        ApiErrorResponse(errorMsg)
                     }
                 }
             } else {
@@ -50,9 +58,11 @@ sealed class ApiResponse<in T> {
                 } else {
                     msg
                 }
+
                 ApiErrorResponse(errorMsg ?: "unknown error")
             }
         }
+
     }
 }
 

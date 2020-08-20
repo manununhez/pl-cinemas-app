@@ -30,10 +30,9 @@ class MovieRepositoryTest {
 
     @Test
     fun loadMovies(){
-
         //Interactions - Repo call service function once
         repository.loadMovies()
-        verify(service, times(1)).getMovies()
+        verify(service).getMovies() //times(1)
 
         //Correct value passed from service to repo - when success
         `when`(service.getMovies()).thenReturn(successCall(createMovies()))
