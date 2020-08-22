@@ -1,11 +1,14 @@
 package com.manudev.cinemaspl.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.manudev.cinemaspl.api.CinemaPLService
 import com.manudev.cinemaspl.util.ApiUtil.successCall
 import com.manudev.cinemaspl.util.TestUtil.createMovies
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.Is
+import com.manudev.cinemaspl.util.mock
+import com.manudev.cinemaspl.vo.GeneralResponse
+import com.manudev.cinemaspl.vo.Movies
+import com.manudev.cinemaspl.vo.Resource
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,24 +22,31 @@ class MovieRepositoryTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val service = mock(CinemaPLService::class.java)
-
-    private lateinit var repository : MovieRepository
+    private lateinit var service : CinemaPLService
+    private lateinit var repository: MovieRepository
 
     @Before
     fun setUp() {
+        service = mock(CinemaPLService::class.java)
         repository = MovieRepository(service)
     }
 
+
     @Test
-    fun loadMovies(){
-        //Interactions - Repo call service function once
-        repository.loadMovies()
-        verify(service).getMovies() //times(1)
+    fun callFromNetwork_loadMovies() {
 
         //Correct value passed from service to repo - when success
-        `when`(service.getMovies()).thenReturn(successCall(createMovies()))
+        val movies = createMovies()
+        val call = successCall(GeneralResponse<List<Movies>>(true, "", movies))
+        `when`(service.getMovies()).thenReturn(call)
 
-        assertThat(repository.loadMovies(), Is.`is`(service.getMovies()))
+        val observer = mock<Observer<Resource<List<Movies>>>>()
+
+        repository.loadMovies().observeForever(observer)
+
+        verify(service).getMovies() //times(1)
+        //Return the correct data transformed: ApiResponse -> Resource
+//        verify(observer).onChanged(Resource.loading(null))
+        verify(observer).onChanged(Resource.success(movies))
     }
 }

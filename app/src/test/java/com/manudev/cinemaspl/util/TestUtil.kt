@@ -1,9 +1,9 @@
 package com.manudev.cinemaspl.util
 
-import com.manudev.cinemaspl.api.Cinema
-import com.manudev.cinemaspl.api.GeneralResponse
-import com.manudev.cinemaspl.api.Movie
-import com.manudev.cinemaspl.api.Movies
+import com.manudev.cinemaspl.vo.Cinema
+import com.manudev.cinemaspl.vo.GeneralResponse
+import com.manudev.cinemaspl.vo.Movie
+import com.manudev.cinemaspl.vo.Movies
 
 object TestUtil {
     fun createCinema() = Cinema(
@@ -23,8 +23,7 @@ object TestUtil {
         "https://media.multikino.pl/uploads/images/films_and_events/ab-plakatpl-net-1_ec2187b97a.jpg"
     )
 
-
-    fun createMovies() = GeneralResponse(true, "", listOf(Movies(createMovie(), createCinemas())))
+    fun createMovies() = listOf(Movies(createMovie(), createCinemas()))
 
     fun createTestResponse(success: Boolean, message: String, data: String) =
         GeneralResponse(success, message, data)

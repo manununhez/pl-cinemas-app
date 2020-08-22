@@ -16,6 +16,7 @@
 
 package com.manudev.cinemaspl.api
 
+import com.manudev.cinemaspl.vo.GeneralResponse
 import retrofit2.Response
 
 /**
