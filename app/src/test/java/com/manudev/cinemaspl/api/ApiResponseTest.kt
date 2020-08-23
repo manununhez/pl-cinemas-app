@@ -1,7 +1,7 @@
 package com.manudev.cinemaspl.api
 
 import com.manudev.cinemaspl.util.TestUtil.createTestResponse
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -98,14 +98,14 @@ class ApiResponseTest {
     private fun setupErrorResponseWithCodeNotInRangeAndErrorBody() = ApiResponse.create<String>(
         Response.error<String>(
             400,
-            ResponseBody.create(MediaType.parse("application/txt"), MESSAGE_3)
+            ResponseBody.create("application/txt".toMediaType(), MESSAGE_3)
         )
     ) as ApiErrorResponse<String>
 
     private fun setupErrorResponseWithCodeNotInRangeAndWithEmptyErrorBody(): ApiErrorResponse<String> {
         return ApiResponse.create<String>(
             Response.error<String>(
-                ResponseBody.create(MediaType.parse("application/txt"), ""),
+                ResponseBody.create("application/txt".toMediaType(), ""),
                 okhttp3.Response.Builder() //
                     .code(400)
                     .message(MESSAGE_6)

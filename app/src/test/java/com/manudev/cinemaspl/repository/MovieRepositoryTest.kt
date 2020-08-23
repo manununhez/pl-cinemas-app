@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.manudev.cinemaspl.api.CinemaPLService
 import com.manudev.cinemaspl.util.ApiUtil.successCall
-import com.manudev.cinemaspl.util.TestUtil.createMovies
+import com.manudev.cinemaspl.util.TestUtil
 import com.manudev.cinemaspl.util.mock
 import com.manudev.cinemaspl.vo.GeneralResponse
 import com.manudev.cinemaspl.vo.Movies
@@ -13,7 +13,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -33,20 +34,20 @@ class MovieRepositoryTest {
 
 
     @Test
-    fun callFromNetwork_loadMovies() {
-
+    fun callFromNetwork_getMovies() {
+        //Arrange
         //Correct value passed from service to repo - when success
-        val movies = createMovies()
-        val call = successCall(GeneralResponse<List<Movies>>(true, "", movies))
-        `when`(service.getMovies()).thenReturn(call)
-
+        val movies = TestUtil.createMovies()
+        val call = successCall(GeneralResponse(true, "", movies))
+        Mockito.`when`(service.getMovies()).thenReturn(call)
+        //Act
         val observer = mock<Observer<Resource<List<Movies>>>>()
 
         repository.loadMovies().observeForever(observer)
-
-        verify(service).getMovies() //times(1)
+        //Assert
+        Mockito.verify(service).getMovies() //times(1)
         //Return the correct data transformed: ApiResponse -> Resource
 //        verify(observer).onChanged(Resource.loading(null))
-        verify(observer).onChanged(Resource.success(movies))
+        Mockito.verify(observer).onChanged(Resource.success(movies))
     }
 }

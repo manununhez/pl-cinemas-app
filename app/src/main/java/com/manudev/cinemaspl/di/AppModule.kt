@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.manudev.cinemaspl.api.CinemaPLService
 import com.manudev.cinemaspl.repository.MovieRepository
-import com.manudev.cinemaspl.repository.MoviesRemoteDataSource
 import com.manudev.cinemaspl.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -34,13 +33,9 @@ object AppModule {
     fun provideCinemaPLService(retrofit: Retrofit): CinemaPLService = retrofit.create(
         CinemaPLService::class.java)
 
-    @Singleton
-    @Provides
-    fun provideMoviesRemoteDataSource(cinemaPLService: CinemaPLService) = MoviesRemoteDataSource(cinemaPLService)
-
 
     @Singleton
     @Provides
-    fun provideMovieRepository(remoteDataSource: MoviesRemoteDataSource) =
-        MovieRepository(remoteDataSource)
+    fun provideMovieRepository(cinemaPLService: CinemaPLService) =
+        MovieRepository(cinemaPLService)
 }

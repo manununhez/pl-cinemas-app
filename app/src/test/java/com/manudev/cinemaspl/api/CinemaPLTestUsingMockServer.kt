@@ -7,7 +7,8 @@ import com.manudev.cinemaspl.util.TestUtil.createMovie
 import com.manudev.cinemaspl.util.getOrAwaitValue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okio.Okio
+import okio.buffer
+import okio.source
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -74,7 +75,7 @@ class CinemaPLTestUsingMockServer {
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
         val inputStream = javaClass.classLoader!!
             .getResourceAsStream(fileName)
-        val source = Okio.buffer(Okio.source(inputStream))
+        val source = inputStream.source().buffer()
         val mockResponse = MockResponse()
         for ((key, value) in headers) {
             mockResponse.addHeader(key, value)

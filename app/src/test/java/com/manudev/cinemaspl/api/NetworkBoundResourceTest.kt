@@ -25,7 +25,7 @@ import com.manudev.cinemaspl.util.ApiUtil
 import com.manudev.cinemaspl.util.mock
 import com.manudev.cinemaspl.vo.GeneralResponse
 import com.manudev.cinemaspl.vo.Resource
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Rule
 import org.junit.Test
@@ -85,7 +85,7 @@ class NetworkBoundResourceTest {
 
     @Test
     fun successFromNetwork_emptyData__emptyBody_receivedNullData() {
-        val handleCreateCall = { ApiUtil.createCall(Response.success<GeneralResponse<String>>(GeneralResponse(true, "", ""))) }
+        val handleCreateCall = { ApiUtil.createCall(Response.success(GeneralResponse(true, "", ""))) }
 
 
         val networkBoundResource = object : NetworkBoundResource<String>() {
@@ -101,8 +101,8 @@ class NetworkBoundResourceTest {
 
     @Test
     fun failureFromNetwork_error() {
-        val body = ResponseBody.create(MediaType.parse("text/html"), "error")
-        handleCreateCall = { ApiUtil.createCall(Response.error<GeneralResponse<Foo>>(500, body)) }
+        val body = ResponseBody.create("text/html".toMediaType(), "error")
+        handleCreateCall = { ApiUtil.createCall(Response.error(500, body)) }
 
 
         networkBoundResource = object : NetworkBoundResource<Foo>() {
@@ -115,11 +115,6 @@ class NetworkBoundResourceTest {
 
         verify(observer).onChanged(Resource.error("error", null))
     }
-
-    private fun setupEmptyBodyResponse() = ApiResponse
-        .create(Response.success("")) as ApiEmptyResponse
-
-
 
     private data class Foo(var value: Int)
 

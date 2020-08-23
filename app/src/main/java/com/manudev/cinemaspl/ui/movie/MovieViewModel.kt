@@ -9,7 +9,7 @@ import com.manudev.cinemaspl.repository.MovieRepository
 import com.manudev.cinemaspl.util.AbsentLiveData
 import com.manudev.cinemaspl.vo.Movies
 import com.manudev.cinemaspl.vo.Resource
-import com.manudev.cinemaspl.vo.Status
+import com.manudev.cinemaspl.vo.Status.*
 import org.jetbrains.annotations.TestOnly
 
 class MovieViewModel @ViewModelInject constructor(
@@ -32,7 +32,7 @@ class MovieViewModel @ViewModelInject constructor(
     val movies: LiveData<Resource<List<Movies>>> =
         Transformations.switchMap(_loadTrigger) { isRefreshing ->
             if (isRefreshing) {
-                _loadTrigger.value = false
+//                _loadTrigger.value = false
                 repository.loadMovies()
             } else AbsentLiveData.create()
         }
@@ -46,15 +46,15 @@ class MovieViewModel @ViewModelInject constructor(
         movies.observeForever {
             it?.let {
                 when (it.status) {
-                    Status.LOADING -> {
+                    LOADING -> {
                         _loading.value = true
                         _error.value = false
                     }
-                    Status.SUCCESS -> {
+                    SUCCESS -> {
                         _loading.value = false
                         _error.value = false
                     }
-                    else -> { //ERROR
+                    ERROR -> { //ERROR
                         _loading.value = false
                         _error.value = true
                     }
