@@ -1,4 +1,4 @@
-package com.manudev.cinemaspl.ui
+package com.manudev.cinemaspl.ui.movie
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
