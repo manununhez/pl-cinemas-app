@@ -1,5 +1,6 @@
 package com.manudev.cinemaspl.ui.movie
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -11,7 +12,9 @@ import com.manudev.cinemaspl.vo.Resource
 import com.manudev.cinemaspl.vo.Status
 import org.jetbrains.annotations.TestOnly
 
-class MovieViewModel(repository: MovieRepository) : ViewModel() {
+class MovieViewModel @ViewModelInject constructor(
+    private val repository: MovieRepository
+) : ViewModel() {
 
 
     private val _loading = MutableLiveData<Boolean>()

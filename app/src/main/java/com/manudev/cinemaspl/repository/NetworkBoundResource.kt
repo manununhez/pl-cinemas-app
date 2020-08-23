@@ -69,21 +69,6 @@ abstract class NetworkBoundResource<ResultType> @MainThread constructor() {
                 }
             }
         }
-//        result.addSource(apiResponse) { response ->
-//            result.removeSource(apiResponse)
-//            when (response) {
-//                is ApiSuccessResponse -> {
-//                    setValue(Resource.success(processResponse(response)))
-//                }
-//                is ApiEmptyResponse -> {
-//                    setValue(Resource.success(null))
-//                }
-//                is ApiErrorResponse -> {
-//                    onFetchFailed()
-//                    setValue(Resource.error(response.errorMessage, null))
-//                }
-//            }
-//        }
     }
 
     protected open fun onFetchFailed() {}
@@ -91,7 +76,8 @@ abstract class NetworkBoundResource<ResultType> @MainThread constructor() {
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 
     @WorkerThread
-    protected open fun processResponse(response: ApiSuccessResponse<GeneralResponse<ResultType>>) : ResultType = response.body.data
+    protected open fun processResponse(response: ApiSuccessResponse<GeneralResponse<ResultType>>): ResultType =
+        response.body.data
 
 
     @MainThread
