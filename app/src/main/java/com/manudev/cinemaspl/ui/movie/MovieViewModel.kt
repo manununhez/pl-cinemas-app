@@ -32,7 +32,6 @@ class MovieViewModel @ViewModelInject constructor(
     val movies: LiveData<Resource<List<Movies>>> =
         Transformations.switchMap(_loadTrigger) { isRefreshing ->
             if (isRefreshing) {
-//                _loadTrigger.value = false
                 repository.loadMovies()
             } else AbsentLiveData.create()
         }
@@ -54,18 +53,17 @@ class MovieViewModel @ViewModelInject constructor(
                         _loading.value = false
                         _error.value = false
                     }
-                    ERROR -> { //ERROR
+                    ERROR -> {
                         _loading.value = false
                         _error.value = true
                     }
                 }
             }
         }
-
     }
 
 
-    fun refreshMovies() {
+    fun loadMovies() {
         //TODO refresh data should be done with Date().now or from DB - to avoid refresh same data
         //TODO this function could be renamed to forceRefresh data
         _loadTrigger.value = true

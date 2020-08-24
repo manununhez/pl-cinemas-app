@@ -5,12 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.transition.TransitionInflater
 import com.manudev.cinemaspl.R
-import com.manudev.cinemaspl.vo.Status
+import com.manudev.cinemaspl.databinding.FragmentMovieBinding
+import com.manudev.cinemaspl.ui.common.RetryCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -23,37 +24,56 @@ class MovieFragment : Fragment() {
     private val viewModel: MovieViewModel by viewModels()
 
     private val TAG = MovieFragment::getTag.name
+
+    private lateinit var binding: FragmentMovieBinding
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie, container, false)
+        val dataBinding = DataBindingUtil.inflate<FragmentMovieBinding>(
+            inflater,
+            R.layout.fragment_movie,
+            container,
+            false
+        )
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.loadMovies()
+            }
+        }
+        binding = dataBinding
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(R.transition.move)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        initRecyclerView()
+//        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+//            //findNavController().navigate(R.id.action_MovieFragment_to_MovieDetailsFragment)
+//            viewModel.refreshMovies()
+//        }
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            //findNavController().navigate(R.id.action_MovieFragment_to_MovieDetailsFragment)
-            viewModel.refreshMovies()
-        }
 
         viewModel.init()
-        viewModel.refreshMovies()
+        viewModel.loadMovies()
+
+
+    }
+
+    private fun initRecyclerView() {
+        val movieListAdapter =  MovieListAdapter()
+        binding.movieList.adapter = movieListAdapter
+        binding.movies = viewModel.movies
+
         viewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        Log.d(TAG, "SUCCESS")
-                    }
-                    Status.ERROR ->
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-
-                    Status.LOADING ->
-                        Log.d(TAG, "LOADING")
-                }
-            }
-        })
+                Log.e("MainActivity", it.toString())
+                movieListAdapter.submitList(it.data)
+        }})
     }
 }
