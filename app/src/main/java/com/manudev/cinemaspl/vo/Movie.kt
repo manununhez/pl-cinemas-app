@@ -1,7 +1,11 @@
 package com.manudev.cinemaspl.vo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
+@Parcelize
 data class Movie(
     @SerializedName("id")
     val id: String,
@@ -13,8 +17,9 @@ data class Movie(
     val trailerUrl: String,
     @SerializedName("poster_url")
     val posterUrl: String
-)
+) : Parcelable
 
+@Parcelize
 data class Cinema(
     @SerializedName("id")
     val id: String,
@@ -24,20 +29,22 @@ data class Cinema(
     val website: String,
     @SerializedName("logo_url")
     val logoUrl: String
-)
+) : Parcelable
 
+@Parcelize
 data class GeneralResponse<T>(
     @SerializedName("success")
     val success: Boolean,
     @SerializedName("message")
     val message: String,
     @SerializedName("data")
-    val data: T
-)
+    val data: @RawValue T
+) : Parcelable
 
+@Parcelize
 data class Movies(
     @SerializedName("movie")
     val movie: Movie,
     @SerializedName("cinemas")
     val cinemas: List<Cinema>
-)
+) : Parcelable

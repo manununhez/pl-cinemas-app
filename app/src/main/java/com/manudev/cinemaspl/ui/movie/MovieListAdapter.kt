@@ -24,12 +24,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manudev.cinemaspl.databinding.MovieItemBinding
 import com.manudev.cinemaspl.vo.Movies
 
-class MovieListAdapter : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(Companion) {
+class MovieListAdapter(
+    private val movieClickCallback: ((Movies) -> Unit)?
+) : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(Companion) {
 
     class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object : DiffUtil.ItemCallback<Movies>() {
-        override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean = oldItem === newItem
+        override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean =
+            oldItem === newItem
+
         override fun areContentsTheSame(oldItem: Movies, newItem: Movies): Boolean =
             oldItem.movie.id == newItem.movie.id
     }
@@ -45,5 +49,8 @@ class MovieListAdapter : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(C
         val currentMovie = getItem(position)
         holder.binding.movie = currentMovie.movie
         holder.binding.executePendingBindings()
+        holder.binding.root.setOnClickListener {
+            movieClickCallback?.invoke(currentMovie)
+        }
     }
 }

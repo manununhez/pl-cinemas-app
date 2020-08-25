@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
@@ -66,7 +67,11 @@ class MovieFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val movieListAdapter =  MovieListAdapter()
+        val movieListAdapter =  MovieListAdapter { movies ->
+            findNavController().navigate(
+                MovieFragmentDirections.showDetailsMovie(movies)
+            )
+        }
         binding.movieList.adapter = movieListAdapter
         binding.movies = viewModel.movies
 

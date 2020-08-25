@@ -11,8 +11,11 @@
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_movie">
         <action
-            android:id="@+id/action_MovieFragment_to_MovieDetailsFragment"
+            android:id="@+id/showDetailsMovie"
             app:destination="@id/MovieDetailsFragment" />
+        <argument
+            android:name="movies"
+            app:argType="com.manudev.cinemaspl.vo.Movies" />
     </fragment>
     <fragment
         android:id="@+id/MovieDetailsFragment"
@@ -21,6 +24,10 @@
         tools:layout="@layout/fragment_details_movie">
         <action
             android:id="@+id/action_MovieDetailsFragment_to_MovieFragment"
-            app:destination="@id/MovieFragment" />
+            app:destination="@id/MovieFragment"
+            app:popUpTo="@id/MovieFragment" />
+        <argument
+            android:name="movies"
+            app:argType="com.manudev.cinemaspl.vo.Movies" />
     </fragment>
 </navigation>
