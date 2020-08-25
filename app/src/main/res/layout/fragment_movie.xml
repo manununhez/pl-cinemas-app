@@ -26,53 +26,72 @@
             type="RetryCallback" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimarySurface"
+        android:theme="@style/CinePL.White"
+        android:transitionGroup="false"
+        tools:context="com.manudev.cinemapl.ui.movie.MovieFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.CinePL.White.Dark"
+            app:liftOnScroll="true"
+            app:liftOnScrollTargetViewId="@id/movie_list_grid">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:paddingStart="@dimen/grid_2"
+                android:paddingEnd="@dimen/grid_2"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:title="CinemaPL"
+                app:navigationIcon="@drawable/ic_broken_image" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2"
-            tools:itemCount="16"
+            android:id="@+id/movie_list_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/grid_1_5"
+            android:paddingBottom="@dimen/grid_1"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            app:hasFixedSize="@{true}"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:spanCount="@integer/featured_grid_columns"
             tools:listitem="@layout/movie_item" />
 
         <TextView
             android:id="@+id/no_results_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@{movies.message}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:visibleGone="@{movies.status == Status.SUCCESS &amp;&amp; movies.data.size == 0}"
             tools:text="Texto de prueba" />
 
         <include
             layout="@layout/loading_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            app:retryCallback="@{() -> retryCallback.retry()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:resource="@{(Resource) movies}" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:resource="@{(Resource) movies}"
+            app:retryCallback="@{() -> retryCallback.retry()}" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

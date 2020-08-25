@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Base theme, all common styling here-->
+    <style name="BaseTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!--Material type attributes-->
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Cinema.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Cinema.Subtitle2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Cinema.Button</item>
+
+
+
+    </style>
+
+    <style name="CinePL" parent="@style/BaseTheme"/>
+
+    <style name="CinePL.White">
+        <item name="colorPrimary">@color/cinepl_brown_200</item>
+        <item name="colorPrimaryVariant">@color/cinepl_brown_300</item>
+        <item name="colorSecondary">@color/cinepl_deep_orange_700</item>
+        <item name="colorSecondaryVariant">@color/cinepl_deep_orange_800</item>
+
+        <!--Platform attributes-->
+        <item name="android:navigationBarColor">@color/immersive_sys_ui_deep_orange_900</item>
+        <item name="android:statusBarColor">@color/immersive_sys_ui_deep_orange_900</item>
+
+    </style>
+
+    <style name="ThemeOverlay.CinePL.White" parent="@style/ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/cinepl_deep_orange_700</item>
+        <item name="colorPrimaryVariant">@color/cinepl_deep_orange_800</item>
+        <item name="colorSecondary">@color/cinepl_brown_300</item>
+        <item name="colorSecondaryVariant">@color/cinepl_brown_200</item>
+        <item name="colorOnPrimary">#fff</item>
+    </style>
+
+    <style name="ThemeOverlay.CinePL.White.Dark" parent="@style/ThemeOverlay.MaterialComponents.Dark">
+        <item name="colorPrimary">@color/cinepl_deep_orange_700</item>
+        <item name="colorPrimaryVariant">@color/cinepl_deep_orange_800</item>
+        <item name="colorSecondary">@color/cinepl_brown_300</item>
+        <item name="colorSecondaryVariant">@color/cinepl_brown_200</item>
+        <item name="colorOnPrimary">#fff</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="lineHeight">22sp</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+</resources>

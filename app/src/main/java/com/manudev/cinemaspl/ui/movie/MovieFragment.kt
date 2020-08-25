@@ -72,7 +72,7 @@ class MovieFragment : Fragment() {
                 MovieFragmentDirections.showDetailsMovie(movies)
             )
         }
-        binding.movieList.adapter = movieListAdapter
+        binding.movieListGrid.adapter = movieListAdapter
         binding.movies = viewModel.movies
 
         viewModel.movies.observe(viewLifecycleOwner, {
