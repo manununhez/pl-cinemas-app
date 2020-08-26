@@ -17,6 +17,7 @@
 package com.manudev.cinemaspl.ui.movie
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -25,7 +26,7 @@ import com.manudev.cinemaspl.databinding.MovieItemBinding
 import com.manudev.cinemaspl.vo.Movies
 
 class MovieListAdapter(
-    private val movieClickCallback: ((Movies) -> Unit)?
+    private val movieClickCallback: MovieViewClickCallback
 ) : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(Companion) {
 
     class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -49,8 +50,12 @@ class MovieListAdapter(
         val currentMovie = getItem(position)
         holder.binding.movie = currentMovie.movie
         holder.binding.executePendingBindings()
-        holder.binding.root.setOnClickListener {
-            movieClickCallback?.invoke(currentMovie)
+        holder.binding.movieItemCardView.setOnClickListener {
+            movieClickCallback.onClick(it, currentMovie)
         }
     }
+}
+
+interface MovieViewClickCallback {
+    fun onClick(cardView: View, movies: Movies)
 }

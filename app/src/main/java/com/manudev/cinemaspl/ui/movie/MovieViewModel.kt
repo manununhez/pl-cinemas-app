@@ -66,7 +66,10 @@ class MovieViewModel @ViewModelInject constructor(
     fun loadMovies() {
         //TODO refresh data should be done with Date().now or from DB - to avoid refresh same data
         //TODO this function could be renamed to forceRefresh data
-        _loadTrigger.value = true
+        //if the data is not null, we avoid fetching the data again. This should be replaced with DB
+        if (movies.value == null) {
+            _loadTrigger.value = true
+        }
     }
 
     @TestOnly

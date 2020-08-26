@@ -22,17 +22,27 @@
 
         <import type="android.view.View" />
 
+        <import type="com.manudev.cinemaspl.vo.Movie" />
+
+        <import type="com.manudev.cinemaspl.ui.movie.MovieViewClickCallback" />
+
         <variable
             name="movie"
-            type="com.manudev.cinemaspl.vo.Movie" />
+            type="Movie" />
+
+        <variable
+            name="clickHandler"
+            type="MovieViewClickCallback" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/movie_item_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:transitionName="@{@string/movie_item_transition_name(movie.id)}"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/cinepl_deep_orange_dark"

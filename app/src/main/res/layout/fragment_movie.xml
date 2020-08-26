@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:background="?attr/colorPrimarySurface"
         android:theme="@style/CinePL.White"
-        android:transitionGroup="false"
+        android:transitionGroup="true"
         tools:context="com.manudev.cinemapl.ui.movie.MovieFragment">
 
         <com.google.android.material.appbar.AppBarLayout

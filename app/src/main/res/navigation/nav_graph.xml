@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_movie">
         <action
             android:id="@+id/showDetailsMovie"
-            app:destination="@id/MovieDetailsFragment" />
+            app:destination="@id/MovieDetailsFragment"
+            app:exitAnim="@null" />
         <argument
             android:name="movies"
             app:argType="com.manudev.cinemaspl.vo.Movies" />
@@ -22,10 +23,6 @@
         android:name="com.manudev.cinemaspl.ui.moviedetails.MovieDetailsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_details_movie">
-        <action
-            android:id="@+id/action_MovieDetailsFragment_to_MovieFragment"
-            app:destination="@id/MovieFragment"
-            app:popUpTo="@id/MovieFragment" />
         <argument
             android:name="movies"
             app:argType="com.manudev.cinemaspl.vo.Movies" />
