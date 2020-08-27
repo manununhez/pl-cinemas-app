@@ -62,6 +62,7 @@ class MovieDetailsFragment : Fragment() {
 
         movies = params.movies;
         binding.movies = movies
+        binding.duration.text = if(movies.movie.duration == "0") "" else getString(R.string.movie_duration, movies.movie.duration)
 
         initRecyclerView()
 

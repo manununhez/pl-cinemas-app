@@ -52,6 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--title background-->
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
@@ -59,47 +61,44 @@
                 android:contentDescription="@string/a11y_movie_avatar"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{movie.posterUrl}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <!--title background-->
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="0dp"
                 android:alpha="0.7"
                 android:textAllCaps="true"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:theme="@style/ThemeOverlay.CinePL.White"
                 app:elevationOverlay="@{@dimen/card_elevation}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="2"
-                android:padding="@dimen/grid_2"
+                android:padding="@dimen/grid_1"
                 android:text="@{movie.title}"
                 android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:ellipsize="end"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                tools:text="Movie 1" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:text="Movieaaasdasdasdasdasdsadasdasdsadsadsdsadasdsadsdsadasdasd 1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

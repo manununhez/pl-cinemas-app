@@ -11,6 +11,7 @@
 
 <!--    Material transitions-->
     <string name="movie_item_transition_name">movie_item_%1$s</string>
+    <string name="movie_duration">%1$s min.</string>
     <string name="movie_detail_transition_name">movie_detail_transition_name</string>
     <string name="description_text_collapsed">Więcej</string> <!-- more -->
     <string name="description_text_expanded">Mniej</string> <!-- less -->
