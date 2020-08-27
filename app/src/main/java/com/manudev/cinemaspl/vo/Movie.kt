@@ -34,7 +34,9 @@ data class Cinema(
     @SerializedName("website")
     val website: String,
     @SerializedName("logo_url")
-    val logoUrl: String
+    val logoUrl: String,
+    @SerializedName("cinema_movie_url")
+    val cinemaPageUrl:String
 ) : Parcelable
 
 @Parcelize

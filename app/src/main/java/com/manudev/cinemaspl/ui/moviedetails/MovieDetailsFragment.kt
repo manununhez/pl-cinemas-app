@@ -14,6 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentDetailsMovieBinding
+import com.manudev.cinemaspl.vo.Cinema
+import com.manudev.cinemaspl.vo.Movies
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_details_movie.*
 
@@ -24,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_details_movie.*
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsMovieBinding
+    private lateinit var movies: Movies
 
     private val params by navArgs<MovieDetailsFragmentArgs>()
 
@@ -57,9 +60,10 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movies = params.movies;
+        movies = params.movies;
         binding.movies = movies
 
+        initRecyclerView()
 
         binding.detailsMovieCallback = object : DetailsMovieCallback {
             override fun watchTrailer() {
@@ -97,6 +101,25 @@ class MovieDetailsFragment : Fragment() {
             if (movieDescription.lineCount <= resources.getInteger(R.integer.max_lines_collapsed))
                 expandCollapseOption.visibility = View.GONE
         }
+
+    }
+
+    private fun initRecyclerView() {
+        val cinemaClickCallback = object :
+            CinemaViewClickCallback {
+            override fun onClick(cinema: Cinema) {
+                requireActivity().startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(cinema.cinemaPageUrl)
+                    )
+                )
+            }
+
+        }
+
+        val cinemaListAdapter = CinemaMovieListAdapter(movies.cinemas, cinemaClickCallback)
+        binding.rvCinemaList.adapter = cinemaListAdapter
 
     }
 }

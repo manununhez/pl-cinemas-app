@@ -30,12 +30,13 @@ import com.manudev.cinemaspl.R
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
  */
-@BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?) {
+@BindingAdapter("imageUrl", "circleCrop", requireAll = false)
+fun bindImage(imgView: ImageView, imgUrl: String?, circleCrop: Boolean) {
     imgUrl?.let {
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
 
         val request = Glide.with(imgView.context).load(imgUri)
+        if (circleCrop) request.circleCrop()
 
         request.apply(
             RequestOptions()

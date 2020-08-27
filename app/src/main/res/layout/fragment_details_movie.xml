@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.manudev.cinemaspl.vo.Movies" />
 
         <import type="com.manudev.cinemaspl.ui.moviedetails.DetailsMovieCallback" />
@@ -29,7 +30,6 @@
         android:paddingTop="@dimen/grid_1">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/movie_item_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:transitionName="@string/movie_detail_transition_name">
@@ -69,12 +69,12 @@
                     android:layout_marginTop="16dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    app:visibleGone="@{!movies.movie.trailerUrl.isEmpty()}"
                     android:onClick="@{() -> detailsMovieCallback.watchTrailer()}"
                     android:text="@string/button_watch_trailer"
                     app:icon="@drawable/ic_baseline_play_circle_filled_24"
                     app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    app:visibleGone="@{!movies.movie.trailerUrl.isEmpty()}" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -137,12 +137,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{movies.movie.releaseYear}"
-                    tools:text="2020"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/movieTitle"
-                    app:layout_constraintVertical_bias="0.31" />
+                    app:layout_constraintVertical_bias="0.31"
+                    tools:text="2020" />
 
                 <TextView
                     android:id="@+id/classification"
@@ -150,10 +150,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{movies.movie.classification}"
-                    tools:text="TV-MA"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintBaseline_toBaselineOf="@+id/year"
-                    app:layout_constraintStart_toEndOf="@+id/year" />
+                    app:layout_constraintStart_toEndOf="@+id/year"
+                    tools:text="TV-MA" />
 
                 <TextView
                     android:id="@+id/duration"
@@ -161,10 +161,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{movies.movie.duration}"
-                    tools:text="2h 13m"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/classification"
-                    app:layout_constraintStart_toEndOf="@+id/classification" />
+                    app:layout_constraintBaseline_toBaselineOf="@id/classification"
+                    app:layout_constraintStart_toEndOf="@id/classification"
+                    tools:text="2h 13m" />
 
                 <TextView
                     android:id="@+id/expandCollapseOption"
@@ -176,19 +176,22 @@
                     android:textAppearance="?attr/textAppearanceSubtitle1"
                     android:textColor="@color/cinepl_deep_orange_700"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieDescription" />
+                    app:layout_constraintTop_toBottomOf="@id/movieDescription" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cinema_list"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:clipToPadding="false"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView8"
                     app:spanCount="@integer/featured_grid_columns"
-                    tools:itemCount="4"
                     tools:listitem="@layout/movie_item" />
 
                 <TextView
@@ -196,13 +199,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/description_movie_title_where_to_watch"
+                    android:text="@string/buy_tickets"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view2" />
-
+                    app:layout_constraintTop_toBottomOf="@id/view2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.core.widget.NestedScrollView>

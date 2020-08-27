@@ -40,11 +40,7 @@ class MovieFragment : Fragment() {
             container,
             false
         )
-        dataBinding.retryCallback = object : RetryCallback {
-            override fun retry() {
-                viewModel.loadMovies()
-            }
-        }
+
         binding = dataBinding
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.move)
@@ -59,7 +55,11 @@ class MovieFragment : Fragment() {
 
         viewModel.init()
         viewModel.loadMovies()
-
+        binding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.loadMovies()
+            }
+        }
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
