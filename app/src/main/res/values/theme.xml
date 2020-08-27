@@ -4,9 +4,17 @@
     <style name="BaseTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!--Material type attributes-->
+        <!--Material type attributes-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Cinema.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Cinema.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Cinema.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Cinema.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Cinema.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Cinema.Headline6</item>
         <item name="textAppearanceSubtitle1">@style/TextAppearance.Cinema.Subtitle1</item>
         <item name="textAppearanceSubtitle2">@style/TextAppearance.Cinema.Subtitle2</item>
         <item name="textAppearanceButton">@style/TextAppearance.Cinema.Button</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Cinema.Body1</item>
 
 
 
@@ -42,6 +50,38 @@
         <item name="colorOnPrimary">#fff</item>
     </style>
 
+    <style name="TextAppearance.Cinema.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="lineHeight">40sp</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/rubik_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="lineHeight">28sp</item>
+    </style>
+
     <style name="TextAppearance.Cinema.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/rubik_medium</item>
         <item name="lineHeight">22sp</item>
@@ -54,6 +94,11 @@
     <style name="TextAppearance.Cinema.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">@font/rubik_bold</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/rubik</item>
+        <item name="lineHeight">28sp</item>
     </style>
 
 

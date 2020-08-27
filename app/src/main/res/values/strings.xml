@@ -12,6 +12,12 @@
 <!--    Material transitions-->
     <string name="movie_item_transition_name">movie_item_%1$s</string>
     <string name="movie_detail_transition_name">movie_detail_transition_name</string>
+    <string name="description_text_collapsed">More</string>
+    <string name="description_text_expanded">Less</string>
+    <string name="description_movie_title_where_to_watch">Where to watch it</string>
+    <string name="button_watch_trailer">Trailer</string>
+
+    <integer name="max_lines_collapsed">9</integer>
 
 
 </resources>

@@ -1,7 +1,10 @@
 package com.manudev.cinemaspl.ui.moviedetails
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,8 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentDetailsMovieBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_details_movie.*
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -54,6 +59,44 @@ class MovieDetailsFragment : Fragment() {
 
         val movies = params.movies;
         binding.movies = movies
+
+
+        binding.detailsMovieCallback = object : DetailsMovieCallback {
+            override fun watchTrailer() {
+                requireActivity().startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(movies.movie.trailerUrl)
+                    )
+                )
+            }
+
+            override fun expandCollapseDescription() {
+                if (expandCollapseOption.text == getString(R.string.description_text_collapsed)) {
+//                    TransitionManager.beginDelayedTransition(
+//                        menu_item_constraint_layout,
+//                        AutoTransition()
+//                    )
+                    expandCollapseOption.text = getString(R.string.description_text_expanded)
+                    movieDescription.maxLines = Integer.MAX_VALUE
+                    movieDescription.ellipsize = null
+                } else {
+//                    TransitionManager.beginDelayedTransition(
+//                        menu_item_constraint_layout,
+//                        AutoTransition()
+//                    )
+                    expandCollapseOption.text = getString(R.string.description_text_collapsed)
+                    movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
+                    movieDescription.ellipsize = TextUtils.TruncateAt.END
+                }
+
+            }
+        }
+
+        movieDescription.post {
+            if (movieDescription.lineCount <= resources.getInteger(R.integer.max_lines_collapsed))
+                expandCollapseOption.visibility = View.GONE
+        }
 
     }
 }
