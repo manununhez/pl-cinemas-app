@@ -47,7 +47,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="80dp"
+                android:minHeight="?attr/actionBarSize"
                 android:paddingStart="@dimen/grid_2"
                 android:paddingEnd="@dimen/grid_2"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
@@ -75,6 +75,7 @@
             android:id="@+id/no_results_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:text="@{movies.message}"
             app:visibleGone="@{movies.status == Status.SUCCESS &amp;&amp; movies.data.size == 0}"
             tools:text="Texto de prueba" />

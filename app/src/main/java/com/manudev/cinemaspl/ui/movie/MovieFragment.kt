@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -24,6 +23,9 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MovieFragment : Fragment() {
+    companion object {
+        private val TAG: String? = MovieFragment::class.simpleName
+    }
 
     //internally using defaultViewModelProviderFactory
     private val viewModel: MovieViewModel by viewModels()
@@ -34,17 +36,11 @@ class MovieFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataBinding = DataBindingUtil.inflate<FragmentMovieBinding>(
-            inflater,
-            R.layout.fragment_movie,
-            container,
-            false
-        )
+        binding = FragmentMovieBinding.inflate(inflater, container, false)
 
-        binding = dataBinding
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.move)
-        return dataBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +91,7 @@ class MovieFragment : Fragment() {
 
         viewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
-                Log.e("MainActivity", it.toString())
+                Log.d(TAG, it.toString())
                 movieListAdapter.submitList(it.data)
             }
         })

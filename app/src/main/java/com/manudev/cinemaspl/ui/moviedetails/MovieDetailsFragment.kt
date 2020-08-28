@@ -8,8 +8,8 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.manudev.cinemaspl.R
@@ -34,13 +34,12 @@ class MovieDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataBinding = DataBindingUtil.inflate<FragmentDetailsMovieBinding>(
-            inflater,
-            R.layout.fragment_details_movie,
-            container,
-            false
-        )
-        binding = dataBinding
+
+        binding = FragmentDetailsMovieBinding.inflate(inflater, container, false).apply {
+            toolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+        }
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
@@ -54,7 +53,7 @@ class MovieDetailsFragment : Fragment() {
             scrimColor = Color.TRANSPARENT
         }
 
-        return dataBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +61,10 @@ class MovieDetailsFragment : Fragment() {
 
         movies = params.movies;
         binding.movies = movies
-        binding.duration.text = if(movies.movie.duration == "0") "" else getString(R.string.movie_duration, movies.movie.duration)
+        binding.duration.text = if (movies.movie.duration == "0") "" else getString(
+            R.string.movie_duration,
+            movies.movie.duration
+        )
 
         initRecyclerView()
 
@@ -78,18 +80,10 @@ class MovieDetailsFragment : Fragment() {
 
             override fun expandCollapseDescription() {
                 if (expandCollapseOption.text == getString(R.string.description_text_collapsed)) {
-//                    TransitionManager.beginDelayedTransition(
-//                        menu_item_constraint_layout,
-//                        AutoTransition()
-//                    )
                     expandCollapseOption.text = getString(R.string.description_text_expanded)
                     movieDescription.maxLines = Integer.MAX_VALUE
                     movieDescription.ellipsize = null
                 } else {
-//                    TransitionManager.beginDelayedTransition(
-//                        menu_item_constraint_layout,
-//                        AutoTransition()
-//                    )
                     expandCollapseOption.text = getString(R.string.description_text_collapsed)
                     movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
                     movieDescription.ellipsize = TextUtils.TruncateAt.END
