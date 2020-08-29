@@ -27,12 +27,16 @@ data class Movie(
 
 @Parcelize
 data class Cinema(
-    @SerializedName("id")
-    val id: String,
+    @SerializedName("cinema_id")
+    val cinemaId: String,
+    @SerializedName("location_id")
+    val locationId: String,
     @SerializedName("name")
     val name: String,
-    @SerializedName("website")
-    val website: String,
+    @SerializedName("coord_latitude")
+    val latitude: String,
+    @SerializedName("coord_longitude")
+    val longitude: String,
     @SerializedName("logo_url")
     val logoUrl: String,
     @SerializedName("cinema_movie_url")
