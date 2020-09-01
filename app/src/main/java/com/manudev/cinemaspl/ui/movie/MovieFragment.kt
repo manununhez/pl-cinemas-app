@@ -1,5 +1,6 @@
 package com.manudev.cinemaspl.ui.movie
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -82,13 +83,18 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                     duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
                 }
 
-                val movieDetailTransitionName = getString(R.string.movie_detail_transition_name)
-                val extras = FragmentNavigatorExtras(
-                    cardView to movieDetailTransitionName
-                )
-                val action = MovieFragmentDirections.showDetailsMovie(movies)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val movieDetailTransitionName = getString(R.string.movie_detail_transition_name)
+                    val extras = FragmentNavigatorExtras(
+                        cardView to movieDetailTransitionName
+                    )
+                    val action = MovieFragmentDirections.showDetailsMovie(movies)
 
-                findNavController().navigate(action, extras)
+                    findNavController().navigate(action, extras)
+                } else {
+                    findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movies))
+                }
+
             }
 
         }
@@ -128,7 +134,13 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.filterFragmentMenu -> {
-                findNavController().navigate( MovieFragmentDirections.showFilterFragment(Locations(locationsList), viewModelShared.query.value!!))
+                findNavController().navigate(
+                    MovieFragmentDirections.showFilterFragment(
+                        Locations(
+                            locationsList
+                        ), viewModelShared.query.value!!
+                    )
+                )
             }
         }
         return true

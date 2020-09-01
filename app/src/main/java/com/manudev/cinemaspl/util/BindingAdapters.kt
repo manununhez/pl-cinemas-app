@@ -17,6 +17,8 @@
 
 package com.manudev.cinemaspl.util
 
+import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
@@ -33,8 +35,11 @@ import com.manudev.cinemaspl.R
 @BindingAdapter("imageUrl", "circleCrop", requireAll = false)
 fun bindImage(imgView: ImageView, imgUrl: String?, circleCrop: Boolean) {
     imgUrl?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
 
+        val scheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) "https" else "http"
+
+        val imgUri = imgUrl.toUri().buildUpon().scheme(scheme).build()
+        Log.d(BindingAdapter::class.java.simpleName, imgUri.toString())
         val request = Glide.with(imgView.context).load(imgUri)
         if (circleCrop) request.circleCrop()
 
@@ -43,6 +48,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?, circleCrop: Boolean) {
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.ic_broken_image)
         )
+
+        request.timeout(2000)
         request.into(imgView)
     }
 }
