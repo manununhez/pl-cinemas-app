@@ -60,3 +60,15 @@ data class Movies(
     @SerializedName("cinemas")
     val cinemas: List<Cinema>
 ) : Parcelable
+
+@Parcelize
+data class Location(
+    @SerializedName("city")
+    val city: String
+) : Parcelable
+
+//To pass as a parcelable navArgs
+@Parcelize
+data class Locations(
+    val locations: List<Location>
+) : Parcelable

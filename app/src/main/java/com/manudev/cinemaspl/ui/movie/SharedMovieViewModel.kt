@@ -6,13 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.manudev.cinemaspl.repository.MovieRepository
-import com.manudev.cinemaspl.util.AbsentLiveData
 import com.manudev.cinemaspl.vo.Movies
 import com.manudev.cinemaspl.vo.Resource
 import com.manudev.cinemaspl.vo.Status.*
 import org.jetbrains.annotations.TestOnly
 
-class MovieViewModel @ViewModelInject constructor(
+class SharedMovieViewModel @ViewModelInject constructor(
     private val repository: MovieRepository
 ) : ViewModel() {
 
@@ -25,16 +24,19 @@ class MovieViewModel @ViewModelInject constructor(
     val error: LiveData<Boolean>
         get() = _error
 
-    private val _loadTrigger = MutableLiveData<Boolean>()
-    val loadTrigger: LiveData<Boolean>
-        get() = _loadTrigger
+    private val _query = MutableLiveData<String>()
+    val query: LiveData<String>
+        get() = _query
 
     val movies: LiveData<Resource<List<Movies>>> =
-        Transformations.switchMap(_loadTrigger) { isRefreshing ->
-            if (isRefreshing) {
-                repository.loadMovies()
-            } else AbsentLiveData.create()
+        Transformations.switchMap(_query) { //isRefreshing ->
+//            if (isRefreshing) {
+                repository.loadMovies(it)
+//            } else AbsentLiveData.create()
         }
+
+
+    val locations = repository.loadLocations()
 
 
     fun init() {
@@ -62,19 +64,26 @@ class MovieViewModel @ViewModelInject constructor(
         }
     }
 
+    fun setMoviesCity(cityName: String){
+        if (cityName == _query.value) {
+            return
+        }
+        _query.value = cityName
+    }
+
 
     fun loadMovies() {
         //TODO refresh data should be done with Date().now or from DB - to avoid refresh same data
         //TODO this function could be renamed to forceRefresh data
         //if the data is not null, we avoid fetching the data again. This should be replaced with DB
         if (movies.value?.data == null) {
-            _loadTrigger.value = true
+            _query.value = ""
         }
     }
 
     @TestOnly
     fun resetRefreshMovies() {
-        _loadTrigger.value = false
+        _query.value = ""
     }
 
 

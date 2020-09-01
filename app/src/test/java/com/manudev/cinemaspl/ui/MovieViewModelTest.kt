@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.manudev.cinemaspl.repository.MovieRepository
-import com.manudev.cinemaspl.ui.movie.MovieViewModel
+import com.manudev.cinemaspl.ui.movie.SharedMovieViewModel
 import com.manudev.cinemaspl.util.TestUtil.createMovies
 import com.manudev.cinemaspl.util.mock
 import com.manudev.cinemaspl.vo.Movies
@@ -32,7 +32,7 @@ class MovieViewModelTest {
 
     private val repository = mock(MovieRepository::class.java)
     private var viewModel =
-        MovieViewModel(repository)
+        SharedMovieViewModel(repository)
     private val loadingObserver = mock<Observer<Boolean>>()
     private val errorObserver = mock<Observer<Boolean>>()
     private val loadTriggerObserver = mock<Observer<Boolean>>()
@@ -43,7 +43,7 @@ class MovieViewModelTest {
     fun setup() {
         viewModel.loading.observeForever(loadingObserver)
         viewModel.error.observeForever(errorObserver)
-        viewModel.loadTrigger.observeForever(loadTriggerObserver)
+        viewModel.query.observeForever(loadTriggerObserver)
         viewModel.movies.observeForever(movieObserver)
 
         viewModel.init()

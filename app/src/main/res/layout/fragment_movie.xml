@@ -50,9 +50,10 @@
                 android:minHeight="?attr/actionBarSize"
                 android:paddingStart="@dimen/grid_2"
                 android:paddingEnd="@dimen/grid_2"
+                app:menu="@menu/movie_list_menu"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:title="CinemaPL"
-                app:navigationIcon="@drawable/ic_broken_image" />
+                app:navigationIcon="@drawable/ic_broken_image"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

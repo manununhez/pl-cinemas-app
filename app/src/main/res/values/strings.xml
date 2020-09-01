@@ -9,10 +9,14 @@
     <string name="unknown_error">Unknown Error</string>
     <string name="a11y_movie_avatar">Movie Avatar</string>
 
-<!--    Material transitions-->
+    <!--    Material transitions-->
     <string name="movie_item_transition_name">movie_item_%1$s</string>
-    <string name="movie_duration">%1$s min.</string>
+    <string name="location_transition_name">location_item_%1$s</string>
+    <string name="filter_transition_name">filter transition</string>
     <string name="movie_detail_transition_name">movie_detail_transition_name</string>
+
+
+    <string name="movie_duration">%1$s min.</string>
     <string name="description_text_collapsed">Więcej</string> <!-- more -->
     <string name="description_text_expanded">Mniej</string> <!-- less -->
     <string name="description_movie_title_where_to_watch">Where to watch it</string>
@@ -20,6 +24,9 @@
     <string name="buy_tickets">Kup Bilet</string>
 
     <integer name="max_lines_collapsed">9</integer>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_item_filter">Filter</string>
 
 
 </resources>

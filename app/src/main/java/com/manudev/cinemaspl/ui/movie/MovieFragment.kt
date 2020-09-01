@@ -3,32 +3,41 @@ package com.manudev.cinemaspl.ui.movie
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
 import com.manudev.cinemaspl.ui.common.RetryCallback
+import com.manudev.cinemaspl.vo.Location
+import com.manudev.cinemaspl.vo.Locations
 import com.manudev.cinemaspl.vo.Movies
+import com.manudev.cinemaspl.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @AndroidEntryPoint
-class MovieFragment : Fragment() {
+class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     companion object {
         private val TAG: String? = MovieFragment::class.simpleName
     }
 
     //internally using defaultViewModelProviderFactory
-    private val viewModel: MovieViewModel by viewModels()
+    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
+        defaultViewModelProviderFactory
+    }
+
+    private lateinit var locationsList: List<Location>
 
     private lateinit var binding: FragmentMovieBinding
 
@@ -37,6 +46,7 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMovieBinding.inflate(inflater, container, false)
+        binding.toolbar.setOnMenuItemClickListener(this)
 
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.move)
@@ -49,11 +59,11 @@ class MovieFragment : Fragment() {
 
         initRecyclerView()
 
-        viewModel.init()
-        viewModel.loadMovies()
+        viewModelShared.init()
+        viewModelShared.loadMovies()
         binding.retryCallback = object : RetryCallback {
             override fun retry() {
-                viewModel.loadMovies()
+                viewModelShared.loadMovies()
             }
         }
         postponeEnterTransition()
@@ -87,13 +97,40 @@ class MovieFragment : Fragment() {
         val movieListAdapter = MovieListAdapter(movieClickCallback)
 
         binding.movieListGrid.adapter = movieListAdapter
-        binding.movies = viewModel.movies
+        binding.movies = viewModelShared.movies
 
-        viewModel.movies.observe(viewLifecycleOwner, {
+        viewModelShared.movies.observe(viewLifecycleOwner, {
             it?.let {
                 Log.d(TAG, it.toString())
                 movieListAdapter.submitList(it.data)
             }
         })
+
+        //TODO receive only data with couroutines!
+        viewModelShared.locations.observe(viewLifecycleOwner, {
+            it?.let {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        locationsList = it.data!!
+                    }
+
+                    Status.ERROR -> {
+                        //TODO complete
+                    }
+                    Status.LOADING -> {
+                        //TODO complete
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.filterFragmentMenu -> {
+                findNavController().navigate( MovieFragmentDirections.showFilterFragment(Locations(locationsList), viewModelShared.query.value!!))
+            }
+        }
+        return true
     }
 }

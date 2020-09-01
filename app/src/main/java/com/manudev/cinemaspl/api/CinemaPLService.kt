@@ -2,12 +2,17 @@ package com.manudev.cinemaspl.api
 
 import androidx.lifecycle.LiveData
 import com.manudev.cinemaspl.vo.GeneralResponse
+import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Movies
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 interface CinemaPLService {
     @GET("movies")
-    fun getMovies(): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
+    fun getMovies(@Query("city") query: String): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
+
+    @GET("locations")
+    fun getLocations(): LiveData<ApiResponse<GeneralResponse<List<Location>>>>
 
 }
