@@ -4,6 +4,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Parcelize
 data class Movie(
@@ -40,7 +42,7 @@ data class Cinema(
     @SerializedName("logo_url")
     val logoUrl: String,
     @SerializedName("cinema_movie_url")
-    val cinemaPageUrl:String
+    val cinemaPageUrl: String
 ) : Parcelable
 
 @Parcelize
@@ -72,3 +74,13 @@ data class Location(
 data class Locations(
     val locations: List<Location>
 ) : Parcelable
+
+@Parcelize
+data class DayTitle(
+    @SerializedName("date")
+    val date: String
+) : Parcelable {
+    companion object {
+        fun dateFormat(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
+}

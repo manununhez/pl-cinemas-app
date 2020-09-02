@@ -50,12 +50,21 @@
                 android:minHeight="?attr/actionBarSize"
                 android:paddingStart="@dimen/grid_2"
                 android:paddingEnd="@dimen/grid_2"
-                app:menu="@menu/movie_list_menu"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:title="CinemaPL"
-                app:navigationIcon="@drawable/ic_broken_image"/>
+                app:menu="@menu/movie_list_menu"
+                app:navigationIcon="@drawable/ic_broken_image"
+                app:title="CinemaPL" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_days_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/grid_0_5"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movie_list_grid"

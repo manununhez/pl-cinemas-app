@@ -29,15 +29,14 @@ class SharedMovieViewModel @ViewModelInject constructor(
         get() = _query
 
     val movies: LiveData<Resource<List<Movies>>> =
-        Transformations.switchMap(_query) { //isRefreshing ->
-//            if (isRefreshing) {
-                repository.loadMovies(it)
-//            } else AbsentLiveData.create()
+        Transformations.switchMap(_query) {
+            repository.loadMovies(it)
         }
 
 
     val locations = repository.loadLocations()
 
+    val date = repository.loadDates()
 
     fun init() {
         _loading.value = true
@@ -64,7 +63,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
         }
     }
 
-    fun setMoviesCity(cityName: String){
+    fun setMoviesCity(cityName: String) {
         if (cityName == _query.value) {
             return
         }

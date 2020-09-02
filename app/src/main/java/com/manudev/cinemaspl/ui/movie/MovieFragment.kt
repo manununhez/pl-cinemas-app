@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -18,10 +19,7 @@ import com.google.android.material.transition.MaterialElevationScale
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
 import com.manudev.cinemaspl.ui.common.RetryCallback
-import com.manudev.cinemaspl.vo.Location
-import com.manudev.cinemaspl.vo.Locations
-import com.manudev.cinemaspl.vo.Movies
-import com.manudev.cinemaspl.vo.Status
+import com.manudev.cinemaspl.vo.*
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -42,6 +40,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private lateinit var binding: FragmentMovieBinding
 
+    private lateinit var movieListAdapter: MovieListAdapter
+
+    private lateinit var daysListAdapter: DaysListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,7 +59,9 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.movies = viewModelShared.movies
 
+        setupObservers()
         initRecyclerView()
 
         viewModelShared.init()
@@ -69,6 +73,40 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
+    }
+
+    private fun setupObservers() {
+        viewModelShared.movies.observe(viewLifecycleOwner, {
+            it?.let {
+                Log.d(TAG, it.toString())
+                movieListAdapter.submitList(it.data)
+            }
+        })
+
+        //TODO receive only data with couroutines!
+        viewModelShared.locations.observe(viewLifecycleOwner, {
+            it?.let {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        locationsList = it.data!!
+                    }
+
+                    Status.ERROR -> {
+                        //TODO complete
+                    }
+                    Status.LOADING -> {
+                        //TODO complete
+                    }
+                }
+            }
+        })
+
+        viewModelShared.date.observe(viewLifecycleOwner, {
+            it?.let {
+                Log.d(TAG, it.toString())
+                daysListAdapter.submitList(it.data)
+            }
+        })
     }
 
     private fun initRecyclerView() {
@@ -99,36 +137,21 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         }
 
-
-        val movieListAdapter = MovieListAdapter(movieClickCallback)
+        movieListAdapter = MovieListAdapter(movieClickCallback)
 
         binding.movieListGrid.adapter = movieListAdapter
-        binding.movies = viewModelShared.movies
 
-        viewModelShared.movies.observe(viewLifecycleOwner, {
-            it?.let {
-                Log.d(TAG, it.toString())
-                movieListAdapter.submitList(it.data)
+        val dayTitleClickCallback = object : DayTitleViewClickCallback {
+            override fun onClick(cardView: View, dayTitle: DayTitle) {
+                Toast.makeText(requireContext(), dayTitle.date, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        //TODO receive only data with couroutines!
-        viewModelShared.locations.observe(viewLifecycleOwner, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        locationsList = it.data!!
-                    }
+        daysListAdapter = DaysListAdapter(dayTitleClickCallback)
 
-                    Status.ERROR -> {
-                        //TODO complete
-                    }
-                    Status.LOADING -> {
-                        //TODO complete
-                    }
-                }
-            }
-        })
+        binding.rvDaysTitle.adapter = daysListAdapter
+
+
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
