@@ -11,7 +11,10 @@ import retrofit2.http.Query
 
 interface CinemaPLService {
     @GET("movies")
-    fun getMovies(@Query("city") query: String): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
+    fun getMovies(
+        @Query("city") city: String,
+        @Query("date") date: String
+    ): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
 
     @GET("locations")
     fun getLocations(): LiveData<ApiResponse<GeneralResponse<List<Location>>>>

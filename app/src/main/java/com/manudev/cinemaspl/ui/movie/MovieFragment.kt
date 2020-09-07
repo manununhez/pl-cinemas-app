@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -31,7 +30,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         private val TAG: String? = MovieFragment::class.simpleName
     }
 
-    //internally using defaultViewModelProviderFactory
+    //sharedViewModel - navGraph scope
     private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
         defaultViewModelProviderFactory
     }
@@ -61,14 +60,16 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movies = viewModelShared.movies
 
-        setupObservers()
-        initRecyclerView()
-
         viewModelShared.init()
         viewModelShared.loadMovies()
+
+        setupObservers()
+        initMoviesRecyclerView()
+        initCinemasRecyclerView()
+
         binding.retryCallback = object : RetryCallback {
             override fun retry() {
-                viewModelShared.loadMovies()
+                viewModelShared.retry()
             }
         }
         postponeEnterTransition()
@@ -109,7 +110,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         })
     }
 
-    private fun initRecyclerView() {
+    private fun initMoviesRecyclerView() {
         val movieClickCallback = object : MovieViewClickCallback {
             override fun onClick(cardView: View, movies: Movies) {
                 // Set exit and reenter transitions here as opposed to in onCreate because these transitions
@@ -141,17 +142,18 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         binding.movieListGrid.adapter = movieListAdapter
 
+    }
+
+    private fun initCinemasRecyclerView() {
         val dayTitleClickCallback = object : DayTitleViewClickCallback {
             override fun onClick(cardView: View, dayTitle: DayTitle) {
-                Toast.makeText(requireContext(), dayTitle.date, Toast.LENGTH_SHORT).show()
+                viewModelShared.setDateMoviesTitle(dayTitle.date)
             }
         }
 
         daysListAdapter = DaysListAdapter(dayTitleClickCallback)
 
         binding.rvDaysTitle.adapter = daysListAdapter
-
-
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -161,7 +163,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                     MovieFragmentDirections.showFilterFragment(
                         Locations(
                             locationsList
-                        ), viewModelShared.query.value!!
+                        ), viewModelShared.query.value!!.city
                     )
                 )
             }

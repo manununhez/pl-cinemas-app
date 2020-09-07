@@ -23,7 +23,7 @@
         android:focusable="true"
         app:cardCornerRadius="0dp"
         app:strokeColor="@color/cinepl_gray_dark"
-        app:strokeWidth="@dimen/grid_0_25"
+        app:strokeWidth="1dp"
         android:foreground="?android:attr/selectableItemBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout

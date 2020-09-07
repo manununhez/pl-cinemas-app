@@ -24,11 +24,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.manudev.cinemaspl.databinding.LocationItemBinding
+import com.manudev.cinemaspl.ui.movie.SharedMovieViewModel
 import com.manudev.cinemaspl.vo.Location
 
 class FilterLocationAdapter(
     private val items: List<Location>,
-    private val selectedLocation: LiveData<String>,
+    private val selectedLocation: LiveData<SharedMovieViewModel.CinemaMoviesId>,
     private val viewLifecycleOwner: LifecycleOwner,
     private val locationViewClickCallback: LocationViewClickCallback
 ) :
@@ -58,17 +59,13 @@ class FilterLocationAdapter(
         fun bind(
             context: Context,
             item: Location,
-            selectedLocation: LiveData<String>,
+            selectedLocation: LiveData<SharedMovieViewModel.CinemaMoviesId>,
             viewLifecycleOwner: LifecycleOwner,
             locationViewClickCallback: LocationViewClickCallback
         ) {
             //TODO trying not to use LiveData here!
             selectedLocation.observe(viewLifecycleOwner, {
-                if (it.isEmpty() && item.city == "Warszawa") {
-                    binding.textView.setTextColor(Color.parseColor("#d84315"))
-                    binding.locationCardItem.strokeColor = Color.parseColor("#d84315")
-                    binding.locationCardItem.strokeWidth = 1
-                } else if (item.city == it) {
+                if (item.city == it.city) {
                     binding.textView.setTextColor(Color.parseColor("#d84315"))
                     binding.locationCardItem.strokeColor = Color.parseColor("#d84315")
                     binding.locationCardItem.strokeWidth = 1

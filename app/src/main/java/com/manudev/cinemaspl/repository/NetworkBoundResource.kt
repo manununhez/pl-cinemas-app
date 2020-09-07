@@ -19,7 +19,7 @@ package com.manudev.cinemaspl.repository
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import com.manudev.cinemaspl.api.ApiEmptyResponse
 import com.manudev.cinemaspl.api.ApiErrorResponse
 import com.manudev.cinemaspl.api.ApiResponse
@@ -36,13 +36,24 @@ import com.manudev.cinemaspl.vo.Resource
  * @param <ResultType>
  * @param <RequestType>
 </RequestType></ResultType> */
-abstract class NetworkBoundResource<ResultType> @MainThread constructor() {
+abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor() {
 
-    private val result = MutableLiveData<Resource<ResultType>>()
+    private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
-        setValue(Resource.loading(null))
-        fetchFromNetwork()
+        result.value = Resource.loading(null)
+        @Suppress("LeakingThis")
+        val dbSource = loadFromDb()
+        result.addSource(dbSource) { data ->
+            result.removeSource(dbSource)
+            if (shouldFetch(data)) {
+                fetchFromNetwork(dbSource)
+            } else {
+                result.addSource(dbSource) { newData ->
+                    setValue(Resource.success(newData))
+                }
+            }
+        }
     }
 
     @MainThread
@@ -52,20 +63,42 @@ abstract class NetworkBoundResource<ResultType> @MainThread constructor() {
         }
     }
 
-    private fun fetchFromNetwork() {
+    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         val apiResponse = createCall()
-
-        apiResponse.observeForever { response ->
+        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
+        result.addSource(dbSource) { newData ->
+            setValue(Resource.loading(newData))
+        }
+        result.addSource(apiResponse) { response ->
+            result.removeSource(apiResponse)
+            result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-                    setValue(Resource.success(processResponse(response)))
+//                    Executor().execute {
+                        saveCallResult(processResponse(response))
+//                        appExecutors.mainThread().execute {
+                            // we specially request a new live data,
+                            // otherwise we will get immediately last cached value,
+                            // which may not be updated with latest results received from network.
+                            result.addSource(loadFromDb()) { newData ->
+                                setValue(Resource.success(newData))
+                            }
+//                        }
+//                    }
                 }
                 is ApiEmptyResponse -> {
-                    setValue(Resource.success(null))
+//                    appExecutors.mainThread().execute {
+                        // reload from disk whatever we had
+                        result.addSource(loadFromDb()) { newData ->
+                            setValue(Resource.success(newData))
+                        }
+//                    }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
-                    setValue(Resource.error(response.errorMessage, null))
+                    result.addSource(dbSource) { newData ->
+                        setValue(Resource.error(response.errorMessage, newData))
+                    }
                 }
             }
         }
@@ -76,11 +109,15 @@ abstract class NetworkBoundResource<ResultType> @MainThread constructor() {
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 
     @WorkerThread
-    protected open fun processResponse(response: ApiSuccessResponse<GeneralResponse<ResultType>>): ResultType =
+    protected open fun processResponse(response: ApiSuccessResponse<GeneralResponse<RequestType>>) =
         response.body.data
 
-
+    @WorkerThread
+    protected abstract fun saveCallResult(item: RequestType)
     @MainThread
-    protected abstract fun createCall(): LiveData<ApiResponse<GeneralResponse<ResultType>>>
-
+    protected abstract fun shouldFetch(data: ResultType?): Boolean
+    @MainThread
+    protected abstract fun loadFromDb(): LiveData<ResultType>
+    @MainThread
+    protected abstract fun createCall(): LiveData<ApiResponse<GeneralResponse<RequestType>>>
 }

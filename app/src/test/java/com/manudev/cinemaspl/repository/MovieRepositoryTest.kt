@@ -29,7 +29,7 @@ class MovieRepositoryTest {
     @Before
     fun setUp() {
         service = mock(CinemaPLService::class.java)
-        repository = MovieRepository(service)
+        repository = MovieRepository(service, sharedPreferences)
     }
 
 
