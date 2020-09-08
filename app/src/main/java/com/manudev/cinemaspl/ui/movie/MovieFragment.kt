@@ -17,6 +17,7 @@ import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
+import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.ui.common.RetryCallback
 import com.manudev.cinemaspl.vo.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     companion object {
-        private val TAG: String? = MovieFragment::class.simpleName
+        val TAG: String? = MovieFragment::class.simpleName
     }
 
     //sharedViewModel - navGraph scope
@@ -79,8 +80,20 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private fun setupObservers() {
         viewModelShared.movies.observe(viewLifecycleOwner, {
             it?.let {
-                Log.d(TAG, it.toString())
-                movieListAdapter.submitList(it.data)
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Log.d(TAG, it.toString())
+                        movieListAdapter.submitList(it.data)
+                    }
+
+                    Status.ERROR -> {
+                        //TODO complete
+                    }
+                    Status.LOADING -> {
+                        //TODO complete
+                    }
+                }
+
             }
         })
 
@@ -151,7 +164,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
 
-        daysListAdapter = DaysListAdapter(dayTitleClickCallback)
+        daysListAdapter =
+            DaysListAdapter(dayTitleClickCallback, viewModelShared.query, viewLifecycleOwner)
 
         binding.rvDaysTitle.adapter = daysListAdapter
     }

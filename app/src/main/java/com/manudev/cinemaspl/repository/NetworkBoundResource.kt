@@ -24,6 +24,7 @@ import com.manudev.cinemaspl.api.ApiEmptyResponse
 import com.manudev.cinemaspl.api.ApiErrorResponse
 import com.manudev.cinemaspl.api.ApiResponse
 import com.manudev.cinemaspl.api.ApiSuccessResponse
+import com.manudev.cinemaspl.util.AppExecutors
 import com.manudev.cinemaspl.vo.GeneralResponse
 import com.manudev.cinemaspl.vo.Resource
 
@@ -36,7 +37,7 @@ import com.manudev.cinemaspl.vo.Resource
  * @param <ResultType>
  * @param <RequestType>
 </RequestType></ResultType> */
-abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor() {
+abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor(private val appExecutors: AppExecutors) {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
@@ -74,25 +75,25 @@ abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constru
             result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-//                    Executor().execute {
+                    appExecutors.diskIO().execute {
                         saveCallResult(processResponse(response))
-//                        appExecutors.mainThread().execute {
+                        appExecutors.mainThread().execute {
                             // we specially request a new live data,
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
                                 setValue(Resource.success(newData))
                             }
-//                        }
-//                    }
+                        }
+                    }
                 }
                 is ApiEmptyResponse -> {
-//                    appExecutors.mainThread().execute {
+                    appExecutors.mainThread().execute {
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
                             setValue(Resource.success(newData))
                         }
-//                    }
+                    }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
@@ -114,10 +115,13 @@ abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constru
 
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)
+
     @MainThread
     protected abstract fun shouldFetch(data: ResultType?): Boolean
+
     @MainThread
     protected abstract fun loadFromDb(): LiveData<ResultType>
+
     @MainThread
     protected abstract fun createCall(): LiveData<ApiResponse<GeneralResponse<RequestType>>>
 }

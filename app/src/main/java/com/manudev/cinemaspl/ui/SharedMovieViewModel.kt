@@ -1,4 +1,4 @@
-package com.manudev.cinemaspl.ui.movie
+package com.manudev.cinemaspl.ui
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
@@ -17,7 +17,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     companion object {
-        val TAG = SharedMovieViewModel::class.java.simpleName
+        val TAG: String = SharedMovieViewModel::class.java.simpleName
     }
 
     private val _loading = MutableLiveData<Boolean>()
@@ -67,6 +67,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
                 }
             }
         }
+
     }
 
     fun setMoviesCity(newCityName: String) {
@@ -93,6 +94,12 @@ class SharedMovieViewModel @ViewModelInject constructor(
         //TODO this function could be renamed to forceRefresh data
         //if the data is not null, we avoid fetching the data again. This should be replaced with DB
         Log.d(TAG, "loadMovies()")
+        val sameCity = _query.value?.city == repository.getSelectedCity()
+        val sameDate = _query.value?.date == repository.getSelectedDate()
+
+        if (sameCity && sameDate)
+            return
+
         _query.value =
             CinemaMoviesId(repository.getSelectedCity(), repository.getSelectedDate())
     }

@@ -12,10 +12,13 @@ data class DayTitle(
     val date: String
 ) : Parcelable {
     companion object {
-        val datePattern = "yyyy-MM-dd"
+        private const val datePattern = "yyyy-MM-dd"
         fun dateFormat(): SimpleDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
 
         fun currentDate(): String =
             SimpleDateFormat(datePattern, Locale.getDefault()).format(Date())
+
+        fun currentDateWeekName(): String =
+            SimpleDateFormat("EEE", Locale.getDefault()).format(Date())
     }
 }

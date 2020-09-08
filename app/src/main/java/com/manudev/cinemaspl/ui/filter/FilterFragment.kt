@@ -11,7 +11,7 @@ import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialSharedAxis
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentFilterBinding
-import com.manudev.cinemaspl.ui.movie.SharedMovieViewModel
+import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Locations
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +28,11 @@ private const val ARG_PARAM2 = "param2"
  */
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
+    companion object {
+        val TAG: String? = FilterFragment::class.simpleName
+    }
+
+
     private lateinit var binding: FragmentFilterBinding
     private lateinit var locations: Locations
     private lateinit var selectedLocation: String
@@ -64,6 +69,7 @@ class FilterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lifecycleOwner = viewLifecycleOwner
         locations = params.locations;
         selectedLocation = params.selectedLocation;
         initRecyclerView()
@@ -74,10 +80,16 @@ class FilterFragment : Fragment() {
             LocationViewClickCallback {
             override fun onClick(location: Location) {
                 viewModelShared.setMoviesCity(location.city)
+                findNavController().popBackStack()
             }
         }
 
         binding.rvFilterList.adapter =
-            FilterLocationAdapter(locations.locations, viewModelShared.query, viewLifecycleOwner, filterClickCallback)
+            FilterLocationAdapter(
+                locations.locations,
+                viewModelShared.query,
+                viewLifecycleOwner,
+                filterClickCallback
+            )
     }
 }

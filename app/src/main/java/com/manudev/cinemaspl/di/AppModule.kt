@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.manudev.cinemaspl.api.CinemaPLService
 import com.manudev.cinemaspl.repository.MovieRepository
+import com.manudev.cinemaspl.util.AppExecutors
 import com.manudev.cinemaspl.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -49,8 +50,15 @@ object AppModule {
         )
     }
 
+    @Provides
+    fun provideAppExecutors() = AppExecutors()
+
     @Singleton
     @Provides
-    fun provideMovieRepository(cinemaPLService: CinemaPLService, sharedPreferences: SharedPreferences) =
-        MovieRepository(cinemaPLService, sharedPreferences)
+    fun provideMovieRepository(
+        cinemaPLService: CinemaPLService,
+        sharedPreferences: SharedPreferences,
+        appExecutors: AppExecutors
+    ) =
+        MovieRepository(cinemaPLService, sharedPreferences, appExecutors)
 }
