@@ -55,6 +55,16 @@
                 app:navigationIcon="@drawable/ic_broken_image"
                 app:title="CinemaPL" />
 
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_days_title"
                 android:layout_width="match_parent"
@@ -63,23 +73,21 @@
                 android:padding="@dimen/grid_0_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_list_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/grid_1_5"
+                android:paddingBottom="@dimen/grid_1"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                app:hasFixedSize="@{true}"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="@integer/featured_grid_columns"
+                tools:listitem="@layout/movie_item" />
+        </LinearLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list_grid"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingHorizontal="@dimen/grid_1_5"
-            android:paddingBottom="@dimen/grid_1"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            app:hasFixedSize="@{true}"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:spanCount="@integer/featured_grid_columns"
-            tools:listitem="@layout/movie_item" />
 
         <TextView
             android:id="@+id/no_results_text"

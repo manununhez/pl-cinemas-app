@@ -23,8 +23,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.LocationItemBinding
-import com.manudev.cinemaspl.ui.movie.SharedMovieViewModel
+import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.vo.Location
 
 class FilterLocationAdapter(
@@ -66,11 +67,14 @@ class FilterLocationAdapter(
             //TODO trying not to use LiveData here!
             selectedLocation.observe(viewLifecycleOwner, {
                 if (item.city == it.city) {
-                    binding.textView.setTextColor(Color.parseColor("#d84315"))
-                    binding.locationCardItem.strokeColor = Color.parseColor("#d84315")
+                    binding.textView.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
+                    binding.locationCardItem.strokeColor = context.resources.getColor(R.color.cinepl_deep_orange_700)
                     binding.locationCardItem.strokeWidth = 1
                 } else {
-                    binding.textView.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary)).getColor(0, 0))
+                    binding.textView.setTextColor(
+                        context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                            .getColor(0, 0)
+                    )
                     binding.locationCardItem.strokeColor = Color.TRANSPARENT
                     binding.locationCardItem.strokeWidth = 0
 

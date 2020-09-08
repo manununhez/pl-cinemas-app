@@ -43,7 +43,6 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="0dp"
-                    android:backgroundTint="?attr/colorSecondary"
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
                     app:contentInsetStartWithNavigation="0dp"

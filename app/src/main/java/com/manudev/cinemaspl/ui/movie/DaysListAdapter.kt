@@ -18,7 +18,6 @@ package com.manudev.cinemaspl.ui.movie
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,21 +64,24 @@ class DaysListAdapter(
 
         selectedDate.observe(viewLifecycleOwner, {
             if (it.date == currentDayTitle.date) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline4)
-                }
-                holder.binding.tvWeekDay.setTextColor(Color.parseColor("#d84315"))
-                holder.binding.tvDayTitle.setTextColor(Color.parseColor("#d84315"))
-                holder.binding.tvMonthTitle.setTextColor(Color.parseColor("#d84315"))
-                holder.binding.dayTitleCardView.strokeColor = Color.parseColor("#d84315")
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline4)
+//                }
+                holder.binding.tvWeekDay.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
+                holder.binding.tvDayTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
+                holder.binding.tvMonthTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
+                holder.binding.dayTitleCardView.strokeColor = context.resources.getColor(R.color.cinepl_deep_orange_700)
                 holder.binding.dayTitleCardView.strokeWidth = 1
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline5)
-                }
-                holder.binding.tvWeekDay.setTextColor(Color.WHITE)
-                holder.binding.tvDayTitle.setTextColor(Color.WHITE)
-                holder.binding.tvMonthTitle.setTextColor(Color.WHITE)
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline5)
+//                }
+                holder.binding.tvWeekDay.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                    .getColor(0, 0))
+                holder.binding.tvDayTitle.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                    .getColor(0, 0))
+                holder.binding.tvMonthTitle.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                    .getColor(0, 0))
                 holder.binding.dayTitleCardView.strokeColor = Color.GRAY
                 holder.binding.dayTitleCardView.strokeWidth = 1
             }
