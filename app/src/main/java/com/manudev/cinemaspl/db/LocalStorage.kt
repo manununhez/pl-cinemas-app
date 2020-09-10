@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.manudev.cinemaspl.util.AbsentLiveData
+import com.manudev.cinemaspl.util.DateUtils
 import com.manudev.cinemaspl.vo.DateTitle
 import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Movies
@@ -22,7 +23,7 @@ class LocalStorage @Inject constructor(
         private const val SHARED_PREFS_LOCATIONS = "Locations"
         private const val SHARED_PREFS_DATES = "dates"
         private const val DEFAULT_CITY = "Warszawa"
-        private val DEFAULT_CURRENT_DATE = DateTitle.dateFormat(Date())
+        private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
     }
 
     fun getSelectedCity() =

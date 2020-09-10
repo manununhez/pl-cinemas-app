@@ -23,6 +23,7 @@ object TestUtil {
         "12+",
         "2019",
         "2020-09-08",
+        "Warszawa",
         "https://www.youtube.com/watch?v=g-mwqHq_3Og&t=9s",
         "https://media.multikino.pl/uploads/images/films_and_events/zieja-poster_f70c7c06fd.jpg",
     )

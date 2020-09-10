@@ -62,6 +62,7 @@ class CinemaPLServiceTest {
         assertThat(movie.releaseYear, `is`(movieListTest[0].movie.releaseYear))
         assertThat(movie.description, `is`(movieListTest[0].movie.description))
         assertThat(movie.dateTitle, `is`(movieListTest[0].movie.dateTitle))
+        assertThat(movie.city, `is`(movieListTest[0].movie.city))
         assertThat(movie.trailerUrl, `is`(movieListTest[0].movie.trailerUrl))
         assertThat(movie.posterUrl, `is`(movieListTest[0].movie.posterUrl))
 
@@ -71,7 +72,7 @@ class CinemaPLServiceTest {
 
         val cinema = cinemas[0]
         assertThat(cinema.cinemaId, `is`(movieListTest[0].cinemas[0].cinemaId))
-        assertThat(cinema.name, `is`(movieListTest[0].cinemas[0].name))
+        assertThat(cinema.locationName, `is`(movieListTest[0].cinemas[0].locationName))
         assertThat(cinema.locationId, `is`(movieListTest[0].cinemas[0].locationId))
         assertThat(cinema.latitude, `is`(movieListTest[0].cinemas[0].latitude))
         assertThat(cinema.longitude, `is`(movieListTest[0].cinemas[0].longitude))

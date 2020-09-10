@@ -20,6 +20,8 @@ data class Movie(
     val releaseYear: String,
     @SerializedName("date_title")
     val dateTitle: String,
+    @SerializedName("city")
+    val city: String,
     @SerializedName("trailer_url")
     val trailerUrl: String,
     @SerializedName("poster_url")
