@@ -110,6 +110,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:resource="@{(Resource) movies}"
+            app:movies="@{movies.data}"
             app:retryCallback="@{() -> retryCallback.retry()}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

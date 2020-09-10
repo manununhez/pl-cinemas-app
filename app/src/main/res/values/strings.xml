@@ -26,6 +26,8 @@
     <string name="filter_fragment_toolbar_title">Select your city</string>
     <string name="movie_fragment_toolbar_title">@string/app_name</string>
     <string name="today">Today</string>
+    <string name="empty_description">No description provided.</string>
+    <string name="empty_movie_list">No movies found in this specific date.</string>
 
 
 </resources>
