@@ -1,16 +1,16 @@
 package com.manudev.cinemaspl.api
 
-import com.manudev.cinemaspl.util.TestUtil.createTestResponse
+import com.manudev.cinemaspl.vo.GeneralResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
 import okhttp3.Request
-import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.isA
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
+import org.junit.runners.JUnit4
 import retrofit2.Response
 
 private const val MESSAGE_1 = "foo"
@@ -20,7 +20,7 @@ private const val MESSAGE_4 = "Error_blah"
 private const val MESSAGE_5 = "foo_error"
 private const val MESSAGE_6 = "Errorazo!"
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(JUnit4::class)
 class ApiResponseTest {
 
 
@@ -62,21 +62,21 @@ class ApiResponseTest {
     @Test
     fun errorResponse_codeNotBetween200and300_showResponseErrorBody() {
         val (errorMessage) = setupErrorResponseWithCodeNotInRangeAndErrorBody()
-        assertThat<String>(errorMessage, `is`(MESSAGE_3))
+        assertThat(errorMessage, `is`(MESSAGE_3))
     }
 
 
     @Test
     fun errorResponse_codeNotBetween200and300_responseErrorBodyEmpty_showResponseMessage() {
         val (errorMessage) = setupErrorResponseWithCodeNotInRangeAndWithEmptyErrorBody()
-        assertThat<String>(errorMessage, `is`(MESSAGE_6))
+        assertThat(errorMessage, `is`(MESSAGE_6))
     }
 
 
     @Test
     fun errorResponse_showingThrowableErrorMessage() {
         val apiResponse = setupErrorResponseWithThrowableErrorMessage()
-        assertThat<String>(apiResponse.errorMessage, `is`(MESSAGE_4))
+        assertThat(apiResponse.errorMessage, `is`(MESSAGE_4))
 
     }
 
@@ -87,25 +87,25 @@ class ApiResponseTest {
         .create(Response.success(null)) as ApiEmptyResponse
 
     private fun setupSuccessResponse() = ApiResponse
-        .create(Response.success(createTestResponse(true, "", MESSAGE_1))) as ApiSuccessResponse
+        .create(Response.success(GeneralResponse(true, "", MESSAGE_1))) as ApiSuccessResponse
 
     private fun setupSuccessFalseResponseEmptyData() = ApiResponse
-        .create(Response.success(createTestResponse(false, "", MESSAGE_2))) as ApiErrorResponse
+        .create(Response.success(GeneralResponse(false, "", MESSAGE_2))) as ApiErrorResponse
 
     private fun setupSuccessFalseResponseEmptyMessage() = ApiResponse
-        .create(Response.success(createTestResponse(false, MESSAGE_5, ""))) as ApiErrorResponse
+        .create(Response.success(GeneralResponse(false, MESSAGE_5, ""))) as ApiErrorResponse
 
     private fun setupErrorResponseWithCodeNotInRangeAndErrorBody() = ApiResponse.create<String>(
-        Response.error<String>(
+        Response.error(
             400,
-            ResponseBody.create("application/txt".toMediaType(), MESSAGE_3)
+            MESSAGE_3.toResponseBody("application/txt".toMediaType())
         )
     ) as ApiErrorResponse<String>
 
     private fun setupErrorResponseWithCodeNotInRangeAndWithEmptyErrorBody(): ApiErrorResponse<String> {
         return ApiResponse.create<String>(
-            Response.error<String>(
-                ResponseBody.create("application/txt".toMediaType(), ""),
+            Response.error(
+                "".toResponseBody("application/txt".toMediaType()),
                 okhttp3.Response.Builder() //
                     .code(400)
                     .message(MESSAGE_6)

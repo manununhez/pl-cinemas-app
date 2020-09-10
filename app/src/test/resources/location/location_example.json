@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "data": [
+    {
+      "city": "Bielsko-Biała"
+    },
+    {
+      "city": "Bydgoszcz"
+    }
+  ],
+  "message": "Cities succesfully delivered."
+}
