@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.manudev.cinemaspl.api.CinemaPLService
+import com.manudev.cinemaspl.db.LocalStorage
 import com.manudev.cinemaspl.repository.MovieRepository
 import com.manudev.cinemaspl.util.AppExecutors
 import com.manudev.cinemaspl.util.LiveDataCallAdapterFactory
@@ -22,7 +23,7 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object AppModule {
 
-    val SHARED_PREFERENCES_NAME = "prefs"
+    private const val SHARED_PREFERENCES_NAME = "prefs"
 
     @Singleton
     @Provides
@@ -53,12 +54,15 @@ object AppModule {
     @Provides
     fun provideAppExecutors() = AppExecutors()
 
+    @Provides
+    fun provideLocalStorage(sharedPreferences: SharedPreferences) = LocalStorage(sharedPreferences)
+
     @Singleton
     @Provides
     fun provideMovieRepository(
         cinemaPLService: CinemaPLService,
-        sharedPreferences: SharedPreferences,
+        localStorage: LocalStorage,
         appExecutors: AppExecutors
     ) =
-        MovieRepository(cinemaPLService, sharedPreferences, appExecutors)
+        MovieRepository(cinemaPLService, localStorage, appExecutors)
 }
