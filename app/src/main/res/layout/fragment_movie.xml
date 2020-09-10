@@ -52,8 +52,7 @@
                 android:paddingEnd="@dimen/grid_2"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:menu="@menu/movie_list_menu"
-                app:navigationIcon="@drawable/ic_broken_image"
-                app:title="CinemaPL" />
+                app:navigationIcon="@drawable/ic_toolbar_logo" />
 
 
         </com.google.android.material.appbar.AppBarLayout>
