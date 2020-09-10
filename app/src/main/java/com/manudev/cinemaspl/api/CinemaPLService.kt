@@ -1,7 +1,7 @@
 package com.manudev.cinemaspl.api
 
 import androidx.lifecycle.LiveData
-import com.manudev.cinemaspl.vo.DayTitle
+import com.manudev.cinemaspl.vo.DateTitle
 import com.manudev.cinemaspl.vo.GeneralResponse
 import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Movies
@@ -20,6 +20,6 @@ interface CinemaPLService {
     fun getLocations(): LiveData<ApiResponse<GeneralResponse<List<Location>>>>
 
     @GET("dates")
-    fun getDates(): LiveData<ApiResponse<GeneralResponse<List<DayTitle>>>>
+    fun getDates(): LiveData<ApiResponse<GeneralResponse<List<DateTitle>>>>
 
 }

@@ -89,6 +89,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView"
                     app:visibleGone="@{!movies.movie.trailerUrl.isEmpty()}" />
 
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{movies.movie.dateTitle}"
+                    app:layout_constraintBottom_toTopOf="@+id/view2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/btnWatchTrailer"
+                    tools:text="2020-09-08" />
+
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="@dimen/detail_poster_size_width"
@@ -201,7 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/buy_tickets"
+                    android:text="@string/where_to_watch"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

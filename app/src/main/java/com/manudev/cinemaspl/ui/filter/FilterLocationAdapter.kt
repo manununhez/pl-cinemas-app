@@ -68,15 +68,18 @@ class FilterLocationAdapter(
             selectedLocation.observe(viewLifecycleOwner, {
                 if (item.city == it.city) {
                     binding.textView.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
-                    binding.locationCardItem.strokeColor = context.resources.getColor(R.color.cinepl_deep_orange_700)
+                    binding.locationCardItem.strokeColor =
+                        context.resources.getColor(R.color.cinepl_deep_orange_700)
                     binding.locationCardItem.strokeWidth = 1
                 } else {
-                    binding.textView.setTextColor(
+                    val typedArray =
                         context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
-                            .getColor(0, 0)
-                    )
+
+                    binding.textView.setTextColor(typedArray.getColor(0, 0))
                     binding.locationCardItem.strokeColor = Color.TRANSPARENT
                     binding.locationCardItem.strokeWidth = 0
+
+                    typedArray.recycle()
 
                 }
             })

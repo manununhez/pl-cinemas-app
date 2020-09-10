@@ -1,4 +1,4 @@
-package com.manudev.cinemaspl;
+package com.manudev.cinemaspl
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

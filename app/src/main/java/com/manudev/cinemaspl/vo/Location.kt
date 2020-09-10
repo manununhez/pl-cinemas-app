@@ -9,3 +9,9 @@ data class Location(
     @SerializedName("city")
     val city: String
 ) : Parcelable
+
+//Only to pass a value navArgs
+@Parcelize
+data class Locations(
+    val locations: List<Location>
+) : Parcelable

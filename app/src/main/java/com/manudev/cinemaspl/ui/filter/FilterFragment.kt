@@ -16,16 +16,7 @@ import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Locations
 import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FilterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
     companion object {
@@ -65,13 +56,13 @@ class FilterFragment : Fragment() {
         }
 
 
-        return binding.root;
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
-        locations = params.locations;
-        selectedLocation = params.selectedLocation;
+        locations = params.locations
+        selectedLocation = params.selectedLocation
         initRecyclerView()
     }
 

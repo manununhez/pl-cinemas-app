@@ -29,23 +29,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.DayTitleItemBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
-import com.manudev.cinemaspl.vo.DayTitle
-import java.text.SimpleDateFormat
+import com.manudev.cinemaspl.vo.DateTitle
 import java.util.*
 
 class DaysListAdapter(
     private val dayTitleViewClickCallback: DayTitleViewClickCallback,
     private val selectedDate: LiveData<SharedMovieViewModel.CinemaMoviesId>,
     private val viewLifecycleOwner: LifecycleOwner
-) : ListAdapter<DayTitle, DaysListAdapter.DaysViewHolder>(Companion) {
+) : ListAdapter<DateTitle, DaysListAdapter.DaysViewHolder>(Companion) {
 
     class DaysViewHolder(val binding: DayTitleItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    companion object : DiffUtil.ItemCallback<DayTitle>() {
-        override fun areItemsTheSame(oldItem: DayTitle, newItem: DayTitle): Boolean =
+    companion object : DiffUtil.ItemCallback<DateTitle>() {
+        override fun areItemsTheSame(oldItem: DateTitle, newItem: DateTitle): Boolean =
             oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: DayTitle, newItem: DayTitle): Boolean =
+        override fun areContentsTheSame(oldItem: DateTitle, newItem: DateTitle): Boolean =
             oldItem.date == newItem.date
     }
 
@@ -70,20 +69,24 @@ class DaysListAdapter(
                 holder.binding.tvWeekDay.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
                 holder.binding.tvDayTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
                 holder.binding.tvMonthTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
-                holder.binding.dayTitleCardView.strokeColor = context.resources.getColor(R.color.cinepl_deep_orange_700)
+                holder.binding.dayTitleCardView.strokeColor =
+                    context.resources.getColor(R.color.cinepl_deep_orange_700)
                 holder.binding.dayTitleCardView.strokeWidth = 1
             } else {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline5)
 //                }
-                holder.binding.tvWeekDay.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
-                    .getColor(0, 0))
-                holder.binding.tvDayTitle.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
-                    .getColor(0, 0))
-                holder.binding.tvMonthTitle.setTextColor(context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
-                    .getColor(0, 0))
+
+                val typedArray =
+                    context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+
+                holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
+                holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
+                holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
                 holder.binding.dayTitleCardView.strokeColor = Color.GRAY
                 holder.binding.dayTitleCardView.strokeWidth = 1
+
+                typedArray.recycle()
             }
         })
 
@@ -98,30 +101,22 @@ class DaysListAdapter(
     }
 
     private fun formatWeekDay(date: String): String {
-        val formatOutputDay = SimpleDateFormat("EEE", Locale.getDefault())
-        val timestamp = DayTitle.dateFormat().parse(date)?.time
+        val currentDate = Date()
+        val today = DateTitle.dateFormat(currentDate)
+        val todayWeekName = DateTitle.weekDateFormat(currentDate)
 
-        val today = DayTitle.currentDateWeekName()
-        val formattedWeekDay = formatOutputDay.format(timestamp)
-        return if (today == formattedWeekDay)
-            "Today"
+        val formattedDay = DateTitle.dateFormat(date)
+        val formattedWeekDay = DateTitle.weekDateFormat(date)
+        return if (today == formattedDay && todayWeekName == formattedWeekDay)
+            context.getString(R.string.today)
         else formattedWeekDay
     }
 
-    private fun formatDateDay(date: String): String {
-        val formatOutputDay = SimpleDateFormat("dd", Locale.getDefault())
-        val timestamp = DayTitle.dateFormat().parse(date)?.time
-        return formatOutputDay.format(timestamp)
-    }
+    private fun formatDateDay(date: String) = DateTitle.dayDateFormat(date)
 
-    private fun formatDateMonth(date: String): String {
-        val formatOutputMonth = SimpleDateFormat("MMM", Locale.getDefault())
-        val timestamp = DayTitle.dateFormat().parse(date)?.time
-        val formatted = formatOutputMonth.format(timestamp)
-        return formatted.toUpperCase(Locale.getDefault()).replace(".", "")
-    }
+    private fun formatDateMonth(date: String) = DateTitle.monthDateFormat(date)
 }
 
 interface DayTitleViewClickCallback {
-    fun onClick(cardView: View, dayTitle: DayTitle)
+    fun onClick(cardView: View, dateTitle: DateTitle)
 }

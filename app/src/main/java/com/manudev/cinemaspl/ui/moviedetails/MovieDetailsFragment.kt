@@ -25,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_details_movie.*
  */
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
+    private val params by navArgs<MovieDetailsFragmentArgs>()
+
     private lateinit var binding: FragmentDetailsMovieBinding
     private lateinit var movies: Movies
-
-    private val params by navArgs<MovieDetailsFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +59,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movies = params.movies;
+        movies = params.movies
         binding.movies = movies
         binding.duration.text = if (movies.movie.duration == "0") "" else getString(
             R.string.movie_duration,
@@ -88,7 +88,6 @@ class MovieDetailsFragment : Fragment() {
                     movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
                     movieDescription.ellipsize = TextUtils.TruncateAt.END
                 }
-
             }
         }
 
@@ -110,7 +109,6 @@ class MovieDetailsFragment : Fragment() {
                     )
                 )
             }
-
         }
 
         val cinemaListAdapter = CinemaMovieListAdapter(movies.cinemas, cinemaClickCallback)
