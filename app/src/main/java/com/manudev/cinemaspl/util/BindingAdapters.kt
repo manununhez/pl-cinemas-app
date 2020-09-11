@@ -21,12 +21,14 @@ import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.manudev.cinemaspl.R
+import java.util.*
 
 
 /**
@@ -60,6 +62,11 @@ fun View.bindElevationOverlay(previousElevation: Float, elevation: Float) {
     val color = ElevationOverlayProvider(context)
         .compositeOverlayWithThemeSurfaceColorIfNeeded(elevation)
     setBackgroundColor(color)
+}
+
+@BindingAdapter("classification")
+fun bindClassification(view: TextView, str: String) {
+    view.text = str.split("|").joinToString(" ") { it.capitalize(Locale.getDefault()) }
 }
 
 
