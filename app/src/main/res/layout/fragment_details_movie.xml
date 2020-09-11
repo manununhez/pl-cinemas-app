@@ -74,21 +74,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/expandCollapseOption" />
 
-                <Button
-                    android:id="@+id/btnWatchTrailer"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:adjustViewBounds="true"
-                    android:cropToPadding="false"
-                    android:onClick="@{() -> detailsMovieCallback.watchTrailer()}"
-                    android:text="@string/button_watch_trailer"
-                    app:icon="@drawable/ic_baseline_play_circle_filled_24"
-                    app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView"
-                    app:visibleGone="@{!movies.movie.trailerUrl.empty}" />
-
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="@dimen/detail_poster_size_width"
@@ -102,6 +87,25 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/view"
                     tools:src="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:adjustViewBounds="true"
+                    android:clickable="true"
+                    android:contentDescription="@string/a11y_movie_avatar"
+                    android:cropToPadding="false"
+                    android:focusable="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_play"
+                    android:onClick="@{() -> detailsMovieCallback.watchTrailer()}"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                    tools:src="@drawable/ic_play"
+                    app:visibleGone="@{!movies.movie.trailerUrl.empty}"/>
 
                 <TextView
                     android:id="@+id/movieTitle"
@@ -152,8 +156,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:classification="@{movies.movie.classification}"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
+                    app:classification="@{movies.movie.classification}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/year"
                     app:layout_constraintStart_toEndOf="@+id/year"
                     tools:text="TV-MA" />
