@@ -12,10 +12,14 @@ data class Movie(
     val title: String,
     @SerializedName("description")
     val description: String,
+    @SerializedName("original_lang")
+    val originalLanguage: String,
     @SerializedName("duration")
     val duration: String,
     @SerializedName("classification")
     val classification: String,
+    @SerializedName("genre")
+    val genre: String,
     @SerializedName("release_year")
     val releaseYear: String,
     @SerializedName("date_title")
