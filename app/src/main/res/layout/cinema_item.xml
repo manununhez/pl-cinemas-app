@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/a11y_movie_avatar"
                 android:scaleType="center"
-                android:background="@android:color/white"
+                android:background="@android:color/black"
                 app:imageUrl="@{cinema.logoUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -51,7 +51,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
                 app:background="?android:attr/textColorPrimary"
                 app:elevationOverlay="@{@dimen/card_elevation}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -75,7 +74,19 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="Cinema 1" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{cinema.language}"
+                android:padding="@dimen/grid_1"
+                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:text="Subtitles"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

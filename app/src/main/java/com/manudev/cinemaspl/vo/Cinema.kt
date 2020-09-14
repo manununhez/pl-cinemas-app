@@ -12,6 +12,8 @@ data class Cinema(
     val locationId: String,
     @SerializedName("name")
     val locationName: String,
+    @SerializedName("language")
+    val language: String,
     @SerializedName("coord_latitude")
     val latitude: String,
     @SerializedName("coord_longitude")
