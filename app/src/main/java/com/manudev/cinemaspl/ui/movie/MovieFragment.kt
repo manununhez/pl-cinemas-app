@@ -19,7 +19,9 @@ import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.ui.common.RetryCallback
-import com.manudev.cinemaspl.vo.*
+import com.manudev.cinemaspl.vo.Attribute
+import com.manudev.cinemaspl.vo.Movies
+import com.manudev.cinemaspl.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -36,7 +38,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         defaultViewModelProviderFactory
     }
 
-    private lateinit var locationsList: List<Location>
+
+    private lateinit var attributes: Attribute
 
     private lateinit var binding: FragmentMovieBinding
 
@@ -61,12 +64,12 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movies = viewModelShared.movies
 
-        viewModelShared.init()
         viewModelShared.loadMovies()
+
 
         setupObservers()
         initMoviesRecyclerView()
-        initCinemasRecyclerView()
+        initDateTitleRecyclerView()
 
         binding.retryCallback = object : RetryCallback {
             override fun retry() {
@@ -79,48 +82,21 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun setupObservers() {
         viewModelShared.movies.observe(viewLifecycleOwner, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        Log.d(TAG, it.toString())
-                        movieListAdapter.submitList(it.data)
-                    }
-
-                    Status.ERROR -> {
-                        //TODO complete
-                    }
-                    Status.LOADING -> {
-                        //TODO complete
-                    }
-                }
-
-            }
-        })
-
-        //TODO receive only data with couroutines!
-        viewModelShared.locations.observe(viewLifecycleOwner, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        locationsList = it.data!!
-                    }
-
-                    Status.ERROR -> {
-                        //TODO complete
-                    }
-                    Status.LOADING -> {
-                        //TODO complete
-                    }
-                }
-            }
-        })
-
-        viewModelShared.date.observe(viewLifecycleOwner, {
-            it?.let {
+            if (it.status == Status.SUCCESS) {
                 Log.d(TAG, it.toString())
-                daysListAdapter.submitList(it.data)
+                movieListAdapter.submitList(it.data)
+            } else if(it.status == Status.ERROR){
+                movieListAdapter.submitList(listOf())
             }
         })
+
+        viewModelShared.attributes.observe(viewLifecycleOwner, {
+            if (it.status == Status.SUCCESS) {
+                attributes = it.data!!
+                daysListAdapter.submitList(it.data.days)
+            }
+        })
+
     }
 
     private fun initMoviesRecyclerView() {
@@ -157,15 +133,20 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     }
 
-    private fun initCinemasRecyclerView() {
+    private fun initDateTitleRecyclerView() {
         val dayTitleClickCallback = object : DayTitleViewClickCallback {
-            override fun onClick(cardView: View, dayTitle: DayTitle) {
-                viewModelShared.setDateMoviesTitle(dayTitle.date)
+            override fun onClick(cardView: View, dateTitle: String) {
+                viewModelShared.setDateMoviesTitle(dateTitle)
+                viewModelShared.loadMovies()
             }
         }
 
         daysListAdapter =
-            DaysListAdapter(dayTitleClickCallback, viewModelShared.query, viewLifecycleOwner)
+            DaysListAdapter(
+                dayTitleClickCallback,
+                viewModelShared.currentFilterAttribute,
+                viewLifecycleOwner
+            )
 
         binding.rvDaysTitle.adapter = daysListAdapter
     }
@@ -175,9 +156,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             R.id.filterFragmentMenu -> {
                 findNavController().navigate(
                     MovieFragmentDirections.showFilterFragment(
-                        Locations(
-                            locationsList
-                        ), viewModelShared.query.value!!.city
+                        attributes,
+                        viewModelShared.getFilteredAttributes()
                     )
                 )
             }

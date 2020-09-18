@@ -14,6 +14,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -31,6 +33,11 @@ object AppModule {
         .baseUrl("http://192.168.1.10:8000/api/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(LiveDataCallAdapterFactory())
+        .client(//Added interceptor to print level body request/response Retrofit
+            OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build()
+        )
         .build()
 
     @Provides

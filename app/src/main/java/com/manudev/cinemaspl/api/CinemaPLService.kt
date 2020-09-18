@@ -1,25 +1,22 @@
 package com.manudev.cinemaspl.api
 
 import androidx.lifecycle.LiveData
-import com.manudev.cinemaspl.vo.DateTitle
+import com.manudev.cinemaspl.vo.Attribute
+import com.manudev.cinemaspl.vo.FilterAttribute
 import com.manudev.cinemaspl.vo.GeneralResponse
-import com.manudev.cinemaspl.vo.Location
 import com.manudev.cinemaspl.vo.Movies
+import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.POST
 
 
 interface CinemaPLService {
-    @GET("movies")
-    fun getMovies(
-        @Query("city") city: String,
-        @Query("date") date: String
+    @POST("movies/search")
+    fun searchMovies(
+        @Body filterAttribute: FilterAttribute
     ): LiveData<ApiResponse<GeneralResponse<List<Movies>>>>
 
-    @GET("locations")
-    fun getLocations(): LiveData<ApiResponse<GeneralResponse<List<Location>>>>
-
-    @GET("dates")
-    fun getDates(): LiveData<ApiResponse<GeneralResponse<List<DateTitle>>>>
+    @GET("attributes")
+    fun getAttributes(): LiveData<ApiResponse<GeneralResponse<Attribute>>>
 
 }

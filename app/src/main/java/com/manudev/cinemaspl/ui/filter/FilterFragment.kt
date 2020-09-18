@@ -12,21 +12,16 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentFilterBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
-import com.manudev.cinemaspl.vo.Location
-import com.manudev.cinemaspl.vo.Locations
+import com.manudev.cinemaspl.vo.Attribute
+import com.manudev.cinemaspl.vo.FilterAttribute
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
-    companion object {
-        val TAG: String? = FilterFragment::class.simpleName
-    }
-
-
     private lateinit var binding: FragmentFilterBinding
-    private lateinit var locations: Locations
-    private lateinit var selectedLocation: String
+    private lateinit var attributes: Attribute
+    private lateinit var filteredAttributes: FilterAttribute
 
     //SharedViewModel
     private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
@@ -61,26 +56,65 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
-        locations = params.locations
-        selectedLocation = params.selectedLocation
-        initRecyclerView()
+        attributes = params.attributes
+        filteredAttributes = params.filteredAttributes
+
+        initFilterCitiesRecyclerView()
+        initFilterCinemasRecyclerView()
+        initFilterLanguagesRecyclerView()
     }
 
-    private fun initRecyclerView() {
+    private fun initFilterCitiesRecyclerView() {
         val filterClickCallback = object :
             LocationViewClickCallback {
-            override fun onClick(location: Location) {
-                viewModelShared.setMoviesCity(location.city)
-                findNavController().popBackStack()
+            override fun onClick(location: String) {
+                viewModelShared.setMoviesCity(location)
+                //findNavController().popBackStack()
             }
         }
 
-        binding.rvFilterList.adapter =
+        binding.rvFilterCitiesList.adapter =
             FilterLocationAdapter(
-                locations.locations,
-                viewModelShared.query,
+                attributes.cities,
+                viewModelShared.currentFilterAttribute,
                 viewLifecycleOwner,
                 filterClickCallback
+            )
+    }
+
+    private fun initFilterCinemasRecyclerView() {
+        val filterCinemaClickCallback = object :
+            FilterCinemaViewClickCallback {
+            override fun onClick(cinema: String) {
+                viewModelShared.setMoviesCinemas(cinema)
+//                findNavController().popBackStack()
+            }
+        }
+
+        binding.rvFilterCinemasList.adapter =
+            FilterCinemaAdapter(
+                attributes.cinemas,
+                viewModelShared.currentFilterAttribute,
+                viewLifecycleOwner,
+                filterCinemaClickCallback
+            )
+    }
+
+    private fun initFilterLanguagesRecyclerView() {
+        val filterLanguageClickCallback = object :
+            FilterLanguageViewClickCallback {
+            override fun onClick(language: String) {
+                viewModelShared.setMoviesLanguage(language)
+                //findNavController().popBackStack()
+            }
+        }
+
+        binding.rvFilterLanguagesList.adapter =
+            FilterLanguageAdapter(
+                attributes.languages,
+                viewModelShared.currentFilterAttribute,
+                viewLifecycleOwner,
+                filterLanguageClickCallback
             )
     }
 }

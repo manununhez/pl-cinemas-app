@@ -12,25 +12,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.DayTitleItemBinding
-import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.util.DateUtils
-import com.manudev.cinemaspl.vo.DateTitle
+import com.manudev.cinemaspl.vo.FilterAttribute
 import java.util.*
 
 class DaysListAdapter(
     private val dayTitleViewClickCallback: DayTitleViewClickCallback,
-    private val selectedDate: LiveData<SharedMovieViewModel.CinemaMoviesId>,
+    private val currentAttributes: LiveData<FilterAttribute>,
     private val viewLifecycleOwner: LifecycleOwner
-) : ListAdapter<DateTitle, DaysListAdapter.DaysViewHolder>(Companion) {
+) : ListAdapter<String, DaysListAdapter.DaysViewHolder>(Companion) {
 
     class DaysViewHolder(val binding: DayTitleItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    companion object : DiffUtil.ItemCallback<DateTitle>() {
-        override fun areItemsTheSame(oldItem: DateTitle, newItem: DateTitle): Boolean =
+    companion object : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
             oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: DateTitle, newItem: DateTitle): Boolean =
-            oldItem.date == newItem.date
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+            oldItem == newItem
     }
 
     private lateinit var context: Context
@@ -46,8 +45,8 @@ class DaysListAdapter(
     override fun onBindViewHolder(holder: DaysViewHolder, position: Int) {
         val currentDayTitle = getItem(position)
 
-        selectedDate.observe(viewLifecycleOwner, {
-            if (it.date == currentDayTitle.date) {
+        currentAttributes.observe(viewLifecycleOwner, {
+            if (it.date == currentDayTitle) {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline4)
 //                }
@@ -75,9 +74,9 @@ class DaysListAdapter(
             }
         })
 
-        holder.binding.tvWeekDay.text = formatWeekDay(currentDayTitle.date)
-        holder.binding.tvDayTitle.text = formatDateDay(currentDayTitle.date)
-        holder.binding.tvMonthTitle.text = formatDateMonth(currentDayTitle.date)
+        holder.binding.tvWeekDay.text = formatWeekDay(currentDayTitle)
+        holder.binding.tvDayTitle.text = formatDateDay(currentDayTitle)
+        holder.binding.tvMonthTitle.text = formatDateMonth(currentDayTitle)
         holder.binding.dayTitleCardView.setOnClickListener {
             dayTitleViewClickCallback.onClick(it, currentDayTitle)
         }
@@ -103,5 +102,5 @@ class DaysListAdapter(
 }
 
 interface DayTitleViewClickCallback {
-    fun onClick(cardView: View, dateTitle: DateTitle)
+    fun onClick(cardView: View, dateTitle: String)
 }

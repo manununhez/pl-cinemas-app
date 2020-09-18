@@ -1,25 +1,28 @@
 package com.manudev.cinemaspl.ui.filter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.manudev.cinemaspl.databinding.FilterItemSingleChoiceBinding
+import com.manudev.cinemaspl.databinding.FilterItemMultipleChoiceBinding
 import com.manudev.cinemaspl.vo.FilterAttribute
 
-
-class FilterLocationAdapter(
+class FilterLanguageAdapter(
     private val items: List<String>,
     private val currentAttribute: LiveData<FilterAttribute>,
     private val lifecycleOwner: LifecycleOwner,
-    private val locationViewClickCallback: LocationViewClickCallback
+    private val languageViewClickCallback: FilterLanguageViewClickCallback
 ) :
-    RecyclerView.Adapter<FilterLocationAdapter.ViewHolder>() {
+    RecyclerView.Adapter<FilterLanguageAdapter.ViewHolder>() {
+
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FilterItemSingleChoiceBinding.inflate(inflater)
+        val binding = FilterItemMultipleChoiceBinding.inflate(inflater)
+        context = parent.context
         return ViewHolder(binding)
     }
 
@@ -30,32 +33,31 @@ class FilterLocationAdapter(
             items[position],
             currentAttribute,
             lifecycleOwner,
-            locationViewClickCallback
+            languageViewClickCallback
         )
 
-    class ViewHolder(val binding: FilterItemSingleChoiceBinding) :
+    class ViewHolder(val binding: FilterItemMultipleChoiceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: String,
             currentAttribute: LiveData<FilterAttribute>,
             viewLifecycleOwner: LifecycleOwner,
-            locationViewClickCallback: LocationViewClickCallback
+            languageViewClickCallback: FilterLanguageViewClickCallback
         ) {
 
-            //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
-                binding.radio.isChecked = item == it.city
+                binding.checkBox.isChecked = it.language.contains(item)
             })
 
             binding.location = item
-            binding.radio.setOnClickListener {
-                locationViewClickCallback.onClick(item)
+            binding.checkBox.setOnClickListener {
+                languageViewClickCallback.onClick(item)
             }
             binding.executePendingBindings()
         }
     }
 }
 
-interface LocationViewClickCallback {
-    fun onClick(location: String)
+interface FilterLanguageViewClickCallback {
+    fun onClick(language: String)
 }

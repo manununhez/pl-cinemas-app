@@ -1,115 +1,110 @@
 package com.manudev.cinemaspl.ui
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations.switchMap
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.manudev.cinemaspl.repository.MovieRepository
 import com.manudev.cinemaspl.util.AbsentLiveData
+import com.manudev.cinemaspl.vo.FilterAttribute
 import com.manudev.cinemaspl.vo.Movies
 import com.manudev.cinemaspl.vo.Resource
-import com.manudev.cinemaspl.vo.Status.*
 
 class SharedMovieViewModel @ViewModelInject constructor(
     private val repository: MovieRepository
 ) : ViewModel() {
 
-    companion object {
-        val TAG: String = SharedMovieViewModel::class.java.simpleName
-    }
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-
-    private val _error = MutableLiveData<Boolean>()
-    val error: LiveData<Boolean>
-        get() = _error
-
     private val _query = MutableLiveData<CinemaMoviesId>()
-    val query: LiveData<CinemaMoviesId>
-        get() = _query
 
     val movies: LiveData<Resource<List<Movies>>> =
-        switchMap(_query) { input ->
-            input.ifExists { city, date ->
-                repository.loadMovies(city, date)
+        Transformations.switchMap(_query) { input ->
+            input.ifExists { fAttr ->
+                repository.loadMovies(fAttr)
             }
         }
 
+    private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
+    val currentFilterAttribute: LiveData<FilterAttribute>
+        get() = _currentFilterAttribute
 
-    val locations = repository.loadLocations()
+    var attributes = repository.loadAttributes()
 
-    val date = repository.loadDates()
+    init {
+        _currentFilterAttribute.value = repository.getFilteredAttributes()
+        _query.value = CinemaMoviesId(repository.getFilteredAttributes())
 
-    fun init() {
-        _loading.value = true
-        _error.value = false
-
-        //TODO load and error should be DataBinding???
-        movies.observeForever {
-            it?.let {
-                when (it.status) {
-                    LOADING -> {
-                        _loading.value = true
-                        _error.value = false
-                    }
-                    SUCCESS -> {
-                        _loading.value = false
-                        _error.value = false
-                    }
-                    ERROR -> {
-                        _loading.value = false
-                        _error.value = true
-                    }
-                }
-            }
-        }
-
-    }
-
-    fun setMoviesCity(newCityName: String) {
-        val originalCity = _query.value?.city
-        val originalDate = _query.value?.date ?: repository.getSelectedDate()
-        if (newCityName == originalCity) {
-            return
-        }
-        _query.value = CinemaMoviesId(newCityName, originalDate)
-    }
-
-    fun setDateMoviesTitle(newDate: String) {
-        val originalCity = _query.value?.city ?: repository.getSelectedCity()
-        val originalDate = _query.value?.date
-        if (newDate == originalDate) {
-            return
-        }
-        _query.value = CinemaMoviesId(originalCity, newDate)
     }
 
 
     fun loadMovies() {
-        //TODO refresh data should be done with Date().now or from DB - to avoid refresh same data
-        //TODO this function could be renamed to forceRefresh data
-        //if the data is not null, we avoid fetching the data again. This should be replaced with DB
-        Log.d(TAG, "loadMovies()")
-        val sameCity = _query.value?.city == repository.getSelectedCity()
-        val sameDate = _query.value?.date == repository.getSelectedDate()
+        val selectedAttributes = repository.getFilteredAttributes()
+        val filterAttribute = _currentFilterAttribute.value!!
 
-        if (sameCity && sameDate)
-            return
-
-        _query.value =
-            CinemaMoviesId(repository.getSelectedCity(), repository.getSelectedDate())
+        if (filterAttribute != selectedAttributes)
+            _query.value = CinemaMoviesId(filterAttribute)
     }
 
+    fun setMoviesLanguage(filteredLanguage: String) {
+        val filterAttribute = _currentFilterAttribute.value!!
+        val languagesList = filterAttribute.language.toMutableList()
+        if (languagesList.contains(filteredLanguage)) //checkbox
+            languagesList.remove(filteredLanguage) //remove if exists
+        else
+            languagesList.add(filteredLanguage)//append new cinema to the list
+
+        _currentFilterAttribute.value = FilterAttribute(
+            filterAttribute.city,
+            filterAttribute.date,
+            filterAttribute.cinema,
+            languagesList
+        )
+    }
+
+    fun setMoviesCinemas(filteredCinemas: String) {
+        val filterAttribute = _currentFilterAttribute.value!!
+        val cinemasList = filterAttribute.cinema.toMutableList()
+        if (cinemasList.contains(filteredCinemas)) //checkbox
+            cinemasList.remove(filteredCinemas) //remove if exists
+        else
+            cinemasList.add(filteredCinemas)//append new cinema to the list
+
+        _currentFilterAttribute.value = FilterAttribute(
+            filterAttribute.city,
+            filterAttribute.date,
+            cinemasList,
+            filterAttribute.language
+        )
+    }
+
+    fun setMoviesCity(filteredCityName: String) {
+        val filterAttribute = _currentFilterAttribute.value!!
+        _currentFilterAttribute.value = FilterAttribute(
+            filteredCityName,
+            filterAttribute.date,
+            filterAttribute.cinema,
+            filterAttribute.language
+        )
+    }
+
+    fun setDateMoviesTitle(newDate: String) {
+        val filterAttribute = _currentFilterAttribute.value!!
+        _currentFilterAttribute.value = FilterAttribute(
+            filterAttribute.city,
+            newDate,
+            filterAttribute.cinema,
+            filterAttribute.language
+        )
+    }
+
+    fun getFilteredAttributes() = repository.getFilteredAttributes()
+
     fun retry() {
-        val originalCity = _query.value?.city
-        val originalDate = _query.value?.date
-        if (originalCity != null && originalDate != null) {
-            _query.value = CinemaMoviesId(originalCity, originalDate)
-        }
+        val selectedAttributes = repository.getFilteredAttributes()
+        val filterAttribute = _currentFilterAttribute.value!!
+
+        _query.value = CinemaMoviesId(filterAttribute)
+
     }
 
 //    @TestOnly
@@ -117,15 +112,15 @@ class SharedMovieViewModel @ViewModelInject constructor(
 //        _query.value = ""
 //    }
 
-    data class CinemaMoviesId(val city: String, val date: String) {
-        fun <T> ifExists(f: (String, String) -> LiveData<T>): LiveData<T> {
-            return if (city.isBlank() || date.isBlank()) {
+    data class CinemaMoviesId(
+        val filterAttribute: FilterAttribute
+    ) {
+        fun <T> ifExists(f: (FilterAttribute) -> LiveData<T>): LiveData<T> {
+            return if (filterAttribute.city.isBlank() || filterAttribute.date.isBlank()) {
                 AbsentLiveData.create()
             } else {
-                f(city, date)
+                f(filterAttribute)
             }
         }
     }
-
-
 }

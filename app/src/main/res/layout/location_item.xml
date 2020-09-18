@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,34 +10,31 @@
 
         <variable
             name="location"
-            type="Location" />
+            type="String" />
     </data>
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/locationCardItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:transitionName="@{@string/location_transition_name(location)}">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
+            android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:maxLines="2"
             android:paddingHorizontal="@dimen/grid_2"
             android:paddingVertical="@dimen/grid_1"
-            android:text="@{location.city}"
-            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:text="@{location}"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="?android:attr/textColorPrimary"
-            android:transitionName="@{@string/location_transition_name(location.city)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Location 1" />
     </com.google.android.material.card.MaterialCardView>
 </layout>
