@@ -100,17 +100,11 @@ class SharedMovieViewModel @ViewModelInject constructor(
     fun getFilteredAttributes() = repository.getFilteredAttributes()
 
     fun retry() {
-        val selectedAttributes = repository.getFilteredAttributes()
         val filterAttribute = _currentFilterAttribute.value!!
 
         _query.value = CinemaMoviesId(filterAttribute)
 
     }
-
-//    @TestOnly
-//    fun resetRefreshMovies() {
-//        _query.value = ""
-//    }
 
     data class CinemaMoviesId(
         val filterAttribute: FilterAttribute

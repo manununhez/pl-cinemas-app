@@ -1,6 +1,5 @@
 package com.manudev.cinemaspl.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.manudev.cinemaspl.api.ApiResponse
 import com.manudev.cinemaspl.api.CinemaPLService
@@ -24,7 +23,10 @@ class MovieRepository @Inject constructor(
 
     fun loadMovies(filterAttribute: FilterAttribute) =
         object : NetworkBoundResource<List<Movies>, List<Movies>>(appExecutors) {
-            override fun saveCallResult(item: List<Movies>) = localStorage.setMovies(item)
+            override fun saveCallResult(item: List<Movies>) {
+                setFilteredAttributes(filterAttribute)
+                localStorage.setMovies(item)
+            }
 
 
             override fun shouldFetch(data: List<Movies>?): Boolean =
@@ -33,12 +35,8 @@ class MovieRepository @Inject constructor(
             override fun loadFromDb(): LiveData<List<Movies>> =
                 localStorage.getMovies(filterAttribute)
 
-            override fun createCall(): LiveData<ApiResponse<GeneralResponse<List<Movies>>>> {
-                Log.d(TAG, "createCall")
-                setFilteredAttributes(filterAttribute)
-
-                return cinemaPLService.searchMovies(filterAttribute)
-            }
+            override fun createCall(): LiveData<ApiResponse<GeneralResponse<List<Movies>>>> =
+                cinemaPLService.searchMovies(filterAttribute)
 
         }.asLiveData()
 
