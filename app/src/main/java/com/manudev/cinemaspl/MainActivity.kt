@@ -6,22 +6,27 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.navigation.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.manudev.cinemaspl.ui.SharedMovieViewModel
+import com.manudev.cinemaspl.vo.Coordinate
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"
+    private val TAG = MainActivity::class.java.simpleName
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     /**
      * Provides the entry point to the Fused Location Provider API.
      */
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val sharedMovieViewModel: SharedMovieViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,11 +67,13 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent()
                     intent.putExtra("Latitude", location?.latitude)
                     intent.putExtra("Longitude", location?.longitude)
-                    findNavController(R.id.nav_host_fragment).setGraph(R.navigation.nav_graph, intent.extras)
-                } else {
-                    Log.w(TAG, "getLastLocation:exception -- no lastKnowLocation found yet", taskLocation.exception)
-                    findNavController(R.id.nav_host_fragment).setGraph(R.navigation.nav_graph)
+
+                    val latitude = location?.latitude ?: 0.0
+                    val longitude = location?.longitude ?: 0.0
+
+                    sharedMovieViewModel.setCurrentLocation(Coordinate(latitude, longitude))
                 }
+
             }
     }
 
@@ -135,8 +142,8 @@ class MainActivity : AppCompatActivity() {
                 // again" prompts). Therefore, a user interface affordance is typically implemented
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
-                else -> {
-                    findNavController(R.id.nav_host_fragment).setGraph(R.navigation.nav_graph)
+//                else -> {
+//                    findNavController(R.id.nav_host_fragment).setGraph(R.navigation.nav_graph)
 //                    showSnackbar(R.string.permission_denied_explanation, R.string.settings,
 //                        View.OnClickListener {
 //                            // Build intent that displays the App settings screen.
@@ -147,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 //                            }
 //                            startActivity(intent)
 //                        })
-                }
+//                }
             }
         }
     }

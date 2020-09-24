@@ -98,8 +98,11 @@ class LocalStorage @Inject constructor(
         editor.apply()
     }
 
-    fun getCurrentLocation() : Coordinate {
-        val prefsCoordinate = sharedPreferences.getString(SHARED_PREFS_CURRENT_LOCATION, "")
+    fun getCurrentLocation(): Coordinate {
+        val prefsCoordinate = sharedPreferences.getString(
+            SHARED_PREFS_CURRENT_LOCATION,
+            Gson().toJson(Coordinate(0.0, 0.0))
+        )
         val type = object : TypeToken<Coordinate>() {}.type
         return Gson().fromJson(prefsCoordinate, type)
     }

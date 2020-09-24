@@ -20,7 +20,6 @@ import com.manudev.cinemaspl.databinding.FragmentMovieBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
 import com.manudev.cinemaspl.ui.common.RetryCallback
 import com.manudev.cinemaspl.vo.Attribute
-import com.manudev.cinemaspl.vo.Coordinate
 import com.manudev.cinemaspl.vo.Movies
 import com.manudev.cinemaspl.vo.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +39,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
 
+
     private lateinit var attributes: Attribute
 
     private lateinit var binding: FragmentMovieBinding
@@ -48,20 +48,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private lateinit var daysListAdapter: DaysListAdapter
 
-    private lateinit var currentLocation: Coordinate
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val coordLatitude =
-            if (arguments?.get("Latitude") != null) (arguments?.get("Latitude") as Double) else 0.0
-        val coordLongitude =
-            if (arguments?.get("Longitude") != null) (arguments?.get("Longitude") as Double) else 0.0
-        currentLocation = Coordinate(coordLatitude, coordLongitude)
-
-        Log.d(TAG, "$coordLatitude : $coordLongitude")
 
         binding = FragmentMovieBinding.inflate(inflater, container, false)
         binding.toolbar.setOnMenuItemClickListener(this)
@@ -77,7 +67,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         binding.movies = viewModelShared.movies
 
         viewModelShared.loadMovies()
-        viewModelShared.setCurrentLocation(currentLocation);
 
         setupObservers()
         initMoviesRecyclerView()
