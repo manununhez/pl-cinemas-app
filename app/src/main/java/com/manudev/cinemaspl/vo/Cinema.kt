@@ -21,5 +21,6 @@ data class Cinema(
     @SerializedName("logo_url")
     val logoUrl: String,
     @SerializedName("cinema_movie_url")
-    val cinemaPageUrl: String
+    val cinemaPageUrl: String,
+    var distance: Float = 0.0f
 ) : Parcelable

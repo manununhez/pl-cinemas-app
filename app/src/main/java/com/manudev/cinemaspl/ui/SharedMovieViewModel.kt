@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.manudev.cinemaspl.repository.MovieRepository
 import com.manudev.cinemaspl.util.AbsentLiveData
+import com.manudev.cinemaspl.vo.Coordinate
 import com.manudev.cinemaspl.vo.FilterAttribute
 import com.manudev.cinemaspl.vo.Movies
 import com.manudev.cinemaspl.vo.Resource
@@ -104,6 +105,10 @@ class SharedMovieViewModel @ViewModelInject constructor(
 
         _query.value = CinemaMoviesId(filterAttribute)
 
+    }
+
+    fun setCurrentLocation(currentLocation: Coordinate) {
+        repository.setCurrentLocation(currentLocation)
     }
 
     data class CinemaMoviesId(

@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken
 import com.manudev.cinemaspl.util.AbsentLiveData
 import com.manudev.cinemaspl.util.DateUtils
 import com.manudev.cinemaspl.vo.Attribute
+import com.manudev.cinemaspl.vo.Coordinate
 import com.manudev.cinemaspl.vo.FilterAttribute
 import com.manudev.cinemaspl.vo.Movies
 import java.util.*
@@ -17,13 +18,13 @@ class LocalStorage @Inject constructor(
     private val sharedPreferences: SharedPreferences,
 ) {
     companion object {
+        private const val SHARED_PREFS_CURRENT_LOCATION = "current_location"
         private const val SHARED_PREFS_MOVIES = "Movies"
         private const val SHARED_PREFS_ATTRIBUTES = "Attributes"
         private const val SHARED_PREFS_SELECTED_ATTRIBUTES = "Selected attributes"
         private const val DEFAULT_CITY = "Warszawa"
         private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
     }
-
 
 
     fun getMovies(filterAttribute: FilterAttribute): LiveData<List<Movies>> {
@@ -71,9 +72,13 @@ class LocalStorage @Inject constructor(
     }
 
     fun getFilteredAttributes(): FilterAttribute {
-        val filterAttrDefault = FilterAttribute(DEFAULT_CITY, DEFAULT_CURRENT_DATE, listOf(), listOf())
+        val filterAttrDefault =
+            FilterAttribute(DEFAULT_CITY, DEFAULT_CURRENT_DATE, listOf(), listOf())
         val prefsAttributes =
-            sharedPreferences.getString(SHARED_PREFS_SELECTED_ATTRIBUTES, Gson().toJson(filterAttrDefault))
+            sharedPreferences.getString(
+                SHARED_PREFS_SELECTED_ATTRIBUTES,
+                Gson().toJson(filterAttrDefault)
+            )
 
         val type = object : TypeToken<FilterAttribute>() {}.type
         return Gson().fromJson(prefsAttributes, type)
@@ -84,6 +89,19 @@ class LocalStorage @Inject constructor(
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_SELECTED_ATTRIBUTES, values)
         editor.apply()
+    }
+
+    fun setCurrentLocation(currentLocation: Coordinate) {
+        val values = Gson().toJson(currentLocation)
+        val editor = sharedPreferences.edit()
+        editor.putString(SHARED_PREFS_CURRENT_LOCATION, values)
+        editor.apply()
+    }
+
+    fun getCurrentLocation() : Coordinate {
+        val prefsCoordinate = sharedPreferences.getString(SHARED_PREFS_CURRENT_LOCATION, "")
+        val type = object : TypeToken<Coordinate>() {}.type
+        return Gson().fromJson(prefsCoordinate, type)
     }
 
 }

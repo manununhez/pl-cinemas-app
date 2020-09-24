@@ -16,6 +16,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -70,8 +72,14 @@ dependencies {
     // RETROFIT -- keep this version to work with sdk >= 19
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
+    //Fused location requires the use of the Google Play SDK
+    implementation "com.google.android.gms:play-services-location:17.0.0"
+
+
+    //Multidex
+    implementation 'com.android.support:multidex:1.0.3'
 
     // MockWebServer
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.8.1'
