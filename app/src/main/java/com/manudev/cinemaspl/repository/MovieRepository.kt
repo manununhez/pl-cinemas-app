@@ -1,6 +1,5 @@
 package com.manudev.cinemaspl.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.manudev.cinemaspl.api.ApiResponse
 import com.manudev.cinemaspl.api.CinemaPLService
@@ -20,22 +19,18 @@ class MovieRepository @Inject constructor(
         private val TAG: String = MovieRepository::class.java.simpleName
     }
 
-
     fun loadMovies(filterAttribute: FilterAttribute) =
         object : NetworkBoundResource<List<Movies>, List<Movies>>(appExecutors) {
             override fun saveCallResult(items: List<Movies>) {
                 setFilteredAttributes(filterAttribute)
-                //TODO order list based on distance
-                Log.d(TAG, "Before: $items")
+                //order list based on distance
                 localStorage.setMovies(
                     LocationUtils.orderCinemasByDistance(
                         getCurrentLocation(),
                         items
                     )
                 )
-                Log.d(TAG, "After: $items")
             }
-
 
             override fun shouldFetch(data: List<Movies>?): Boolean =
                 (data == null || data.isEmpty())
@@ -53,7 +48,7 @@ class MovieRepository @Inject constructor(
             override fun saveCallResult(item: Attribute) = localStorage.setAttributes(item)
 
             override fun shouldFetch(data: Attribute?): Boolean =
-                (data == null)
+                true//(data == null) //TODO change when a storage mechanism is added
 
             override fun loadFromDb(): LiveData<Attribute> = localStorage.getAttributes()
 
@@ -73,6 +68,4 @@ class MovieRepository @Inject constructor(
     }
 
     fun getCurrentLocation() = localStorage.getCurrentLocation()
-
-
 }

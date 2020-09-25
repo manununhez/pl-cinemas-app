@@ -51,8 +51,7 @@ class LocalStorage @Inject constructor(
     }
 
     fun getAttributes(): LiveData<Attribute> {
-        val prefs: String =
-            sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
+        val prefs: String = sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
         return if (prefs.isNotEmpty()) {
             val type = object : TypeToken<Attribute>() {}.type
             val locationList: Attribute = Gson().fromJson(prefs, type)
