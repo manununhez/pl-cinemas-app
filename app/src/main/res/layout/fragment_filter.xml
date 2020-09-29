@@ -7,7 +7,6 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimarySurface"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:paddingHorizontal="@dimen/grid_0_5"
@@ -130,7 +129,6 @@
                 android:paddingVertical="@dimen/grid_1"
                 android:text="City"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="?android:attr/textColorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mcLanguages" />

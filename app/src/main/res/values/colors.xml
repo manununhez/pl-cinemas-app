@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cinepl_brown_200">#bcaaa4</color>
-    <color name="cinepl_brown_300">#a1887f</color>
-    <color name="cinepl_gray_dark">#1b1b1b</color>
-    <color name="cinepl_deep_orange_100">#ffccbc</color>
-    <color name="cinepl_deep_orange_200">#ffab91</color>
-    <color name="cinepl_deep_orange_700">#e64a19</color>
-    <color name="cinepl_deep_orange_800">#d84315</color>
-    <color name="cinepl_deep_orange_dark">#870000</color>
-    <!--background protection for nav-bar, varied on Q+-->
-    <color name="immersive_sys_ui_deep_orange_900">#bf360c</color>
+    <color name="cinepl_brown_200">#bcaaa4</color><!--Color primary (dark)-->
+    <color name="cinepl_brown_400">#8d6e63</color>
+    <color name="cinepl_brown_500">#795548</color><!--Color primary (light)-->
+    <color name="cinepl_brown_600">#6d4c41</color><!--Color primary variant (dark)-->
+    <color name="cinepl_brown_700">#5d4037</color><!--Color primary variant (light)-->
 
+
+    <color name="cinepl_gray_dark">#1b1b1b</color><!--Color surface (dark)-->
+    <color name="cinepl_gray_dark_2">#1C1C1C</color><!--Color surface (dark)-->
+
+    <color name="cinepl_deep_orange_100">#ffccbc</color><!--Color secondary (dark)-->
+    <color name="cinepl_deep_orange_200">#ffab91</color>
+    <color name="cinepl_deep_orange_700">#e64a19</color><!--Color secondary (light)-->
+    <color name="cinepl_deep_orange_800">#d84315</color><!--Color secondary variant-->
+    <color name="cinepl_deep_orange_900">#e65100</color>
+    <color name="cinepl_deep_orange_900_dark">#870000</color>
+    <color name="cinepl_red_900_dark">#7f0000</color>
+    <!--background protection for nav-bar, varied on Q+-->
+    <color name="immersive_sys_ui_deep_orange_900">@color/cinepl_deep_orange_900_dark</color>
+    <color name="immersive_sys_ui_deep_orange_900_dark">@color/cinepl_red_900_dark</color>
+
+
+    <color name="deep_purple_200">#b39ddb</color>
+    <color name="deep_purple_400">#7e57c2</color>
+    <color name="deep_purple_500">#673ab7</color>
+    <color name="deep_purple_600">#5e35b1</color>
+    <color name="deep_purple_700">#512da8</color>
+    <color name="deep_purple_800">#4527a0</color>
+    <color name="deep_purple_900">#311b92</color>
+    <color name="deep_purple_900_dark">#000063</color>
+    <color name="blue_200">#90caf9</color>
+    <color name="blue_300">#64b5f6</color>
+    <color name="blue_400">#42a5f5</color>
+    <color name="blue_500">#2196f3</color>
+    <color name="blue_600">#1e88e5</color>
+    <color name="blue_700">#1976d2</color>
+    <color name="blue_800">#1565c0</color>
+    <color name="blue_900">#0d47a1</color>
+    <color name="blue_900_dark">#002171</color>
+    <color name="very_dark_navy_blue">#0b0c1c</color>
+    <color name="ultra_very_dark_baby_blue">#003558</color>
+    <color name="immersive_sys_ui_deep_pruple_900">@color/deep_purple_900_dark</color>
+    <color name="immersive_sys_ui_deep_purple_900_dark">@color/very_dark_navy_blue</color>
+
+
+    <color name="white_50">#ffffff</color>
 </resources>

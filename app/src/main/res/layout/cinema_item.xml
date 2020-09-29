@@ -41,8 +41,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@color/cinepl_deep_orange_700" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!--title background-->
 
@@ -82,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="@dimen/grid_1"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
+                android:textAppearance="?attr/textAppearanceOverline"
                 app:languageDescription="@{cinema.language}"
                 app:layout_constraintEnd_toEndOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent"

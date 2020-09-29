@@ -23,7 +23,6 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimarySurface"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:paddingHorizontal="@dimen/grid_0_5"
@@ -191,7 +190,7 @@
                     android:padding="5dp"
                     android:text="@string/description_text_collapsed"
                     android:textAppearance="?attr/textAppearanceSubtitle1"
-                    android:textColor="@color/cinepl_deep_orange_700"
+                    android:textColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toStartOf="@id/guideline3"
                     app:layout_constraintTop_toBottomOf="@id/movieDescription" />
 

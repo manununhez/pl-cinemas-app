@@ -12,28 +12,64 @@
   or implied. See the License for the specific language governing permissions and limitations under
   the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
 
   <style name="CinePL.White">
     <item name="colorPrimary">@color/cinepl_brown_200</item>
-    <item name="colorSecondary">@color/cinepl_deep_orange_100</item>
-    <item name="colorSurface">@color/cinepl_gray_dark</item>
+    <item name="colorPrimaryVariant">@color/cinepl_brown_400</item>
+    <item name="colorSecondary">@color/cinepl_deep_orange_800</item>
+    <item name="colorSecondaryVariant">@color/cinepl_deep_orange_900</item>
+    <item name="colorSurface">@color/cinepl_gray_dark_2</item>
+    <item name="android:colorBackground">@color/cinepl_gray_dark</item>
 
     <!--Platform attributes-->
-    <item name="android:navigationBarColor">@color/cinepl_deep_orange_dark</item>
-    <item name="android:statusBarColor">@color/cinepl_deep_orange_dark</item>
+    <item name="android:navigationBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_orange_900_dark</item>
+    <item name="android:statusBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_orange_900_dark</item>
 
   </style>
 
   <style name="ThemeOverlay.CinePL.White" parent="@style/ThemeOverlay.MaterialComponents.Dark">
     <item name="colorPrimary">@color/cinepl_deep_orange_200</item>
-    <item name="colorSecondary">@color/cinepl_brown_300</item>
-    <item name="colorSurface">@color/cinepl_deep_orange_dark</item>
+    <item name="colorPrimaryVariant">@color/cinepl_deep_orange_800</item>
+    <item name="colorSecondary">@color/cinepl_brown_200</item>
+    <item name="colorSecondaryVariant">@color/cinepl_brown_700</item>
+    <item name="colorSurface">@color/cinepl_red_900_dark</item>
+    <item name="colorOnSurface">@color/white_50</item>
+    <item name="colorOnPrimary">@color/cinepl_gray_dark</item>
+    <item name="colorOnSecondary">@color/cinepl_gray_dark</item>
+
   </style>
 
-  <style name="ThemeOverlay.CinePL.White.Dark" />
+
+  <style name="CinePL.Metropolis">
+    <item name="colorPrimary">@color/deep_purple_200</item>
+    <item name="colorPrimaryVariant">@color/deep_purple_400</item>
+    <item name="colorSecondary">@color/deep_purple_800</item>
+    <item name="colorSecondaryVariant">@color/deep_purple_900</item>
+    <item name="colorSurface">@color/very_dark_navy_blue</item>
+    <item name="android:colorBackground">@color/ultra_very_dark_baby_blue</item>
+
+    <!--Platform attributes-->
+    <item name="android:navigationBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_purple_900_dark</item>
+    <item name="android:statusBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_purple_900_dark</item>
+
+  </style>
+
+  <style name="ThemeOverlay.CinePL.Metropolis" parent="@style/ThemeOverlay.MaterialComponents.Dark">
+    <item name="colorPrimary">@color/blue_200</item>
+    <item name="colorPrimaryVariant">@color/blue_800</item>
+    <item name="colorSecondary">@color/deep_purple_200</item>
+    <item name="colorSecondaryVariant">@color/deep_purple_700</item>
+    <item name="colorSurface">@color/deep_purple_900_dark</item>
+    <item name="colorOnSurface">@color/white_50</item>
+    <item name="colorOnPrimary">@color/ultra_very_dark_baby_blue</item>
+    <item name="colorOnSecondary">@color/ultra_very_dark_baby_blue</item>
+
+  </style>
+
+<!--  <style name="ThemeOverlay.CinePL.White.Dark" />-->
 
 
 </resources>

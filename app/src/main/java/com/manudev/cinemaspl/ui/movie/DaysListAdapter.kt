@@ -1,7 +1,6 @@
 package com.manudev.cinemaspl.ui.movie
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,24 +49,28 @@ class DaysListAdapter(
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline4)
 //                }
-                holder.binding.tvWeekDay.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
-                holder.binding.tvDayTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
-                holder.binding.tvMonthTitle.setTextColor(context.resources.getColor(R.color.cinepl_deep_orange_700))
-                holder.binding.dayTitleCardView.strokeColor =
-                    context.resources.getColor(R.color.cinepl_deep_orange_700)
+                val typedArray =
+                    context.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary))
+
+                holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
+                holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
+                holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
+                holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
                 holder.binding.dayTitleCardView.strokeWidth = 1
+
+                typedArray.recycle()
             } else {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline5)
 //                }
 
                 val typedArray =
-                    context.obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                    context.obtainStyledAttributes(intArrayOf(R.attr.colorOnSurface))
 
                 holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
                 holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
                 holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.dayTitleCardView.strokeColor = Color.GRAY
+                holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
                 holder.binding.dayTitleCardView.strokeWidth = 1
 
                 typedArray.recycle()

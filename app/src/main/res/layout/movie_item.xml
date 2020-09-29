@@ -30,7 +30,7 @@
         android:transitionName="@{@string/movie_item_transition_name(movie.id)}"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:strokeColor="@color/cinepl_deep_orange_dark"
+        app:strokeColor="?attr/colorSecondary"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,8 +58,7 @@
                 android:layout_height="0dp"
                 android:alpha="0.7"
                 android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:theme="@style/ThemeOverlay.CinePL.White"
+                android:theme="@style/ThemeOverlay.CinePL.Metropolis"
                 app:elevationOverlay="@{@dimen/card_elevation}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
