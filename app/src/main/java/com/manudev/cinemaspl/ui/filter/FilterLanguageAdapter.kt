@@ -2,6 +2,7 @@ package com.manudev.cinemaspl.ui.filter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -44,9 +45,11 @@ class FilterLanguageAdapter(
             viewLifecycleOwner: LifecycleOwner,
             languageViewClickCallback: FilterLanguageViewClickCallback
         ) {
-
+            //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
                 binding.checkBox.isChecked = it.language.contains(item)
+
+                binding.tvBackgroundOVerlay.visibility = if(binding.checkBox.isChecked) View.VISIBLE else View.GONE
             })
 
             binding.location = item

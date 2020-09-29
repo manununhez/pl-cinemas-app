@@ -1,6 +1,8 @@
 package com.manudev.cinemaspl.ui.filter
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -16,9 +18,12 @@ class FilterCinemaAdapter(
 ) :
     RecyclerView.Adapter<FilterCinemaAdapter.ViewHolder>() {
 
+    private lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = FilterItemMultipleChoiceBinding.inflate(inflater)
+        context = parent.context
         return ViewHolder(binding)
     }
 
@@ -26,6 +31,7 @@ class FilterCinemaAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(
+            context,
             items[position],
             currentAttribute,
             lifecycleOwner,
@@ -35,13 +41,17 @@ class FilterCinemaAdapter(
     class ViewHolder(val binding: FilterItemMultipleChoiceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
+            context: Context,
             item: String,
             currentAttribute: LiveData<FilterAttribute>,
             viewLifecycleOwner: LifecycleOwner,
             cinemaViewClickCallback: FilterCinemaViewClickCallback
         ) {
+            //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
                 binding.checkBox.isChecked = it.cinema.contains(item)
+
+                binding.tvBackgroundOVerlay.visibility = if(binding.checkBox.isChecked) View.VISIBLE else View.GONE
             })
 
             binding.location = item

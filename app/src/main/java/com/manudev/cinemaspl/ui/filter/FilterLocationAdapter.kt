@@ -1,6 +1,7 @@
 package com.manudev.cinemaspl.ui.filter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -45,6 +46,8 @@ class FilterLocationAdapter(
             //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
                 binding.radio.isChecked = item == it.city
+
+                binding.tvBackgroundOVerlay.visibility = if(binding.radio.isChecked) View.VISIBLE else View.GONE
             })
 
             binding.location = item

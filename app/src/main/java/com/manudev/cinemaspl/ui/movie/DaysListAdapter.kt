@@ -44,37 +44,21 @@ class DaysListAdapter(
     override fun onBindViewHolder(holder: DaysViewHolder, position: Int) {
         val currentDayTitle = getItem(position)
 
+        //TODO trying not to use LiveData here!
         currentAttributes.observe(viewLifecycleOwner, {
-            if (it.date == currentDayTitle) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline4)
-//                }
-                val typedArray =
-                    context.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary))
+            val typedArray = if (it.date == currentDayTitle)
+                context.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary)) else context.obtainStyledAttributes(
+                intArrayOf(R.attr.colorOnSurface)
+            )
 
-                holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
-                holder.binding.dayTitleCardView.strokeWidth = 1
+            holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
+            holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
+            holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
+            holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
+            holder.binding.tvBackgroundOVerlay.visibility =
+                if (it.date == currentDayTitle) View.VISIBLE else View.GONE
 
-                typedArray.recycle()
-            } else {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    holder.binding.tvDayTitle.setTextAppearance(R.style.TextAppearance_Cinema_Headline5)
-//                }
-
-                val typedArray =
-                    context.obtainStyledAttributes(intArrayOf(R.attr.colorOnSurface))
-
-                holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
-                holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
-                holder.binding.dayTitleCardView.strokeWidth = 1
-
-                typedArray.recycle()
-            }
+            typedArray.recycle()
         })
 
         holder.binding.tvWeekDay.text = formatWeekDay(currentDayTitle)

@@ -4,6 +4,7 @@
     <dimen name="detail_poster_size_height">240dp</dimen>
     <dimen name="detail_poster_size_width">150dp</dimen>
     <integer name="featured_grid_columns">2</integer>
+    <integer name="max_lines_collapsed">9</integer>
 
     <dimen name="card_elevation">1dp</dimen>
 

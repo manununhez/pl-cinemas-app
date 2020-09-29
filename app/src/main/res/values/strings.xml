@@ -13,21 +13,21 @@
     <string name="location_transition_name">location_item_%1$s</string>
     <string name="filter_transition_name">filter transition</string>
     <string name="movie_detail_transition_name">movie_detail_transition_name</string>
-
-
+    
     <string name="movie_duration">%1$s min.</string>
     <string name="description_text_collapsed">More</string> <!-- more -->
     <string name="description_text_expanded">Less</string> <!-- less -->
     <string name="button_watch_trailer">Trailer</string>
     <string name="where_to_watch">Watch it here</string>
 
-    <integer name="max_lines_collapsed">9</integer>
     <string name="menu_item_filter">Filter</string>
-    <string name="filter_fragment_toolbar_title">Select your city</string>
     <string name="movie_fragment_toolbar_title">@string/app_name</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
     <string name="empty_movie_list">No movies found for this specific date.</string>
+    <string name="filter_attribute_city">City</string>
+    <string name="filter_attribute_cinemas">Cinemas</string>
+    <string name="filter_attribute_languages">Languages</string>
 
 
 </resources>

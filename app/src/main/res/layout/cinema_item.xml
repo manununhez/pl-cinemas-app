@@ -21,9 +21,8 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:strokeColor="?android:attr/textColorPrimary"
+        app:strokeColor="?attr/colorSecondary"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,18 +44,17 @@
 
             <!--title background-->
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:textAllCaps="true"
-                app:background="?android:attr/textColorPrimary"
-                app:elevationOverlay="@{@dimen/card_elevation}"
-                app:layout_constraintBottom_toBottomOf="@+id/tVCinemaLocation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/textView2"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:textAllCaps="true"-->
+            <!--                app:background="?android:attr/textColorPrimary"-->
+            <!--                app:elevationOverlay="@{@dimen/card_elevation}"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintHorizontal_bias="0.0"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
 
             <TextView
                 android:id="@+id/tVCinemaLocation"
@@ -64,39 +62,40 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="2"
-                android:padding="@dimen/grid_1"
                 android:text="@{cinema.locationName}"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="?attr/textAppearanceOverline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/tvLanguageDesc"
                 tools:text="Cinema 1" />
 
             <TextView
                 android:id="@+id/tvLanguageDesc"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
                 android:padding="@dimen/grid_1"
-                android:textAppearance="?attr/textAppearanceOverline"
+                android:textAllCaps="true"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
                 app:languageDescription="@{cinema.language}"
-                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDistance"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
                 tools:text="Subtitles" />
 
             <TextView
                 android:id="@+id/textViewDistance"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:textAppearance="?attr/textAppearanceOverline"
                 app:distance="@{cinema.distance}"
-                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/tVCinemaLocation"
                 tools:text="Distance" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
