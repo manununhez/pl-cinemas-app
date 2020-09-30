@@ -113,7 +113,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val movieDetailTransitionName = getString(R.string.movie_detail_transition_name)
+                    val movieDetailTransitionName = resources.getString(R.string.movie_detail_transition_name)
                     val extras = FragmentNavigatorExtras(
                         cardView to movieDetailTransitionName
                     )

@@ -66,18 +66,27 @@ fun View.bindElevationOverlay(previousElevation: Float, elevation: Float) {
 
 @BindingAdapter("classification")
 fun bindClassification(view: TextView, str: String) {
-    view.text = str.split("|").joinToString(" ") { it.capitalize(Locale.getDefault()) }
+    view.text = str
+        .split("|")
+        .joinToString(" ") {
+            it.capitalize(Locale.getDefault())
+        }
 }
 
 @BindingAdapter("languageDescription")
 fun bindLanguageDescription(view: TextView, str: String) {
-    view.text = str.split("|").joinToString(" | ")
+    view.text = str
+        .split("|")
+        .joinToString(" | ")
 }
 
 @BindingAdapter("distance")
 fun bindDistance(view: TextView, distance: Float) {
     if (distance.toInt() > 0) {
-        view.text = "(" + distance.toInt().toString().plus(" m)")
+        view.text = view.context.resources.getString(
+            R.string.distance_description,
+            distance.toInt().toString()
+        )
     } else {
         view.visibility = View.GONE
     }

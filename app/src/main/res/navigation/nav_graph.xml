@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.manudev.cinemaspl.ui.filter.FilterFragment"
-        android:label="fragment_filter"
+        android:label="@string/filter_fragment_label"
         tools:layout="@layout/fragment_filter">
         <argument
             android:name="attributes"

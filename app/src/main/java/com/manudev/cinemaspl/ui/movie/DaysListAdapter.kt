@@ -79,7 +79,7 @@ class DaysListAdapter(
         val formattedDay = DateUtils.dateFormat(date)
         val formattedWeekDay = DateUtils.weekDateFormat(date)
         return if (today == formattedDay && todayWeekName == formattedWeekDay)
-            context.getString(R.string.today)
+            context.resources.getString(R.string.today)
         else formattedWeekDay
     }
 

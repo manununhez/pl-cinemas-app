@@ -61,7 +61,7 @@ class MovieDetailsFragment : Fragment() {
 
         movies = params.movies
         binding.movies = movies
-        binding.duration.text = if (movies.movie.duration == "0") "" else getString(
+        binding.duration.text = if (movies.movie.duration == "0") "" else resources.getString(
             R.string.movie_duration,
             movies.movie.duration
         )
@@ -79,12 +79,12 @@ class MovieDetailsFragment : Fragment() {
             }
 
             override fun expandCollapseDescription() {
-                if (expandCollapseOption.text == getString(R.string.description_text_collapsed)) {
-                    expandCollapseOption.text = getString(R.string.description_text_expanded)
+                if (expandCollapseOption.text == resources.getString(R.string.description_text_collapsed)) {
+                    expandCollapseOption.text = resources.getString(R.string.description_text_expanded)
                     movieDescription.maxLines = Integer.MAX_VALUE
                     movieDescription.ellipsize = null
                 } else {
-                    expandCollapseOption.text = getString(R.string.description_text_collapsed)
+                    expandCollapseOption.text = resources.getString(R.string.description_text_collapsed)
                     movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
                     movieDescription.ellipsize = TextUtils.TruncateAt.END
                 }
