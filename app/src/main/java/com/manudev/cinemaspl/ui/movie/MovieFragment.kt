@@ -98,6 +98,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         })
 
+        viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner,{
+            binding.toolbar.subtitle = "("+it.city+")"
+        })
+
     }
 
     private fun initMoviesRecyclerView() {

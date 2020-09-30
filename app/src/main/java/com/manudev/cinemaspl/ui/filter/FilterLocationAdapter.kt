@@ -20,7 +20,7 @@ class FilterLocationAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FilterItemSingleChoiceBinding.inflate(inflater)
+        val binding = FilterItemSingleChoiceBinding.inflate(inflater, parent, false) //use this to use LinearLayoutManager instead of StaggeredGridLayoutManager
         return ViewHolder(binding)
     }
 

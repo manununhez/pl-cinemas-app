@@ -50,6 +50,8 @@
                 android:paddingEnd="@dimen/grid_2"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:menu="@menu/movie_list_menu"
+                app:subtitle="(Warszawa)"
+                app:titleMarginStart="@dimen/grid_1_5"
                 app:navigationIcon="@drawable/ic_toolbar_logo" />
 
 

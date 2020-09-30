@@ -17,7 +17,6 @@
             android:id="@+id/menu_item_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
             android:transitionGroup="true"
             android:transitionName="@string/filter_transition_name">
 
@@ -51,32 +50,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcCinemas"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_filter_cinemas_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                tools:itemCount="4"
+                tools:listitem="@layout/filter_item_multiple_choice" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_filter_cinemas_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/filter_item_multiple_choice" />
-
-            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView3"
@@ -93,30 +83,25 @@
                 android:textColor="?attr/colorOnBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mcCinemas" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_filter_cinemas_list" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcLanguages"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_filter_languages_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                tools:itemCount="4"
+                tools:listitem="@layout/filter_item_multiple_choice" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_filter_languages_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/filter_item_multiple_choice" />
-
-            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/titleCities"
@@ -133,36 +118,25 @@
                 android:textColor="?attr/colorOnBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mcLanguages" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_filter_languages_list" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcCities"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_filter_cities_list"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleCities">
+                app:layout_constraintTop_toBottomOf="@+id/titleCities"
+                tools:itemCount="10"
+                tools:listitem="@layout/filter_item_single_choice" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_filter_cities_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    android:clipToPadding="false"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleCities"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/filter_item_single_choice" />
-
-            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

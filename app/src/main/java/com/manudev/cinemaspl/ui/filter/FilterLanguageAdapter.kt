@@ -1,6 +1,5 @@
 package com.manudev.cinemaspl.ui.filter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +17,9 @@ class FilterLanguageAdapter(
 ) :
     RecyclerView.Adapter<FilterLanguageAdapter.ViewHolder>() {
 
-    private lateinit var context: Context
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FilterItemMultipleChoiceBinding.inflate(inflater)
-        context = parent.context
+        val binding = FilterItemMultipleChoiceBinding.inflate(inflater, parent, false) //use this to use LinearLayoutManager instead of StaggeredGridLayoutManager
         return ViewHolder(binding)
     }
 

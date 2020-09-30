@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import com.google.android.material.transition.MaterialSharedAxis
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentFilterBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
@@ -42,13 +41,13 @@ class FilterFragment : Fragment() {
         }
 
 
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-        }
-
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-        }
+//        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
+//            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+//        }
+//
+//        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
+//            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+//        }
 
 
         return binding.root
@@ -69,9 +68,10 @@ class FilterFragment : Fragment() {
             LocationViewClickCallback {
             override fun onClick(location: String) {
                 viewModelShared.setMoviesCity(location)
-                //findNavController().popBackStack()
             }
         }
+
+        binding.rvFilterCitiesList.setHasFixedSize(true)
 
         binding.rvFilterCitiesList.adapter =
             FilterLocationAdapter(
@@ -80,6 +80,8 @@ class FilterFragment : Fragment() {
                 viewLifecycleOwner,
                 filterClickCallback
             )
+
+
     }
 
     private fun initFilterCinemasRecyclerView() {
@@ -87,9 +89,10 @@ class FilterFragment : Fragment() {
             FilterCinemaViewClickCallback {
             override fun onClick(cinema: String) {
                 viewModelShared.setMoviesCinemas(cinema)
-//                findNavController().popBackStack()
             }
         }
+
+        binding.rvFilterCinemasList.setHasFixedSize(true)
 
         binding.rvFilterCinemasList.adapter =
             FilterCinemaAdapter(
@@ -98,6 +101,7 @@ class FilterFragment : Fragment() {
                 viewLifecycleOwner,
                 filterCinemaClickCallback
             )
+
     }
 
     private fun initFilterLanguagesRecyclerView() {
@@ -105,9 +109,10 @@ class FilterFragment : Fragment() {
             FilterLanguageViewClickCallback {
             override fun onClick(language: String) {
                 viewModelShared.setMoviesLanguage(language)
-                //findNavController().popBackStack()
             }
         }
+
+        binding.rvFilterLanguagesList.setHasFixedSize(true)
 
         binding.rvFilterLanguagesList.adapter =
             FilterLanguageAdapter(

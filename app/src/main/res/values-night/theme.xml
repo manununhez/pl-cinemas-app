@@ -66,8 +66,9 @@
     <item name="colorSecondary">@color/deep_purple_200</item>
     <item name="colorSecondaryVariant">@color/deep_purple_700</item>
     <item name="colorSurface">@color/deep_purple_900_dark</item>
-    <item name="colorOnPrimary">@color/ultra_very_dark_baby_blue</item>
+    <item name="colorOnPrimary">@color/white_50</item>
     <item name="colorOnSecondary">@color/ultra_very_dark_baby_blue</item>
+    <item name="colorOnSurface">@color/white_50</item>
   </style>
 
 </resources>
