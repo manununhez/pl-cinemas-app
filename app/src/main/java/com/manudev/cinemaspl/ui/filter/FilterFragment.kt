@@ -87,8 +87,8 @@ class FilterFragment : Fragment() {
     private fun initFilterCinemasRecyclerView() {
         val filterCinemaClickCallback = object :
             FilterCinemaViewClickCallback {
-            override fun onClick(cinema: String) {
-                viewModelShared.setMoviesCinemas(cinema)
+            override fun onClick(cinema: String, clearSelection: Boolean) {
+                viewModelShared.setMoviesCinemas(cinema, clearSelection)
             }
         }
 
@@ -107,8 +107,8 @@ class FilterFragment : Fragment() {
     private fun initFilterLanguagesRecyclerView() {
         val filterLanguageClickCallback = object :
             FilterLanguageViewClickCallback {
-            override fun onClick(language: String) {
-                viewModelShared.setMoviesLanguage(language)
+            override fun onClick(language: String, clearSelection: Boolean) {
+                viewModelShared.setMoviesLanguage(language, clearSelection)
             }
         }
 

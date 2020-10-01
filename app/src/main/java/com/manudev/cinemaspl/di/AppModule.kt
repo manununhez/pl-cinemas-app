@@ -30,7 +30,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.10:8000/api/")
+//        .baseUrl("http://192.168.1.10:8000/api/") //development
+        .baseUrl("https://kinema.today/api/") //production
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(LiveDataCallAdapterFactory())
         .client(//Added interceptor to print level body request/response Retrofit

@@ -46,36 +46,57 @@ class SharedMovieViewModel @ViewModelInject constructor(
             _query.value = CinemaMoviesId(filterAttribute)
     }
 
-    fun setMoviesLanguage(filteredLanguage: String) {
+    fun setMoviesLanguage(filteredLanguage: String, clearSelection: Boolean) {
         val filterAttribute = _currentFilterAttribute.value!!
-        val languagesList = filterAttribute.language.toMutableList()
-        if (languagesList.contains(filteredLanguage)) //checkbox
-            languagesList.remove(filteredLanguage) //remove if exists
-        else
-            languagesList.add(filteredLanguage)//append new cinema to the list
 
-        _currentFilterAttribute.value = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            filterAttribute.cinema,
-            languagesList
-        )
+        if (clearSelection) {
+            _currentFilterAttribute.value = FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                filterAttribute.cinema,
+                listOf()//empty list
+            )
+        } else {
+
+            val languagesList = filterAttribute.language.toMutableList()
+            if (languagesList.contains(filteredLanguage)) //checkbox
+                languagesList.remove(filteredLanguage) //remove if exists
+            else
+                languagesList.add(filteredLanguage)//append new cinema to the list
+
+            _currentFilterAttribute.value = FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                filterAttribute.cinema,
+                languagesList
+            )
+        }
     }
 
-    fun setMoviesCinemas(filteredCinemas: String) {
+    fun setMoviesCinemas(filteredCinemas: String, clearSelection: Boolean) {
         val filterAttribute = _currentFilterAttribute.value!!
-        val cinemasList = filterAttribute.cinema.toMutableList()
-        if (cinemasList.contains(filteredCinemas)) //checkbox
-            cinemasList.remove(filteredCinemas) //remove if exists
-        else
-            cinemasList.add(filteredCinemas)//append new cinema to the list
 
-        _currentFilterAttribute.value = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            cinemasList,
-            filterAttribute.language
-        )
+        if (clearSelection) {
+            _currentFilterAttribute.value = FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                listOf(), //empty list
+                filterAttribute.language
+            )
+        } else {
+            val cinemasList = filterAttribute.cinema.toMutableList()
+            if (cinemasList.contains(filteredCinemas)) //checkbox
+                cinemasList.remove(filteredCinemas) //remove if exists
+            else
+                cinemasList.add(filteredCinemas)//append new cinema to the list
+
+            _currentFilterAttribute.value = FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                cinemasList,
+                filterAttribute.language
+            )
+        }
     }
 
     fun setMoviesCity(filteredCityName: String) {

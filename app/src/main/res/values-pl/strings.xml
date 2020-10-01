@@ -14,4 +14,6 @@
     <string name="filter_attribute_city">Miasto</string>
     <string name="filter_attribute_cinemas">Kina</string>
     <string name="filter_attribute_languages">Język</string>
+    <string name="select_all">Zaznacz wszystko</string>
+
 </resources>
