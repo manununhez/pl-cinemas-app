@@ -30,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     companion object {
-        val TAG: String? = MovieFragment::class.simpleName
+        private val TAG: String? = MovieFragment::class.simpleName
     }
 
     //sharedViewModel - navGraph scope
@@ -38,14 +38,9 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         defaultViewModelProviderFactory
     }
 
-
-
     private lateinit var attributes: Attribute
-
     private lateinit var binding: FragmentMovieBinding
-
     private lateinit var movieListAdapter: MovieListAdapter
-
     private lateinit var daysListAdapter: DaysListAdapter
 
     override fun onCreateView(
@@ -98,8 +93,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         })
 
-        viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner,{
-            binding.toolbar.subtitle = "("+it.city+")"
+        viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
+            binding.toolbar.subtitle = resources.getString(R.string.city_format_toolbar, it.city)
         })
 
     }
@@ -117,7 +112,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val movieDetailTransitionName = resources.getString(R.string.movie_detail_transition_name)
+                    val movieDetailTransitionName =
+                        resources.getString(R.string.movie_detail_transition_name)
                     val extras = FragmentNavigatorExtras(
                         cardView to movieDetailTransitionName
                     )

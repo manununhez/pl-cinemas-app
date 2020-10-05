@@ -11,23 +11,25 @@
     <string name="filter_transition_name" translatable="false">filter transition</string>
     <string name="movie_detail_transition_name" translatable="false">movie_detail_transition_name</string>
 
+
+    <string name="movie_duration" translatable="false">%1$s min.</string>
+    <string name="movie_fragment_toolbar_title" translatable="false">@string/app_name</string>
+    <string name="distance_description" translatable="false">(%1$s m)</string>
+    <string name="city_format_toolbar" translatable="false">(%1$s)</string>
+
     <string name="retry">Retry</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="a11y_movie_avatar">Movie Avatar</string>
-
-    <string name="movie_duration" translatable="false">%1$s min.</string>
 
     <string name="description_text_collapsed">More</string> <!-- more -->
     <string name="description_text_expanded">Less</string> <!-- less -->
     <string name="where_to_watch">Watch it here</string>
     <string name="menu_item_filter">Filter</string>
-    <string name="movie_fragment_toolbar_title" translatable="false">@string/app_name</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
     <string name="empty_movie_list">No movies found for this specific date.</string>
     <string name="filter_attribute_city">City</string>
     <string name="filter_attribute_cinemas">Cinemas</string>
     <string name="filter_attribute_languages">Languages</string>
-    <string name="distance_description" translatable="false">(%1$s m)</string>
     <string name="select_all">Select All</string>
 </resources>

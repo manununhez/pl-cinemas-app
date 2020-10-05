@@ -69,7 +69,6 @@ class FilterLanguageAdapter(
                     binding.tvBackgroundOVerlay.visibility =
                         if (binding.checkBox.isChecked) View.VISIBLE else View.GONE
                 }
-
             })
 
             binding.location = item

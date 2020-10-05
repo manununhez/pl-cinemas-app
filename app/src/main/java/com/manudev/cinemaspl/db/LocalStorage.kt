@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 class LocalStorage @Inject constructor(
     private val sharedPreferences: SharedPreferences,
+    private val gson: Gson,
 ) {
     companion object {
         private const val SHARED_PREFS_CURRENT_LOCATION = "current_location"
@@ -32,7 +33,7 @@ class LocalStorage @Inject constructor(
         val prefsAttrs = getFilteredAttributes() == filterAttribute
         return if (prefsMovies.isNotEmpty() && prefsAttrs) {
             val type = object : TypeToken<List<Movies>>() {}.type
-            val moviesList: List<Movies> = Gson().fromJson(prefsMovies, type)
+            val moviesList: List<Movies> = gson.fromJson(prefsMovies, type)
 
             val moviesLiveData = MutableLiveData<List<Movies>>()
             moviesLiveData.value = moviesList
@@ -44,7 +45,7 @@ class LocalStorage @Inject constructor(
     }
 
     fun setMovies(movies: List<Movies>) {
-        val values = Gson().toJson(movies)
+        val values = gson.toJson(movies)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_MOVIES, values)
         editor.apply()
@@ -54,7 +55,7 @@ class LocalStorage @Inject constructor(
         val prefs: String = sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
         return if (prefs.isNotEmpty()) {
             val type = object : TypeToken<Attribute>() {}.type
-            val locationList: Attribute = Gson().fromJson(prefs, type)
+            val locationList: Attribute = gson.fromJson(prefs, type)
             val locationLiveData = MutableLiveData<Attribute>()
             locationLiveData.value = locationList
             locationLiveData
@@ -64,7 +65,7 @@ class LocalStorage @Inject constructor(
     }
 
     fun setAttributes(item: Attribute) {
-        val values = Gson().toJson(item)
+        val values = gson.toJson(item)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_ATTRIBUTES, values)
         editor.apply()
@@ -76,22 +77,22 @@ class LocalStorage @Inject constructor(
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_SELECTED_ATTRIBUTES,
-                Gson().toJson(filterAttrDefault)
+                gson.toJson(filterAttrDefault)
             )
 
         val type = object : TypeToken<FilterAttribute>() {}.type
-        return Gson().fromJson(prefsAttributes, type)
+        return gson.fromJson(prefsAttributes, type)
     }
 
     fun setFilteredAttributes(item: FilterAttribute) {
-        val values = Gson().toJson(item)
+        val values = gson.toJson(item)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_SELECTED_ATTRIBUTES, values)
         editor.apply()
     }
 
     fun setCurrentLocation(currentLocation: Coordinate) {
-        val values = Gson().toJson(currentLocation)
+        val values = gson.toJson(currentLocation)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_CURRENT_LOCATION, values)
         editor.apply()
@@ -100,10 +101,10 @@ class LocalStorage @Inject constructor(
     fun getCurrentLocation(): Coordinate {
         val prefsCoordinate = sharedPreferences.getString(
             SHARED_PREFS_CURRENT_LOCATION,
-            Gson().toJson(Coordinate(0.0, 0.0))
+            gson.toJson(Coordinate(0.0, 0.0))
         )
         val type = object : TypeToken<Coordinate>() {}.type
-        return Gson().fromJson(prefsCoordinate, type)
+        return gson.fromJson(prefsCoordinate, type)
     }
 
 }

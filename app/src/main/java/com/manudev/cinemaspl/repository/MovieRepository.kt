@@ -5,7 +5,7 @@ import com.manudev.cinemaspl.api.ApiResponse
 import com.manudev.cinemaspl.api.CinemaPLService
 import com.manudev.cinemaspl.db.LocalStorage
 import com.manudev.cinemaspl.util.AppExecutors
-import com.manudev.cinemaspl.util.LocationUtils
+import com.manudev.cinemaspl.util.LocationUtils.orderCinemasByDistance
 import com.manudev.cinemaspl.vo.*
 import javax.inject.Inject
 
@@ -15,19 +15,15 @@ class MovieRepository @Inject constructor(
     private val appExecutors: AppExecutors
 ) {
 
-    companion object {
-        private val TAG: String = MovieRepository::class.java.simpleName
-    }
-
     fun loadMovies(filterAttribute: FilterAttribute) =
         object : NetworkBoundResource<List<Movies>, List<Movies>>(appExecutors) {
-            override fun saveCallResult(items: List<Movies>) {
+            override fun saveCallResult(item: List<Movies>) {
                 setFilteredAttributes(filterAttribute)
                 //order list based on distance
                 localStorage.setMovies(
-                    LocationUtils.orderCinemasByDistance(
+                    orderCinemasByDistance(
                         getCurrentLocation(),
-                        items
+                        item
                     )
                 )
             }
@@ -56,16 +52,15 @@ class MovieRepository @Inject constructor(
                 cinemaPLService.getAttributes()
         }.asLiveData()
 
-
     fun getFilteredAttributes() = localStorage.getFilteredAttributes()
 
     fun setFilteredAttributes(item: FilterAttribute) {
         localStorage.setFilteredAttributes(item)
     }
 
+    fun getCurrentLocation() = localStorage.getCurrentLocation()
+
     fun setCurrentLocation(currentLocation: Coordinate) {
         localStorage.setCurrentLocation(currentLocation)
     }
-
-    fun getCurrentLocation() = localStorage.getCurrentLocation()
 }

@@ -2,7 +2,6 @@ package com.manudev.cinemaspl
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -18,8 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val TAG = MainActivity::class.java.simpleName
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+    companion object{
+        private val TAG: String? = MainActivity::class.java.simpleName
+        private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+    }
     /**
      * Provides the entry point to the Fused Location Provider API.
      */
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -63,10 +63,6 @@ class MainActivity : AppCompatActivity() {
                 if (taskLocation.isSuccessful && taskLocation.result != null) {
 
                     val location = taskLocation.result
-
-                    val intent = Intent()
-                    intent.putExtra("Latitude", location?.latitude)
-                    intent.putExtra("Longitude", location?.longitude)
 
                     val latitude = location?.latitude ?: 0.0
                     val longitude = location?.longitude ?: 0.0

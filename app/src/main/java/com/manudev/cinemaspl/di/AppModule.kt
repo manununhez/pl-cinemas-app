@@ -27,11 +27,13 @@ object AppModule {
 
     private const val SHARED_PREFERENCES_NAME = "prefs"
 
+    private const val CINEMA_URL_PRODUCTION = "https://kinema.today/api/"
+    private const val CINEMA_URL_DEVELOPMENT = "http://192.168.1.10:8000/api/"
+
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
-//        .baseUrl("http://192.168.1.10:8000/api/") //development
-        .baseUrl("https://kinema.today/api/") //production
+        .baseUrl(CINEMA_URL_PRODUCTION)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(LiveDataCallAdapterFactory())
         .client(//Added interceptor to print level body request/response Retrofit
@@ -63,7 +65,7 @@ object AppModule {
     fun provideAppExecutors() = AppExecutors()
 
     @Provides
-    fun provideLocalStorage(sharedPreferences: SharedPreferences) = LocalStorage(sharedPreferences)
+    fun provideLocalStorage(sharedPreferences: SharedPreferences, gson: Gson) = LocalStorage(sharedPreferences, gson)
 
     @Singleton
     @Provides

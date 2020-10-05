@@ -29,12 +29,12 @@ class SharedMovieViewModel @ViewModelInject constructor(
     val currentFilterAttribute: LiveData<FilterAttribute>
         get() = _currentFilterAttribute
 
-    var attributes = repository.loadAttributes()
+    val attributes = repository.loadAttributes()
+
 
     init {
         _currentFilterAttribute.value = repository.getFilteredAttributes()
         _query.value = CinemaMoviesId(repository.getFilteredAttributes())
-
     }
 
 
@@ -64,6 +64,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
             else
                 languagesList.add(filteredLanguage)//append new cinema to the list
 
+
             _currentFilterAttribute.value = FilterAttribute(
                 filterAttribute.city,
                 filterAttribute.date,
@@ -89,6 +90,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
                 cinemasList.remove(filteredCinemas) //remove if exists
             else
                 cinemasList.add(filteredCinemas)//append new cinema to the list
+
 
             _currentFilterAttribute.value = FilterAttribute(
                 filterAttribute.city,
@@ -121,15 +123,15 @@ class SharedMovieViewModel @ViewModelInject constructor(
 
     fun getFilteredAttributes() = repository.getFilteredAttributes()
 
+    fun setCurrentLocation(currentLocation: Coordinate) {
+        repository.setCurrentLocation(currentLocation)
+    }
+
     fun retry() {
         val filterAttribute = _currentFilterAttribute.value!!
 
         _query.value = CinemaMoviesId(filterAttribute)
 
-    }
-
-    fun setCurrentLocation(currentLocation: Coordinate) {
-        repository.setCurrentLocation(currentLocation)
     }
 
     data class CinemaMoviesId(
