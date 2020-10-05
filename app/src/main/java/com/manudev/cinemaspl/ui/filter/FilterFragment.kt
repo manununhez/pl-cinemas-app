@@ -81,7 +81,10 @@ class FilterFragment : Fragment() {
                 filterClickCallback
             )
 
-
+        //scroll rv to select city
+        viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
+            binding.rvFilterCitiesList.scrollToPosition(attributes.cities.indexOf(it.city))
+        })
     }
 
     private fun initFilterCinemasRecyclerView() {
@@ -101,7 +104,6 @@ class FilterFragment : Fragment() {
                 viewLifecycleOwner,
                 filterCinemaClickCallback
             )
-
     }
 
     private fun initFilterLanguagesRecyclerView() {

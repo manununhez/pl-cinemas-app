@@ -45,7 +45,7 @@ class FilterLocationAdapter(
 
             //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
-                binding.radio.isChecked = item == it.city
+                binding.radio.isChecked = (item == it.city)
 
                 binding.tvBackgroundOVerlay.visibility = if(binding.radio.isChecked) View.VISIBLE else View.GONE
             })
