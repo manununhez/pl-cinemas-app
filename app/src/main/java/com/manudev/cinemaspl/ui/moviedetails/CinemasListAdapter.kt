@@ -25,11 +25,13 @@ class CinemaMovieListAdapter(
 
     class ViewHolder(val binding: CinemaItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Cinema, cinemaClickCallback: CinemaViewClickCallback) {
-            binding.cinema = item
-            binding.cinemaItemCardView.setOnClickListener {
-                cinemaClickCallback.onClick(item)
+            binding.apply {
+                cinema = item
+                cinemaItemCardView.setOnClickListener {
+                    cinemaClickCallback.onClick(item)
+                }
+                executePendingBindings()
             }
-            binding.executePendingBindings()
         }
     }
 }

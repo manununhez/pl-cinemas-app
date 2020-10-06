@@ -1,7 +1,8 @@
 package com.manudev.cinemaspl.ui.filter
 
 import android.view.LayoutInflater
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -20,7 +21,11 @@ class FilterLocationAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FilterItemSingleChoiceBinding.inflate(inflater, parent, false) //use this to use LinearLayoutManager instead of StaggeredGridLayoutManager
+        val binding = FilterItemSingleChoiceBinding.inflate(
+            inflater,
+            parent,
+            false
+        ) //use this to use LinearLayoutManager instead of StaggeredGridLayoutManager
         return ViewHolder(binding)
     }
 
@@ -45,16 +50,20 @@ class FilterLocationAdapter(
 
             //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
-                binding.radio.isChecked = (item == it.city)
+                binding.apply {
+                    radio.isChecked = (item == it.city)
 
-                binding.tvBackgroundOVerlay.visibility = if(binding.radio.isChecked) View.VISIBLE else View.GONE
+                    tvBackgroundOVerlay.visibility = if (radio.isChecked) VISIBLE else GONE
+                }
             })
 
-            binding.location = item
-            binding.radio.setOnClickListener {
-                locationViewClickCallback.onClick(item)
+            binding.apply {
+                location = item
+                radio.setOnClickListener {
+                    locationViewClickCallback.onClick(item)
+                }
+                executePendingBindings()
             }
-            binding.executePendingBindings()
         }
     }
 }

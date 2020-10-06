@@ -2,7 +2,8 @@ package com.manudev.cinemaspl.ui.filter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -59,26 +60,31 @@ class FilterCinemaAdapter(
         ) {
             //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
-                if (item == context.resources.getString(R.string.select_all) && it.cinema.isEmpty()) { //Select all is checked!, so other options are unchecked
-                    binding.checkBox.isChecked = true
+                binding.apply {
+                    if (item == context.resources.getString(R.string.select_all) && it.cinema.isEmpty()) { //Select all is checked!, so other options are unchecked
+                        checkBox.isChecked = true
 
-                    binding.tvBackgroundOVerlay.visibility = View.VISIBLE
-                } else {
-                    binding.checkBox.isChecked = it.cinema.contains(item)
+                        tvBackgroundOVerlay.visibility = VISIBLE
+                    } else {
+                        checkBox.isChecked = it.cinema.contains(item)
 
-                    binding.tvBackgroundOVerlay.visibility =
-                        if (binding.checkBox.isChecked) View.VISIBLE else View.GONE
+                        tvBackgroundOVerlay.visibility =
+                            if (checkBox.isChecked) VISIBLE else GONE
+                    }
                 }
             })
 
-            binding.location = item
-            binding.checkBox.setOnClickListener {
-                cinemaViewClickCallback.onClick(
-                    item,
-                    item == context.resources.getString(R.string.select_all)
-                )
+            binding.apply {
+                location = item
+                checkBox.setOnClickListener {
+                    cinemaViewClickCallback.onClick(
+                        item,
+                        item == context.resources.getString(R.string.select_all)
+                    )
+                }
+                executePendingBindings()
             }
-            binding.executePendingBindings()
+
         }
     }
 }

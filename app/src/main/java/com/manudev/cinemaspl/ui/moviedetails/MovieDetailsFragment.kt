@@ -86,7 +86,8 @@ class MovieDetailsFragment : Fragment() {
                     } else {
                         expandCollapseOption.text =
                             resources.getString(R.string.description_text_collapsed)
-                        movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
+                        movieDescription.maxLines =
+                            resources.getInteger(R.integer.max_lines_collapsed)
                         movieDescription.ellipsize = TextUtils.TruncateAt.END
                     }
                 }
@@ -115,7 +116,8 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        binding.rvCinemaList.adapter = CinemaMovieListAdapter(moviesArg.cinemas, cinemaClickCallback)
+        binding.rvCinemaList.adapter =
+            CinemaMovieListAdapter(moviesArg.cinemas, cinemaClickCallback)
 
     }
 }

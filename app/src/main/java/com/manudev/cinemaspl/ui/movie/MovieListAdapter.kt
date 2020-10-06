@@ -32,11 +32,14 @@ class MovieListAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentMovie = getItem(position)
-        holder.binding.movie = currentMovie.movie
-        holder.binding.movieItemCardView.setOnClickListener {
-            movieClickCallback.onClick(it, currentMovie)
+
+        holder.binding.apply {
+            movie = currentMovie.movie
+            movieItemCardView.setOnClickListener {
+                movieClickCallback.onClick(it, currentMovie)
+            }
+            executePendingBindings()
         }
-        holder.binding.executePendingBindings()
     }
 }
 

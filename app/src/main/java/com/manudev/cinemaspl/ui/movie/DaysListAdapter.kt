@@ -3,6 +3,8 @@ package com.manudev.cinemaspl.ui.movie
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -50,25 +52,30 @@ class DaysListAdapter(
                 context.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary)) else context.obtainStyledAttributes(
                 intArrayOf(R.attr.colorOnSurface)
             )
+            val colorAttr = typedArray.getColor(0, 0)
 
-            holder.binding.tvWeekDay.setTextColor(typedArray.getColor(0, 0))
-            holder.binding.tvDayTitle.setTextColor(typedArray.getColor(0, 0))
-            holder.binding.tvMonthTitle.setTextColor(typedArray.getColor(0, 0))
-            holder.binding.dayTitleCardView.strokeColor = typedArray.getColor(0, 0)
-            holder.binding.tvBackgroundOVerlay.visibility =
-                if (it.date == currentDayTitle) View.VISIBLE else View.GONE
+            holder.binding.apply {
+                tvWeekDay.setTextColor(colorAttr)
+                tvDayTitle.setTextColor(colorAttr)
+                tvMonthTitle.setTextColor(colorAttr)
+                dayTitleCardView.strokeColor = colorAttr
+                tvBackgroundOVerlay.visibility =
+                    if (it.date == currentDayTitle) VISIBLE else GONE
+            }
 
             typedArray.recycle()
         })
 
-        holder.binding.tvWeekDay.text = formatWeekDay(currentDayTitle)
-        holder.binding.tvDayTitle.text = formatDateDay(currentDayTitle)
-        holder.binding.tvMonthTitle.text = formatDateMonth(currentDayTitle)
-        holder.binding.dayTitleCardView.setOnClickListener {
-            dayTitleViewClickCallback.onClick(it, currentDayTitle)
-        }
+        holder.binding.apply {
+            tvWeekDay.text = formatWeekDay(currentDayTitle)
+            tvDayTitle.text = formatDateDay(currentDayTitle)
+            tvMonthTitle.text = formatDateMonth(currentDayTitle)
+            dayTitleCardView.setOnClickListener {
+                dayTitleViewClickCallback.onClick(it, currentDayTitle)
+            }
 
-        holder.binding.executePendingBindings()
+            executePendingBindings()
+        }
     }
 
     private fun formatWeekDay(date: String): String {
