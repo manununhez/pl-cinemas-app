@@ -8,26 +8,39 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.transition.MaterialSharedAxis
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentFilterBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
-import com.manudev.cinemaspl.vo.Attribute
-import com.manudev.cinemaspl.vo.FilterAttribute
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.LazyThreadSafetyMode.NONE
 
 
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
-    private lateinit var attributes: Attribute
-    private lateinit var filteredAttributes: FilterAttribute
+
+    private val params by navArgs<FilterFragmentArgs>()
+    private val attributes by lazy(NONE) {
+        params.attributes
+    }
 
     //SharedViewModel
     private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
         defaultViewModelProviderFactory
     }
-    private val params by navArgs<FilterFragmentArgs>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,24 +52,11 @@ class FilterFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-
-
-//        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
-//            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-//        }
-//
-//        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
-//            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-//        }
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
-        attributes = params.attributes
-        filteredAttributes = params.filteredAttributes
 
         initFilterCitiesRecyclerView()
         initFilterCinemasRecyclerView()
@@ -71,15 +71,16 @@ class FilterFragment : Fragment() {
             }
         }
 
-        binding.rvFilterCitiesList.setHasFixedSize(true)
-
-        binding.rvFilterCitiesList.adapter =
-            FilterLocationAdapter(
-                attributes.cities,
-                viewModelShared.currentFilterAttribute,
-                viewLifecycleOwner,
-                filterClickCallback
-            )
+        binding.rvFilterCitiesList.apply {
+            setHasFixedSize(true)
+            adapter =
+                FilterLocationAdapter(
+                    attributes.cities,
+                    viewModelShared.currentFilterAttribute,
+                    viewLifecycleOwner,
+                    filterClickCallback
+                )
+        }
 
         //scroll rv to select city
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
@@ -95,15 +96,17 @@ class FilterFragment : Fragment() {
             }
         }
 
-        binding.rvFilterCinemasList.setHasFixedSize(true)
+        binding.rvFilterCinemasList.apply {
+            setHasFixedSize(true)
+            adapter =
+                FilterCinemaAdapter(
+                    attributes.cinemas,
+                    viewModelShared.currentFilterAttribute,
+                    viewLifecycleOwner,
+                    filterCinemaClickCallback
+                )
+        }
 
-        binding.rvFilterCinemasList.adapter =
-            FilterCinemaAdapter(
-                attributes.cinemas,
-                viewModelShared.currentFilterAttribute,
-                viewLifecycleOwner,
-                filterCinemaClickCallback
-            )
     }
 
     private fun initFilterLanguagesRecyclerView() {
@@ -114,14 +117,17 @@ class FilterFragment : Fragment() {
             }
         }
 
-        binding.rvFilterLanguagesList.setHasFixedSize(true)
+        binding.rvFilterLanguagesList.apply {
+            setHasFixedSize(true)
 
-        binding.rvFilterLanguagesList.adapter =
-            FilterLanguageAdapter(
-                attributes.languages,
-                viewModelShared.currentFilterAttribute,
-                viewLifecycleOwner,
-                filterLanguageClickCallback
-            )
+            adapter =
+                FilterLanguageAdapter(
+                    attributes.languages,
+                    viewModelShared.currentFilterAttribute,
+                    viewLifecycleOwner,
+                    filterLanguageClickCallback
+                )
+        }
+
     }
 }

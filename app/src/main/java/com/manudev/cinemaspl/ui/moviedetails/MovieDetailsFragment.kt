@@ -15,9 +15,8 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentDetailsMovieBinding
 import com.manudev.cinemaspl.vo.Cinema
-import com.manudev.cinemaspl.vo.Movies
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_details_movie.*
+import kotlin.LazyThreadSafetyMode.NONE
 
 
 /**
@@ -25,10 +24,12 @@ import kotlinx.android.synthetic.main.fragment_details_movie.*
  */
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
-    private val params by navArgs<MovieDetailsFragmentArgs>()
-
     private lateinit var binding: FragmentDetailsMovieBinding
-    private lateinit var movies: Movies
+
+    private val params by navArgs<MovieDetailsFragmentArgs>()
+    private val moviesArg by lazy(NONE) {
+        params.movies
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,42 +60,45 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movies = params.movies
-        binding.movies = movies
-        binding.duration.text = if (movies.movie.duration == "0") "" else resources.getString(
-            R.string.movie_duration,
-            movies.movie.duration
-        )
+        binding.run {
+            movies = moviesArg
+            duration.text = if (moviesArg.movie.duration == "0") "" else resources.getString(
+                R.string.movie_duration,
+                moviesArg.movie.duration
+            )
 
-        initRecyclerView()
-
-        binding.detailsMovieCallback = object : DetailsMovieCallback {
-            override fun watchTrailer() {
-                requireActivity().startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(movies.movie.trailerUrl)
+            detailsMovieCallback = object : DetailsMovieCallback {
+                override fun watchTrailer() {
+                    requireActivity().startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(moviesArg.movie.trailerUrl)
+                        )
                     )
-                )
-            }
+                }
 
-            override fun expandCollapseDescription() {
-                if (expandCollapseOption.text == resources.getString(R.string.description_text_collapsed)) {
-                    expandCollapseOption.text = resources.getString(R.string.description_text_expanded)
-                    movieDescription.maxLines = Integer.MAX_VALUE
-                    movieDescription.ellipsize = null
-                } else {
-                    expandCollapseOption.text = resources.getString(R.string.description_text_collapsed)
-                    movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
-                    movieDescription.ellipsize = TextUtils.TruncateAt.END
+                override fun expandCollapseDescription() {
+                    if (expandCollapseOption.text == resources.getString(R.string.description_text_collapsed)) {
+                        expandCollapseOption.text =
+                            resources.getString(R.string.description_text_expanded)
+                        movieDescription.maxLines = Integer.MAX_VALUE
+                        movieDescription.ellipsize = null
+                    } else {
+                        expandCollapseOption.text =
+                            resources.getString(R.string.description_text_collapsed)
+                        movieDescription.maxLines = resources.getInteger(R.integer.max_lines_collapsed)
+                        movieDescription.ellipsize = TextUtils.TruncateAt.END
+                    }
                 }
             }
+
+            movieDescription.post {
+                if (movieDescription.lineCount <= resources.getInteger(R.integer.max_lines_collapsed))
+                    expandCollapseOption.visibility = View.GONE
+            }
         }
 
-        movieDescription.post {
-            if (movieDescription.lineCount <= resources.getInteger(R.integer.max_lines_collapsed))
-                expandCollapseOption.visibility = View.GONE
-        }
+        initRecyclerView()
 
     }
 
@@ -111,8 +115,7 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        val cinemaListAdapter = CinemaMovieListAdapter(movies.cinemas, cinemaClickCallback)
-        binding.rvCinemaList.adapter = cinemaListAdapter
+        binding.rvCinemaList.adapter = CinemaMovieListAdapter(moviesArg.cinemas, cinemaClickCallback)
 
     }
 }

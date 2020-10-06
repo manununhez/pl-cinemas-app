@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import com.manudev.cinemaspl.R
 import com.manudev.cinemaspl.databinding.FragmentMovieBinding
 import com.manudev.cinemaspl.ui.SharedMovieViewModel
@@ -33,15 +34,22 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         private val TAG: String? = MovieFragment::class.simpleName
     }
 
+    private lateinit var attributes: Attribute
+    private lateinit var binding: FragmentMovieBinding
+    private lateinit var movieListAdapter: MovieListAdapter
+    private lateinit var daysListAdapter: DaysListAdapter
+
     //sharedViewModel - navGraph scope
     private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
         defaultViewModelProviderFactory
     }
 
-    private lateinit var attributes: Attribute
-    private lateinit var binding: FragmentMovieBinding
-    private lateinit var movieListAdapter: MovieListAdapter
-    private lateinit var daysListAdapter: DaysListAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +66,21 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.movies = viewModelShared.movies
+        // Postpone enter transitions to allow shared element transitions to run.
+        // https://github.com/googlesamples/android-architecture-components/issues/495
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
+        binding.run {
+            lifecycleOwner = viewLifecycleOwner
+            movies = viewModelShared.movies
+            retryCallback = object : RetryCallback {
+                override fun retry() {
+                    viewModelShared.retry()
+                }
+            }
+        }
+
 
         viewModelShared.loadMovies()
 
@@ -67,13 +88,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         initMoviesRecyclerView()
         initDateTitleRecyclerView()
 
-        binding.retryCallback = object : RetryCallback {
-            override fun retry() {
-                viewModelShared.retry()
-            }
-        }
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     private fun setupObservers() {
@@ -131,7 +145,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         movieListAdapter = MovieListAdapter(movieClickCallback)
 
         binding.movieListGrid.adapter = movieListAdapter
-
     }
 
     private fun initDateTitleRecyclerView() {
@@ -155,12 +168,19 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.filterFragmentMenu -> {
-                findNavController().navigate(
-                    MovieFragmentDirections.showFilterFragment(
-                        attributes,
-                        viewModelShared.getFilteredAttributes()
-                    )
+                // Set exit and reenter transitions here as opposed to in onCreate because these transitions
+                // will be set and overwritten on HomeFragment for other navigation actions.
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                }
+
+                val directions = MovieFragmentDirections.showFilterFragment(
+                    attributes
                 )
+                findNavController().navigate(directions)
             }
         }
         return true

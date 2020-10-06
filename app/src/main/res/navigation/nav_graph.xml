@@ -23,9 +23,6 @@
         <argument
             android:name="attributes"
             app:argType="com.manudev.cinemaspl.vo.Attribute" />
-        <argument
-            android:name="filteredAttributes"
-            app:argType="com.manudev.cinemaspl.vo.FilterAttribute" />
     </fragment>
     <fragment
         android:id="@+id/MovieDetailsFragment"
@@ -44,8 +41,5 @@
         <argument
             android:name="attributes"
             app:argType="com.manudev.cinemaspl.vo.Attribute" />
-        <argument
-            android:name="filteredAttributes"
-            app:argType="com.manudev.cinemaspl.vo.FilterAttribute" />
     </fragment>
 </navigation>

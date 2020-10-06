@@ -17,8 +17,7 @@
             android:id="@+id/menu_item_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:transitionGroup="true"
-            android:transitionName="@string/filter_transition_name">
+            android:transitionGroup="true">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -29,7 +28,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_back">
+                app:navigationIcon="@drawable/ic_close">
 
             </androidx.appcompat.widget.Toolbar>
 
