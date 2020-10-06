@@ -9,11 +9,15 @@ import com.manudev.cinemaspl.db.LocalStorage
 import com.manudev.cinemaspl.util.AbsentLiveData
 import com.manudev.cinemaspl.util.ApiUtil.successCall
 import com.manudev.cinemaspl.util.InstantAppExecutors
-import com.manudev.cinemaspl.util.TestUtil.createDates
-import com.manudev.cinemaspl.util.TestUtil.createLocations
+import com.manudev.cinemaspl.util.TestUtil.createAttributes
+import com.manudev.cinemaspl.util.TestUtil.createCurrentLocation
+import com.manudev.cinemaspl.util.TestUtil.createFilterAttribute
 import com.manudev.cinemaspl.util.TestUtil.createMovies
 import com.manudev.cinemaspl.util.mock
-import com.manudev.cinemaspl.vo.*
+import com.manudev.cinemaspl.vo.Attribute
+import com.manudev.cinemaspl.vo.GeneralResponse
+import com.manudev.cinemaspl.vo.Movies
+import com.manudev.cinemaspl.vo.Resource
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -43,23 +47,24 @@ class MovieRepositoryTest {
 
     @Test
     fun loadMovies() {
-        repository.loadMovies("city", "date")
-        verify(localStorage).getMovies("city", "date")
+        val filterAttribute = createFilterAttribute()
+        repository.loadMovies(filterAttribute)
+        verify(localStorage).getMovies(filterAttribute)
     }
 
     @Test
     fun loadMovies_fromDb() {
         //----Arrange
+        val filterAttribute = createFilterAttribute()
         val movies = createMovies()
         //Prepare DB
         val dbData = MutableLiveData<List<Movies>>()
         dbData.value = movies
-        `when`(localStorage.getMovies("city", "date")).thenReturn(dbData)
-
+        `when`(localStorage.getMovies(filterAttribute)).thenReturn(dbData)
 
         //----Act
         val observer = mock<Observer<Resource<List<Movies>>>>()
-        repository.loadMovies("city", "date").observeForever(observer)
+        repository.loadMovies(filterAttribute).observeForever(observer)
         verifyNoMoreInteractions(service)
         verify(observer).onChanged(Resource.success(movies))
     }
@@ -67,29 +72,33 @@ class MovieRepositoryTest {
     @Test
     fun loadMovies_fromServer() {
         //----Arrange
+        val filterAttribute = createFilterAttribute()
+        //------
+        `when`(localStorage.getCurrentLocation()).thenReturn(createCurrentLocation())
         //Prepare DB
         val dbData = MutableLiveData<List<Movies>>()
-        `when`(localStorage.getMovies("city", "date")).thenReturn(dbData)
+        `when`(localStorage.getMovies(filterAttribute)).thenReturn(dbData)
         //Prepare Service
         val movies = createMovies()
         val call = successCall(GeneralResponse(true, "", movies))
-        `when`(service.getMovies("city", "date")).thenReturn(call)
+        `when`(service.searchMovies(filterAttribute)).thenReturn(call)
 
         //----Act
         val observer = mock<Observer<Resource<List<Movies>>>>()
-        repository.loadMovies("city", "date").observeForever(observer)
+        repository.loadMovies(filterAttribute).observeForever(observer)
         verifyNoMoreInteractions(service)
         verify(observer).onChanged(Resource.loading(null))
         //DB updated value
         val updatedDbData = MutableLiveData<List<Movies>>()
-        `when`(localStorage.getMovies("city", "date")).thenReturn(updatedDbData)
+        `when`(localStorage.getMovies(filterAttribute)).thenReturn(updatedDbData)
 
         //Simulate an update in db value, Empty db data, shouldFetch->true
         dbData.postValue(null)
         //createCall()
-        verify(service).getMovies("city", "date")
+        verify(service).searchMovies(filterAttribute)
         //saveCallResult
         verify(localStorage).setMovies(movies)
+        verify(localStorage).setFilteredAttributes(filterAttribute)
         // send new values to observers
         updatedDbData.postValue(movies)
         verify(observer).onChanged(Resource.success(movies))
@@ -99,16 +108,17 @@ class MovieRepositoryTest {
     @Test
     fun loadMovies_fromServer_error() {
         //----Arrange
+        val filterAttribute = createFilterAttribute()
         //Simulate return empty data from DB
-        `when`(localStorage.getMovies("city", "date")).thenReturn(AbsentLiveData.create())
+        `when`(localStorage.getMovies(filterAttribute)).thenReturn(AbsentLiveData.create())
         //Prepare Service
         val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<List<Movies>>>>()
-        `when`(service.getMovies("city", "date")).thenReturn(apiResponse)
+        `when`(service.searchMovies(filterAttribute)).thenReturn(apiResponse)
 
         //----Act
         val observer = mock<Observer<Resource<List<Movies>>>>()
         //Call loadMovies
-        repository.loadMovies("city", "date").observeForever(observer)
+        repository.loadMovies(filterAttribute).observeForever(observer)
         verify(observer).onChanged(Resource.loading(null))
 
         //As db return empty value ->ShouldFetch->true
@@ -121,41 +131,49 @@ class MovieRepositoryTest {
     }
 
     @Test
-    fun loadLocations() {
-        repository.loadLocations()
-        verify(localStorage).getLocations()
+    fun loadAttributes() {
+        repository.loadAttributes()
+        verify(localStorage).getAttributes()
     }
 
     @Test
-    fun loadLocations_fromServer() {
+    fun loadAttributes_fromServer() {
         //----Arrange
-        val locations = createLocations()
+        val attributes = createAttributes()
         //Prepare DB
-        val dbData = MutableLiveData<List<Location>>()
-        dbData.value = locations
-        `when`(localStorage.getLocations()).thenReturn(dbData)
+        val dbData = MutableLiveData<Attribute>()
+        dbData.value = attributes
+        `when`(localStorage.getAttributes()).thenReturn(dbData)
 
+        //Prepare service
+        val call = successCall(GeneralResponse(true, "", attributes))
+        `when`(service.getAttributes()).thenReturn(call)
 
         //----Act
-        val observer = mock<Observer<Resource<List<Location>>>>()
-        repository.loadLocations().observeForever(observer)
-        verifyNoMoreInteractions(service)
-        verify(observer).onChanged(Resource.success(locations))
+        val observer = mock<Observer<Resource<Attribute>>>()
+        repository.loadAttributes().observeForever(observer)
+
+        //createCall()
+        verify(service).getAttributes()
+        //saveCallResult
+        verify(localStorage).setAttributes(attributes)
+
+        verify(observer).onChanged(Resource.success(attributes))
     }
 
     @Test
-    fun loadLocations_fromServer_error() {
+    fun loadAttributes_fromServer_error() {
         //----Arrange
         //Simulate return empty data from DB
-        `when`(localStorage.getLocations()).thenReturn(AbsentLiveData.create())
+        `when`(localStorage.getAttributes()).thenReturn(AbsentLiveData.create())
         //Prepare Service
-        val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<List<Location>>>>()
-        `when`(service.getLocations()).thenReturn(apiResponse)
+        val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<Attribute>>>()
+        `when`(service.getAttributes()).thenReturn(apiResponse)
 
         //----Act
-        val observer = mock<Observer<Resource<List<Location>>>>()
+        val observer = mock<Observer<Resource<Attribute>>>()
         //Call loadMovies
-        repository.loadLocations().observeForever(observer)
+        repository.loadAttributes().observeForever(observer)
         verify(observer).onChanged(Resource.loading(null))
 
         //As db return empty value ->ShouldFetch->true
@@ -168,83 +186,42 @@ class MovieRepositoryTest {
     }
 
     @Test
-    fun loadLocations_fromDb() {
-        //----Arrange
-        val locations = createLocations()
-        //Prepare DB
-        val dbData = MutableLiveData<List<Location>>()
-        dbData.value = locations
-        `when`(localStorage.getLocations()).thenReturn(dbData)
+    fun setAndLoadFilteredAttributes() {
+        val filterAttribute = createFilterAttribute()
 
+        repository.setFilteredAttributes(filterAttribute)
+        verify(localStorage).setFilteredAttributes(filterAttribute)
 
-        //----Act
-        val observer = mock<Observer<Resource<List<Location>>>>()
-        repository.loadLocations().observeForever(observer)
-        verifyNoMoreInteractions(service)
-        verify(observer).onChanged(Resource.success(locations))
+        repository.getFilteredAttributes()
+        verify(localStorage).getFilteredAttributes()
     }
 
     @Test
-    fun loadDates() {
-        repository.loadDates()
-        verify(localStorage).getDatesTitle()
+    fun setAndLoadCurrentLocation() {
+        val currentLocation = createCurrentLocation()
+
+        repository.setCurrentLocation(currentLocation)
+        verify(localStorage).setCurrentLocation(currentLocation)
+
+        repository.getCurrentLocation()
+        verify(localStorage).getCurrentLocation()
     }
 
-    @Test
-    fun loadDates_fromServer() {
-        //----Arrange
-        val dates = createDates()
-        //Prepare DB
-        val dbData = MutableLiveData<List<DateTitle>>()
-        dbData.value = dates
-        `when`(localStorage.getDatesTitle()).thenReturn(dbData)
-
-
-        //----Act
-        val observer = mock<Observer<Resource<List<DateTitle>>>>()
-        repository.loadDates().observeForever(observer)
-        verifyNoMoreInteractions(service)
-        verify(observer).onChanged(Resource.success(dates))
-    }
-
-    @Test
-    fun loadDates_fromServer_error() {
-        //----Arrange
-        //Simulate return empty data from DB
-        `when`(localStorage.getDatesTitle()).thenReturn(AbsentLiveData.create())
-        //Prepare Service
-        val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<List<DateTitle>>>>()
-        `when`(service.getDates()).thenReturn(apiResponse)
-
-        //----Act
-        val observer = mock<Observer<Resource<List<DateTitle>>>>()
-        //Call loadMovies
-        repository.loadDates().observeForever(observer)
-        verify(observer).onChanged(Resource.loading(null))
-
-        //As db return empty value ->ShouldFetch->true
-        // Calling server
-        //Send error data from server
-        apiResponse.postValue(ApiResponse.create(Exception("idk")))
-
-        // send error to observers
-        verify(observer).onChanged(Resource.error("idk", null))
-    }
-
-    @Test
-    fun loadDates_fromDb() {
-        //----Arrange
-        val dates = createDates()
-        //Prepare DB
-        val dbData = MutableLiveData<List<DateTitle>>()
-        dbData.value = dates
-        `when`(localStorage.getDatesTitle()).thenReturn(dbData)
-
-
-        //----Act
-        val observer = mock<Observer<Resource<List<DateTitle>>>>()
-        repository.loadDates().observeForever(observer)
-        verifyNoMoreInteractions(service)
-        verify(observer).onChanged(Resource.success(dates))
-    }
+//    @Test
+//    fun orderCinemasByDistance() {
+//
+//
+//        val movies = createMovies()
+//        val returnedValue = repository.orderCinemasByDistance(createCurrentLocationEmpty(), movies)
+//
+//        assertThat(returnedValue, `is`(movies))
+//
+//        val returnedOrderedValue =
+//            repository.orderCinemasByDistance(createCurrentLocation(), createMoviesUnOrdered())
+//        `when`(repository.sortCinemas(createMoviesUnOrdered(), createCurrentLocation())).thenReturn(createMoviesOrdered())
+//
+//
+//        assertThat(returnedOrderedValue, `is`(createMoviesOrdered()))
+//
+//    }
 }

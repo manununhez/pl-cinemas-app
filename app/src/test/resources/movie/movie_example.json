@@ -3,64 +3,91 @@
   "data": [
     {
       "movie": {
-        "id": 2090,
-        "title": "Zieja",
-        "description": "Lata 70-te. Major SB chce \"kupić\" naiwnego księdza Zieję i zrobić z niego agenta, który skompromituje opozycję. Przesłuchania księdza stają się naturalnym pretekstem do wędrówki przez historię Polski wieku dwudziestego - od wojny bolszewickiej 1920 roku, przez II wojnę światową, aż do czasów współczesnych.",
-        "trailer_url": "https://www.youtube.com/watch?v=g-mwqHq_3Og&t=9s",
-        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/zieja-poster_f70c7c06fd.jpg",
-        "created_at": "2020-09-06T23:45:00.000000Z",
-        "updated_at": "2020-09-06T23:45:52.000000Z",
-        "duration": 111,
-        "classification": "12+",
-        "release_year": "2019",
-        "date_title": "2020-09-08",
+        "id": 335,
+        "title": "After 2",
+        "description": "Tessa wciąż nie potrafi wybaczyć i zaufać Hardinowi, po tym co między nimi zaszło. Aby wyleczyć się z namiętności, rzuca się w wir pracy.",
+        "duration": 105,
+        "genre": "|Melodramat",
+        "original_lang": "angielski",
+        "classification": "",
+        "release_year": "2020",
+        "trailer_url": "https://www.youtube.com/watch?v=YoHYAdScBak",
+        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/after2_dc611831b7.jpg",
+        "created_at": "2020-09-28T19:20:28.000000Z",
+        "updated_at": "2020-09-28T19:23:19.000000Z",
+        "date_title": "2020-10-01",
         "city": "Warszawa"
       },
       "cinemas": [
         {
-          "cinema_id": "2",
+          "cinema_id": "1",
+          "location_id": "1",
+          "name": "Warszawa Złote Tarasy",
+          "coord_latitude": "52.229525",
+          "coord_longitude": "21.002011",
+          "logo_url": "https://zakupersi.com/wp-content/uploads/2016/04/multikino-780x390.png",
+          "cinema_movie_url": "https://multikino.pl/filmy/after-2",
+          "language": "polskie napisy"
+        },
+        {
+          "cinema_id": "3",
           "location_id": "1074",
           "name": "Warszawa -  Arkadia",
           "coord_latitude": "52.257217",
           "coord_longitude": "20.984465",
-          "logo_url": "https://www.cinema-city.pl/loga/cc/Cinema_City_Master_RGB_blackBg.png",
-          "cinema_movie_url": "https://www.cinema-city.pl/filmy/zieja/4074s2r"
+          "logo_url": "https://static.antyweb.pl/uploads/2016/02/Cinema_City-1420x670.png",
+          "cinema_movie_url": "https://www.cinema-city.pl/kina/arkadia/1074#/buy-tickets-by-cinema?in-cinema=609&at=2020-10-01&for-movie=4147s2r&view-mode=list",
+          "language": "angielski|polskie napisy"
         },
         {
           "cinema_id": "3",
-          "location_id": "43",
-          "name": "Warszawa Młociny",
-          "coord_latitude": null,
-          "coord_longitude": null,
-          "logo_url": "https://zakupersi.com/wp-content/uploads/2016/04/multikino-780x390.png",
-          "cinema_movie_url": "https://multikino.pl/filmy/zieja"
+          "location_id": "1070",
+          "name": "Warszawa - Galeria Mokotów",
+          "coord_latitude": "52.17884",
+          "coord_longitude": "21.00342",
+          "logo_url": "https://static.antyweb.pl/uploads/2016/02/Cinema_City-1420x670.png",
+          "cinema_movie_url": "https://www.cinema-city.pl/kina/mokotow/1070#/buy-tickets-by-cinema?in-cinema=612&at=2020-10-02&for-movie=4285o2r&view-mode=list",
+          "language": "polski"
+        },
+        {
+          "cinema_id": "3",
+          "location_id": "1068",
+          "name": "Warszawa - Promenada",
+          "coord_latitude": "52.2316",
+          "coord_longitude": "21.106195",
+          "logo_url": "https://static.antyweb.pl/uploads/2016/02/Cinema_City-1420x670.png",
+          "cinema_movie_url": "https://www.cinema-city.pl/kina/promenada/1068#/buy-tickets-by-cinema?in-cinema=614&at=2020-10-02&for-movie=4285o2r&view-mode=list",
+          "language": "polski"
         }
       ]
     },
     {
       "movie": {
-        "id": 2095,
-        "title": "Babyteeth",
-        "description": "Poważnie chora nastolatka Milla zakochuje się w Mosesie – chłopaku z problemami. To zmienia ją i jej rodzinę. Milla pokazuje rodzicom, Mosesowi i wszystkim wokół jak żyć, kiedy nie masz nic do stracenia.",
-        "trailer_url": "https://www.youtube.com/watch?v=YuCkdRRx51s",
-        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/babyteeth-plakat-pl_7345d8fa34.jpeg",
-        "created_at": "2020-09-06T23:45:04.000000Z",
-        "updated_at": "2020-09-06T23:46:43.000000Z",
-        "duration": 116,
-        "classification": "Komediodramat",
-        "release_year": "2019",
-        "date_title": "2020-09-08",
+        "id": 344,
+        "title": "Greenland",
+        "description": "W przededniu katastrofy tylko nieliczni dostają od władz szansę na ocalenie w tajnych schronach. Żeby ją wykorzystać muszą po drodze stoczyć walkę o przetrwanie w świecie, który ogarnął chaos i panika.",
+        "duration": 120,
+        "genre": "|Science-Fiction|Thriller",
+        "original_lang": "angielski",
+        "classification": "15+",
+        "release_year": "2020",
+        "trailer_url": "https://www.youtube.com/watch?v=ku3oCtmU6jk",
+        "poster_url": "https://media.multikino.pl/uploads/images/films_and_events/greenland-plakat_d46cb8ad29.jpg",
+        "created_at": "2020-09-28T19:20:37.000000Z",
+        "updated_at": "2020-09-28T19:23:19.000000Z",
+        "date_title": "2020-10-01",
         "city": "Warszawa"
       },
       "cinemas": [
         {
-          "cinema_id": "4",
-          "location_id": "156",
-          "name": "Warszawa",
-          "coord_latitude": null,
-          "coord_longitude": null,
-          "logo_url": "https://kulturalna.um.warszawa.pl/pi/131510_e83aa6493.png",
-          "cinema_movie_url": "https://kinomuranow.pl/film/babyteeth"
+          "cinema_id": "1",
+          "location_id": "14",
+          "name": "Warszawa Targówek",
+          "coord_latitude": "52.302543",
+          "coord_longitude": "21.05757",
+          "logo_url": "https://zakupersi.com/wp-content/uploads/2016/04/multikino-780x390.png",
+          "cinema_movie_url": "https://multikino.pl/filmy/greenland",
+          "language": "polskie napisy"
         }
       ]
     }
