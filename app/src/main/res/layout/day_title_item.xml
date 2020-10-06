@@ -7,7 +7,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.manudev.cinemaspl.ui.movie.DayTitleViewClickCallback" />
+        <import type="today.kinema.ui.movie.DayTitleViewClickCallback" />
 
         <variable
             name="clickHandler"

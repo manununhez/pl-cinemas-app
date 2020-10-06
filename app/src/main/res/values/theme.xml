@@ -58,7 +58,6 @@
         <!--Platform attributes-->
         <item name="android:navigationBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_pruple_900</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_pruple_900</item>
-
     </style>
 
     <style name="ThemeOverlay.CinePL.Metropolis" parent="@style/ThemeOverlay.MaterialComponents.Dark">

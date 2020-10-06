@@ -12,7 +12,6 @@
 
 
     <string name="movie_duration" translatable="false">%1$s min.</string>
-    <string name="movie_fragment_toolbar_title" translatable="false">@string/app_name</string>
     <string name="distance_description" translatable="false">(%1$s m)</string>
     <string name="city_format_toolbar" translatable="false">(%1$s)</string>
 

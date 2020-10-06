@@ -7,7 +7,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.manudev.cinemaspl.vo.Location" />
+        <import type="today.kinema.vo.Location" />
 
         <variable
             name="location"

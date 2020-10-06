@@ -10,7 +10,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.manudev.cinemaspl"
+        applicationId "today.kinema"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

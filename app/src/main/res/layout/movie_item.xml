@@ -7,9 +7,9 @@
 
         <import type="android.view.View" />
 
-        <import type="com.manudev.cinemaspl.vo.Movie" />
+        <import type="today.kinema.vo.Movie" />
 
-        <import type="com.manudev.cinemaspl.ui.movie.MovieViewClickCallback" />
+        <import type="today.kinema.ui.movie.MovieViewClickCallback" />
 
         <variable
             name="movie"

@@ -4,13 +4,13 @@
 
     <data>
 
-        <import type="com.manudev.cinemaspl.vo.Resource" />
+        <import type="today.kinema.vo.Resource" />
 
-        <import type="com.manudev.cinemaspl.vo.Status" />
+        <import type="today.kinema.vo.Status" />
 
-        <import type="com.manudev.cinemaspl.ui.common.RetryCallback" />
+        <import type="today.kinema.ui.common.RetryCallback" />
 
-        <import type="com.manudev.cinemaspl.vo.Movies" />
+        <import type="today.kinema.vo.Movies" />
 
         <import type="java.util.List" />
 

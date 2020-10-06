@@ -5,17 +5,17 @@
 
     <data>
 
-        <import type="com.manudev.cinemaspl.vo.Resource" />
+        <import type="today.kinema.vo.Resource" />
 
-        <import type="com.manudev.cinemaspl.vo.Status" />
+        <import type="today.kinema.vo.Status" />
 
-        <import type="com.manudev.cinemaspl.vo.Movies" />
+        <import type="today.kinema.vo.Movies" />
 
         <import type="androidx.lifecycle.LiveData" />
 
         <import type="java.util.List" />
 
-        <import type="com.manudev.cinemaspl.ui.common.RetryCallback" />
+        <import type="today.kinema.ui.common.RetryCallback" />
 
         <variable
             name="movies"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionGroup="true"
-        tools:context="com.manudev.cinemapl.ui.movie.MovieFragment">
+        tools:context="today.cinemapl.ui.movie.MovieFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -52,7 +52,7 @@
                 app:menu="@menu/movie_list_menu"
                 app:subtitle="(Warszawa)"
                 app:titleMarginStart="@dimen/grid_1_5"
-                app:navigationIcon="@drawable/ic_toolbar_logo" />
+                app:navigationIcon="@drawable/ic_kinema_logo" />
 
 
         </com.google.android.material.appbar.AppBarLayout>

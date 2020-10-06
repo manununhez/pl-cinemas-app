@@ -5,9 +5,9 @@
 
     <data>
 
-        <import type="com.manudev.cinemaspl.vo.Movies" />
+        <import type="today.kinema.vo.Movies" />
 
-        <import type="com.manudev.cinemaspl.ui.moviedetails.DetailsMovieCallback" />
+        <import type="today.kinema.ui.moviedetails.DetailsMovieCallback" />
 
         <variable
             name="detailsMovieCallback"

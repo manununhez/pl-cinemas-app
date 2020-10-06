@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MovieFragment"
-        android:name="com.manudev.cinemaspl.ui.movie.MovieFragment"
+        android:name="today.kinema.ui.movie.MovieFragment"
         android:label="@string/movie_fragment_label"
         tools:layout="@layout/fragment_movie">
         <action
@@ -16,30 +16,30 @@
             app:exitAnim="@null" />
         <argument
             android:name="movies"
-            app:argType="com.manudev.cinemaspl.vo.Movies" />
+            app:argType="today.kinema.vo.Movies" />
         <action
             android:id="@+id/showFilterFragment"
             app:destination="@id/filterFragment" />
         <argument
             android:name="attributes"
-            app:argType="com.manudev.cinemaspl.vo.Attribute" />
+            app:argType="today.kinema.vo.Attribute" />
     </fragment>
     <fragment
         android:id="@+id/MovieDetailsFragment"
-        android:name="com.manudev.cinemaspl.ui.moviedetails.MovieDetailsFragment"
+        android:name="today.kinema.ui.moviedetails.MovieDetailsFragment"
         android:label="@string/details_movie_fragment_label"
         tools:layout="@layout/fragment_details_movie">
         <argument
             android:name="movies"
-            app:argType="com.manudev.cinemaspl.vo.Movies" />
+            app:argType="today.kinema.vo.Movies" />
     </fragment>
     <fragment
         android:id="@+id/filterFragment"
-        android:name="com.manudev.cinemaspl.ui.filter.FilterFragment"
+        android:name="today.kinema.ui.filter.FilterFragment"
         android:label="@string/filter_fragment_label"
         tools:layout="@layout/fragment_filter">
         <argument
             android:name="attributes"
-            app:argType="com.manudev.cinemaspl.vo.Attribute" />
+            app:argType="today.kinema.vo.Attribute" />
     </fragment>
 </navigation>
