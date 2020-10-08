@@ -16,6 +16,7 @@ import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
+import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentMovieBinding
 import today.kinema.ui.SharedMovieViewModel
@@ -23,7 +24,6 @@ import today.kinema.ui.common.RetryCallback
 import today.kinema.vo.Attribute
 import today.kinema.vo.Movies
 import today.kinema.vo.Status
-import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -65,7 +65,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         // Postpone enter transitions to allow shared element transitions to run.
         // https://github.com/googlesamples/android-architecture-components/issues/495
         postponeEnterTransition()
@@ -87,7 +86,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         setupObservers()
         initMoviesRecyclerView()
         initDateTitleRecyclerView()
-
     }
 
     private fun setupObservers() {
@@ -115,31 +113,9 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun initMoviesRecyclerView() {
         val movieClickCallback = object : MovieViewClickCallback {
-            override fun onClick(cardView: View, movies: Movies) {
-                // Set exit and reenter transitions here as opposed to in onCreate because these transitions
-                // will be set and overwritten on HomeFragment for other navigation actions.
-                exitTransition = MaterialElevationScale(false).apply {
-                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-                }
-                reenterTransition = MaterialElevationScale(true).apply {
-                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val movieDetailTransitionName =
-                        resources.getString(R.string.movie_detail_transition_name)
-                    val extras = FragmentNavigatorExtras(
-                        cardView to movieDetailTransitionName
-                    )
-                    val action = MovieFragmentDirections.showDetailsMovie(movies)
-
-                    findNavController().navigate(action, extras)
-                } else {
-                    findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movies))
-                }
-
+            override fun onClick(view: View, movies: Movies) {
+                navigateToMovieDetailsFragment(view, movies)
             }
-
         }
 
         movieListAdapter = MovieListAdapter(movieClickCallback)
@@ -167,22 +143,65 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.filterFragmentMenu -> {
-                // Set exit and reenter transitions here as opposed to in onCreate because these transitions
-                // will be set and overwritten on HomeFragment for other navigation actions.
-                exitTransition = MaterialElevationScale(false).apply {
-                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-                }
-                reenterTransition = MaterialElevationScale(true).apply {
-                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-                }
-
-                val directions = MovieFragmentDirections.showFilterFragment(
-                    attributes
-                )
-                findNavController().navigate(directions)
-            }
+            R.id.filterFragmentMenu -> navigateToFilterFragment()
+            R.id.watchlistFragmentMenu -> navigateToWatchListFragment()
         }
         return true
+    }
+
+    private fun navigateToMovieDetailsFragment(view: View, movies: Movies) {
+        // Set exit and reenter transitions here as opposed to in onCreate because these transitions
+        // will be set and overwritten on HomeFragment for other navigation actions.
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val movieDetailTransitionName =
+                resources.getString(R.string.movie_detail_transition_name)
+
+            val extras = FragmentNavigatorExtras(
+                view to movieDetailTransitionName
+            )
+
+            val action = MovieFragmentDirections.showDetailsMovie(movies)
+
+            findNavController().navigate(action, extras)
+        } else {
+            findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movies))
+        }
+    }
+
+    private fun navigateToFilterFragment() {
+        // Set exit and reenter transitions here as opposed to in onCreate because these transitions
+        // will be set and overwritten on HomeFragment for other navigation actions.
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+
+        val directions = MovieFragmentDirections.showFilterFragment(
+            attributes
+        )
+        findNavController().navigate(directions)
+    }
+
+    private fun navigateToWatchListFragment() {
+        // Set exit and reenter transitions here as opposed to in onCreate because these transitions
+        // will be set and overwritten on HomeFragment for other navigation actions.
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+
+        val directions = MovieFragmentDirections.showWatchlistFragment()
+        findNavController().navigate(directions)
     }
 }

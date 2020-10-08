@@ -4,11 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import today.kinema.api.CinemaPLService
-import today.kinema.db.LocalStorage
-import today.kinema.repository.MovieRepository
-import today.kinema.util.AppExecutors
-import today.kinema.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +13,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import today.kinema.api.CinemaPLService
+import today.kinema.db.LocalStorage
+import today.kinema.repository.MovieRepository
+import today.kinema.util.AppExecutors
+import today.kinema.util.LiveDataCallAdapterFactory
 import javax.inject.Singleton
 
 

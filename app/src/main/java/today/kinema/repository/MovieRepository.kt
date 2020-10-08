@@ -63,4 +63,10 @@ class MovieRepository @Inject constructor(
     fun setCurrentLocation(currentLocation: Coordinate) {
         localStorage.setCurrentLocation(currentLocation)
     }
+
+    fun getWatchlist() = localStorage.getWatchlistMovies()
+
+    fun setWatchlist(movies: List<Movies>) {
+        localStorage.setWatchlistMovies(movies)
+    }
 }

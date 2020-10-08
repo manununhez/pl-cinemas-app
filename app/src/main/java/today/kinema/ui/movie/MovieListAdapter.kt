@@ -44,5 +44,5 @@ class MovieListAdapter(
 }
 
 interface MovieViewClickCallback {
-    fun onClick(cardView: View, movies: Movies)
+    fun onClick(view: View, movies: Movies)
 }

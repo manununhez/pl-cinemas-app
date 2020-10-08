@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_movie">
         <action
             android:id="@+id/showDetailsMovie"
-            app:destination="@id/MovieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
             app:exitAnim="@null" />
         <argument
             android:name="movies"
@@ -23,9 +23,12 @@
         <argument
             android:name="attributes"
             app:argType="today.kinema.vo.Attribute" />
+        <action
+            android:id="@+id/showWatchlistFragment"
+            app:destination="@id/watchlistFragment" />
     </fragment>
     <fragment
-        android:id="@+id/MovieDetailsFragment"
+        android:id="@+id/movieDetailsFragment"
         android:name="today.kinema.ui.moviedetails.MovieDetailsFragment"
         android:label="@string/details_movie_fragment_label"
         tools:layout="@layout/fragment_details_movie">
@@ -41,5 +44,15 @@
         <argument
             android:name="attributes"
             app:argType="today.kinema.vo.Attribute" />
+    </fragment>
+    <fragment
+        android:id="@+id/watchlistFragment"
+        android:name="today.kinema.ui.watchlist.WatchlistFragment"
+        android:label="@string/watchlist_fragment_label"
+        tools:layout="@layout/fragment_watchlist" >
+        <action
+            android:id="@+id/showDetailsMovie"
+            app:destination="@id/movieDetailsFragment"
+            app:exitAnim="@null" />
     </fragment>
 </navigation>

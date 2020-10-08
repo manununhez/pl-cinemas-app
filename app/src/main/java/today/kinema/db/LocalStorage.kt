@@ -21,6 +21,7 @@ class LocalStorage @Inject constructor(
     companion object {
         private const val SHARED_PREFS_CURRENT_LOCATION = "current_location"
         private const val SHARED_PREFS_MOVIES = "Movies"
+        private const val SHARED_PREFS_WATCHLIST_MOVIES = "Watchlist Movies"
         private const val SHARED_PREFS_ATTRIBUTES = "Attributes"
         private const val SHARED_PREFS_SELECTED_ATTRIBUTES = "Selected attributes"
         private const val DEFAULT_CITY = "Warszawa"
@@ -48,6 +49,25 @@ class LocalStorage @Inject constructor(
         val values = gson.toJson(movies)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_MOVIES, values)
+        editor.apply()
+    }
+
+    fun getWatchlistMovies(): List<Movies> {
+        val prefsMovies = sharedPreferences.getString(SHARED_PREFS_WATCHLIST_MOVIES, "")!!
+        return if (prefsMovies.isNotEmpty()) {
+            val type = object : TypeToken<List<Movies>>() {}.type
+            val moviesList: List<Movies> = gson.fromJson(prefsMovies, type)
+
+            moviesList
+        } else {
+            listOf()
+        }
+    }
+
+    fun setWatchlistMovies(movies: List<Movies>) {
+        val values = gson.toJson(movies)
+        val editor = sharedPreferences.edit()
+        editor.putString(SHARED_PREFS_WATCHLIST_MOVIES, values)
         editor.apply()
     }
 
@@ -91,13 +111,6 @@ class LocalStorage @Inject constructor(
         editor.apply()
     }
 
-    fun setCurrentLocation(currentLocation: Coordinate) {
-        val values = gson.toJson(currentLocation)
-        val editor = sharedPreferences.edit()
-        editor.putString(SHARED_PREFS_CURRENT_LOCATION, values)
-        editor.apply()
-    }
-
     fun getCurrentLocation(): Coordinate {
         val prefsCoordinate = sharedPreferences.getString(
             SHARED_PREFS_CURRENT_LOCATION,
@@ -105,6 +118,13 @@ class LocalStorage @Inject constructor(
         )
         val type = object : TypeToken<Coordinate>() {}.type
         return gson.fromJson(prefsCoordinate, type)
+    }
+
+    fun setCurrentLocation(currentLocation: Coordinate) {
+        val values = gson.toJson(currentLocation)
+        val editor = sharedPreferences.edit()
+        editor.putString(SHARED_PREFS_CURRENT_LOCATION, values)
+        editor.apply()
     }
 
 }

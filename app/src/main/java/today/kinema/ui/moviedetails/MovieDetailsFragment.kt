@@ -11,13 +11,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialContainerTransform
+import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentDetailsMovieBinding
+import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Cinema
-import dagger.hilt.android.AndroidEntryPoint
-import today.kinema.ui.moviedetails.CinemaMovieListAdapter
-import today.kinema.ui.moviedetails.CinemaViewClickCallback
+import today.kinema.vo.Movies
 import kotlin.LazyThreadSafetyMode.NONE
 
 
@@ -27,6 +28,11 @@ import kotlin.LazyThreadSafetyMode.NONE
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsMovieBinding
+
+    //SharedViewModel
+    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
+        defaultViewModelProviderFactory
+    }
 
     private val params by navArgs<MovieDetailsFragmentArgs>()
     private val moviesArg by lazy(NONE) {
@@ -93,6 +99,11 @@ class MovieDetailsFragment : Fragment() {
                         movieDescription.ellipsize = TextUtils.TruncateAt.END
                     }
                 }
+
+                override fun setWatchlist(movies: Movies) {
+                    viewModelShared.setWatchlist(movies)
+                    updateWatchList(movies)
+                }
             }
 
             movieDescription.post {
@@ -101,25 +112,45 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
+        updateWatchList(moviesArg)
+
         initRecyclerView()
 
+    }
+
+    private fun updateWatchList(movie: Movies) {
+        //Update watchlist btn
+        viewModelShared.watchlist.observe(viewLifecycleOwner, {
+            binding.run {
+                if (it.contains(movie)) {
+                    imageViewWatchlist.setImageResource(R.drawable.ic_watchlist)
+                    textWatchlist.text = resources.getString(R.string.watchlist_added)
+                } else {
+                    imageViewWatchlist.setImageResource(R.drawable.ic_watchlist_add)
+                    textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
+                }
+            }
+        })
     }
 
     private fun initRecyclerView() {
         val cinemaClickCallback = object :
             CinemaViewClickCallback {
             override fun onClick(cinema: Cinema) {
-                requireActivity().startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(cinema.cinemaPageUrl)
-                    )
-                )
+                openCinemaPageURL(cinema)
             }
         }
 
         binding.rvCinemaList.adapter =
             CinemaMovieListAdapter(moviesArg.cinemas, cinemaClickCallback)
+    }
 
+    private fun openCinemaPageURL(cinema: Cinema) {
+        requireActivity().startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(cinema.cinemaPageUrl)
+            )
+        )
     }
 }

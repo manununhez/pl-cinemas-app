@@ -16,10 +16,10 @@ class SharedMovieViewModel @ViewModelInject constructor(
     private val repository: MovieRepository
 ) : ViewModel() {
 
-    private val _query = MutableLiveData<CinemaMoviesId>()
+    private val _searchMovieQuery = MutableLiveData<CinemaMoviesId>()
 
     val movies: LiveData<Resource<List<Movies>>> =
-        Transformations.switchMap(_query) { input ->
+        Transformations.switchMap(_searchMovieQuery) { input ->
             input.ifExists { fAttr ->
                 repository.loadMovies(fAttr)
             }
@@ -29,12 +29,17 @@ class SharedMovieViewModel @ViewModelInject constructor(
     val currentFilterAttribute: LiveData<FilterAttribute>
         get() = _currentFilterAttribute
 
+    private val _watchlist = MutableLiveData<List<Movies>>()
+    val watchlist: LiveData<List<Movies>>
+        get() = _watchlist
+
     val attributes = repository.loadAttributes()
 
 
     init {
+        _watchlist.value = repository.getWatchlist()
         _currentFilterAttribute.value = repository.getFilteredAttributes()
-        _query.value = CinemaMoviesId(repository.getFilteredAttributes())
+        _searchMovieQuery.value = CinemaMoviesId(repository.getFilteredAttributes())
     }
 
 
@@ -43,7 +48,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
         val filterAttribute = _currentFilterAttribute.value!!
 
         if (filterAttribute != selectedAttributes)
-            _query.value = CinemaMoviesId(filterAttribute)
+            _searchMovieQuery.value = CinemaMoviesId(filterAttribute)
     }
 
     fun setMoviesLanguage(filteredLanguage: String, clearSelection: Boolean) {
@@ -125,10 +130,22 @@ class SharedMovieViewModel @ViewModelInject constructor(
         repository.setCurrentLocation(currentLocation)
     }
 
+    fun setWatchlist(movie: Movies) {
+        val watchlist = _watchlist.value!!.toMutableList()
+
+        if (watchlist.contains(movie))
+            watchlist.remove(movie)
+        else
+            watchlist.add(movie)
+
+        _watchlist.value = watchlist
+        repository.setWatchlist(watchlist)
+    }
+
     fun retry() {
         val filterAttribute = _currentFilterAttribute.value!!
 
-        _query.value = CinemaMoviesId(filterAttribute)
+        _searchMovieQuery.value = CinemaMoviesId(filterAttribute)
 
     }
 

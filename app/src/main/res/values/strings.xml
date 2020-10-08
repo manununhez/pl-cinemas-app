@@ -4,14 +4,19 @@
     <string name="movie_fragment_label" translatable="false">Movie Fragment</string>
     <string name="details_movie_fragment_label" translatable="false">Movie Details Fragment</string>
     <string name="filter_fragment_label" translatable="false">fragment_filter</string>
+    <string name="watchlist_fragment_label" translatable="false">fragment_watchlist</string>
 
     <!--    Material transitions names-->
     <string name="movie_item_transition_name" translatable="false">movie_item_%1$s</string>
+    <string name="movie_item_image_transition_name" translatable="false">movie_item_image_%1$s</string>
+    <string name="movie_item_text_transition_name" translatable="false">movie_item_text_%1$s</string>
+    <string name="watchlist_item_transition_name" translatable="false">watchlist_item_%1$s_%2$s</string>
     <string name="location_transition_name" translatable="false">location_item_%1$s</string>
     <string name="movie_detail_transition_name" translatable="false">movie_detail_transition_name</string>
+    <string name="movie_description_image_transition" translatable="false">imageViewDescriptionMovie_%1$s</string>
+    <string name="movie_description_text_transition" translatable="false">textViewDescriptionMovie_%1$s</string>
 
-
-    <string name="movie_duration" translatable="false">%1$s min.</string>
+    <string name="movie_duration" translatable="false">%1$s mins</string>
     <string name="distance_description" translatable="false">(%1$s m)</string>
     <string name="city_format_toolbar" translatable="false">(%1$s)</string>
 
@@ -23,11 +28,15 @@
     <string name="description_text_expanded">Less</string> <!-- less -->
     <string name="where_to_watch">Watch it here</string>
     <string name="menu_item_filter">Filter</string>
+    <string name="menu_item_watchlist">Watchlist</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
     <string name="empty_movie_list">No movies found for this specific date.</string>
+    <string name="empty_watch_movie_list">No movies added to the WatchList.</string>
     <string name="filter_attribute_city">City</string>
     <string name="filter_attribute_cinemas">Cinemas</string>
     <string name="filter_attribute_languages">Languages</string>
     <string name="select_all">Select All</string>
+    <string name="watchlist_added">Added</string>
+
 </resources>

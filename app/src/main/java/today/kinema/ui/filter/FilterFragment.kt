@@ -9,11 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialSharedAxis
+import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentFilterBinding
 import today.kinema.ui.SharedMovieViewModel
-import today.kinema.ui.filter.*
-import dagger.hilt.android.AndroidEntryPoint
 import kotlin.LazyThreadSafetyMode.NONE
 
 
@@ -52,6 +51,8 @@ class FilterFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+            toolbar.title = resources.getString(R.string.menu_item_filter)
+
         }
         return binding.root
     }

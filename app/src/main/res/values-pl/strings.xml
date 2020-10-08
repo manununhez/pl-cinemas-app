@@ -8,12 +8,14 @@
     <string name="description_text_expanded">Mniej</string> <!-- less -->
     <string name="where_to_watch">Obejrzyj tutaj</string>
     <string name="menu_item_filter">Filtruj</string>
+    <string name="menu_item_watchlist">Obserwowane</string>
     <string name="today">Dzisiaj</string>
     <string name="empty_description">Brak opisu</string>
     <string name="empty_movie_list">Nie znaleziono filmów dla wybranej daty</string>
+    <string name="empty_watch_movie_list">Brak obserwowanych filmów</string>
     <string name="filter_attribute_city">Miasto</string>
     <string name="filter_attribute_cinemas">Kina</string>
     <string name="filter_attribute_languages">Język</string>
     <string name="select_all">Zaznacz wszystko</string>
-
+    <string name="watchlist_added">Dodane</string>
 </resources>

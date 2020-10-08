@@ -50,9 +50,9 @@
                 android:paddingEnd="@dimen/grid_2"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:menu="@menu/movie_list_menu"
+                app:navigationIcon="@drawable/ic_kinema_logo"
                 app:subtitle="(Warszawa)"
-                app:titleMarginStart="@dimen/grid_1_5"
-                app:navigationIcon="@drawable/ic_kinema_logo" />
+                app:titleMarginStart="@dimen/grid_1_5" />
 
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -39,6 +39,33 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:onClick="@{() -> detailsMovieCallback.setWatchlist(movies)}"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintTop_toBottomOf="@+id/movieTitle">
+
+                    <ImageView
+                        android:id="@+id/imageViewWatchlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:src="@drawable/ic_watchlist" />
+
+                    <TextView
+                        android:id="@+id/textWatchlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        android:textColor="?attr/colorSecondary"
+                        tools:text="Watchlist" />
+                </LinearLayout>
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="0dp"
@@ -48,9 +75,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:navigationIcon="@drawable/ic_back">
-
-                </androidx.appcompat.widget.Toolbar>
+                    app:navigationIcon="@drawable/ic_back"/>
 
                 <View
                     android:id="@+id/view"
