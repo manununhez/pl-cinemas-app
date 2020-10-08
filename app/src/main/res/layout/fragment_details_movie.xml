@@ -39,32 +39,24 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textWatchlist"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="32dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:onClick="@{() -> detailsMovieCallback.setWatchlist(movies)}"
                     android:orientation="vertical"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@+id/movieTitle">
-
-                    <ImageView
-                        android:id="@+id/imageViewWatchlist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:src="@drawable/ic_watchlist" />
-
-                    <TextView
-                        android:id="@+id/textWatchlist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        android:textColor="?attr/colorSecondary"
-                        tools:text="Watchlist" />
-                </LinearLayout>
+                    app:layout_constraintStart_toStartOf="@+id/year"
+                    app:layout_constraintTop_toBottomOf="@+id/movieTitle"
+                    tools:drawableTop="@drawable/ic_watchlist"
+                    tools:text="Watchlist" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -75,18 +67,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:navigationIcon="@drawable/ic_back"/>
+                    app:navigationIcon="@drawable/ic_back" />
 
                 <View
                     android:id="@+id/view"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="?attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/year" />
+                    app:layout_constraintTop_toBottomOf="@+id/textWatchlist" />
 
                 <View
                     android:id="@+id/view2"

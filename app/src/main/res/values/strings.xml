@@ -8,13 +8,9 @@
 
     <!--    Material transitions names-->
     <string name="movie_item_transition_name" translatable="false">movie_item_%1$s</string>
-    <string name="movie_item_image_transition_name" translatable="false">movie_item_image_%1$s</string>
-    <string name="movie_item_text_transition_name" translatable="false">movie_item_text_%1$s</string>
     <string name="watchlist_item_transition_name" translatable="false">watchlist_item_%1$s_%2$s</string>
     <string name="location_transition_name" translatable="false">location_item_%1$s</string>
     <string name="movie_detail_transition_name" translatable="false">movie_detail_transition_name</string>
-    <string name="movie_description_image_transition" translatable="false">imageViewDescriptionMovie_%1$s</string>
-    <string name="movie_description_text_transition" translatable="false">textViewDescriptionMovie_%1$s</string>
 
     <string name="movie_duration" translatable="false">%1$s mins</string>
     <string name="distance_description" translatable="false">(%1$s m)</string>

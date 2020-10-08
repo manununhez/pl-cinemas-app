@@ -8,7 +8,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import today.kinema.repository.MovieRepository
-import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Movies
 import today.kinema.vo.Resource
 

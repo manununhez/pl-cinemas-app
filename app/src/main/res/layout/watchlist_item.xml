@@ -38,6 +38,7 @@
                 android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
                 android:cropToPadding="false"
+                android:contentDescription="@string/menu_item_watchlist"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{movies.movie.posterUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,6 +110,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_cancel"
+                android:contentDescription="@string/watchlist_added"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

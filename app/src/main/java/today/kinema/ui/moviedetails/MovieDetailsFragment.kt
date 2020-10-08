@@ -123,10 +123,10 @@ class MovieDetailsFragment : Fragment() {
         viewModelShared.watchlist.observe(viewLifecycleOwner, {
             binding.run {
                 if (it.contains(movie)) {
-                    imageViewWatchlist.setImageResource(R.drawable.ic_watchlist)
+                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist, 0, 0)
                     textWatchlist.text = resources.getString(R.string.watchlist_added)
                 } else {
-                    imageViewWatchlist.setImageResource(R.drawable.ic_watchlist_add)
+                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist_add, 0, 0)
                     textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
                 }
             }

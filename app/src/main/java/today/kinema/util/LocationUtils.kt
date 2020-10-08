@@ -7,7 +7,7 @@ import today.kinema.vo.Movies
 
 object LocationUtils {
 
-    fun getDistanceBetweenTwoPoints(
+    private fun getDistanceBetweenTwoPoints(
         lat1: Double,
         lon1: Double,
         lat2: Double,

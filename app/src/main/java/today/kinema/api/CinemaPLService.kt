@@ -1,14 +1,13 @@
 package today.kinema.api
 
 import androidx.lifecycle.LiveData
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
 import today.kinema.vo.Attribute
 import today.kinema.vo.FilterAttribute
 import today.kinema.vo.GeneralResponse
 import today.kinema.vo.Movies
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import today.kinema.api.ApiResponse
 
 
 interface CinemaPLService {
