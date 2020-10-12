@@ -4,21 +4,20 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Coordinate
-import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object{
-        private val TAG: String? = MainActivity::class.java.simpleName
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     }
     /**
@@ -35,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
     }
 
     override fun onStart() {
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             )) {
             // Provide an additional rationale to the user. This would happen if the user denied the
             // request previously, but didn't check the "Don't ask again" checkbox.
-            Log.i(TAG, "Displaying permission rationale to provide additional context.")
+            Timber.i("Displaying permission rationale to provide additional context.")
             // Request permission
             startLocationPermissionRequest()
 
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
-            Log.i(TAG, "Requesting permission")
+            Timber.i( "Requesting permission")
             startLocationPermissionRequest()
         }
     }
@@ -117,12 +115,12 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Log.i(TAG, "onRequestPermissionResult")
+        Timber.i( "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             when {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
-                grantResults.isEmpty() -> Log.i(TAG, "User interaction was cancelled.")
+                grantResults.isEmpty() -> Timber.i("User interaction was cancelled.")
 
                 // Permission granted.
                 (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> getLastLocation()

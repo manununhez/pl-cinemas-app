@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtils {
-    private const val datePattern = "yyyy-MM-dd"
+    const val datePattern = "yyyy-MM-dd"
     private const val weekDayPattern = "EEE"
     private const val dayPattern = "dd"
     private const val monthPattern = "MMM"
@@ -15,6 +15,8 @@ object DateUtils {
     private fun simpleDateFormat(pattern: String): SimpleDateFormat =
         SimpleDateFormat(pattern, Locale.getDefault())
 
+    fun dateParse(date: String): Date =
+        simpleDateFormat(datePattern).parse(date)
 
     fun dateFormat(date: String): String =
         simpleDateFormat(datePattern).format(timestamp(date))
@@ -34,4 +36,6 @@ object DateUtils {
         simpleDateFormat(monthPattern).format(timestamp(date))
             .toUpperCase(Locale.getDefault())
             .replace(".", "")
+
+    fun today(): Date = dateParse(simpleDateFormat(datePattern).format(Date()))
 }

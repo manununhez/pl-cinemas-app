@@ -24,7 +24,7 @@ class LocalStorage @Inject constructor(
         private const val SHARED_PREFS_WATCHLIST_MOVIES = "Watchlist Movies"
         private const val SHARED_PREFS_ATTRIBUTES = "Attributes"
         private const val SHARED_PREFS_SELECTED_ATTRIBUTES = "Selected attributes"
-        private const val DEFAULT_CITY = "Warszawa"
+        private const val DEFAULT_CITY_CODE = "Warszawa"
         private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
     }
 
@@ -32,16 +32,27 @@ class LocalStorage @Inject constructor(
     fun getMovies(filterAttribute: FilterAttribute): LiveData<List<Movies>> {
         val prefsMovies = sharedPreferences.getString(SHARED_PREFS_MOVIES, "")!!
         val prefsAttrs = getFilteredAttributes() == filterAttribute
-        return if (prefsMovies.isNotEmpty() && prefsAttrs) {
+
+        if (prefsMovies.isNotEmpty() && prefsAttrs) {
             val type = object : TypeToken<List<Movies>>() {}.type
             val moviesList: List<Movies> = gson.fromJson(prefsMovies, type)
 
-            val moviesLiveData = MutableLiveData<List<Movies>>()
-            moviesLiveData.value = moviesList
+            if (moviesList.isEmpty())
+                return AbsentLiveData.create()
 
-            moviesLiveData
+            val formattedDay = DateUtils.dateParse(moviesList[0].movie.dateTitle)
+            val today = DateUtils.today()
+
+            return if (formattedDay.before(today)) {//if we have a date saved older than today, we update to today's date
+                AbsentLiveData.create()
+            } else {
+                val moviesLiveData = MutableLiveData<List<Movies>>()
+                moviesLiveData.value = moviesList
+
+                return moviesLiveData
+            }
         } else {
-            AbsentLiveData.create()
+            return AbsentLiveData.create()
         }
     }
 
@@ -93,7 +104,7 @@ class LocalStorage @Inject constructor(
 
     fun getFilteredAttributes(): FilterAttribute {
         val filterAttrDefault =
-            FilterAttribute(DEFAULT_CITY, DEFAULT_CURRENT_DATE, listOf(), listOf())
+            FilterAttribute(DEFAULT_CITY_CODE, DEFAULT_CURRENT_DATE, listOf(), listOf())
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_SELECTED_ATTRIBUTES,
@@ -101,7 +112,21 @@ class LocalStorage @Inject constructor(
             )
 
         val type = object : TypeToken<FilterAttribute>() {}.type
-        return gson.fromJson(prefsAttributes, type)
+        val filterAttribute: FilterAttribute = gson.fromJson(prefsAttributes, type)
+
+        val formattedDay = DateUtils.dateParse(filterAttribute.date)
+        val today = DateUtils.today()
+
+        return if (formattedDay.before(today)) { //if we have a date saved older than today, we update to today's date
+            FilterAttribute(
+                filterAttribute.city,
+                DEFAULT_CURRENT_DATE,
+                filterAttribute.cinema,
+                filterAttribute.language
+            )
+        } else {
+            filterAttribute
+        }
     }
 
     fun setFilteredAttributes(item: FilterAttribute) {

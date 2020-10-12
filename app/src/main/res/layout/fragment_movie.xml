@@ -49,10 +49,29 @@
                 android:paddingStart="@dimen/grid_2"
                 android:paddingEnd="@dimen/grid_2"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:menu="@menu/movie_list_menu"
-                app:navigationIcon="@drawable/ic_kinema_logo"
-                app:subtitle="(Warszawa)"
-                app:titleMarginStart="@dimen/grid_1_5" />
+                app:logo="@drawable/ic_kinema_logo"
+                app:menu="@menu/movie_list_menu">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/grid_1_5"
+                    android:text="("
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Warszawa"
+                    android:drawableStart="@drawable/ic_place_marker"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=")"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+            </androidx.appcompat.widget.Toolbar>
 
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -87,14 +106,15 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/no_results_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@{movies.message}"
-            app:visibleGone="@{movies.status == Status.SUCCESS &amp;&amp; movies.data.size == 0}"
-            tools:text="Texto de prueba" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/no_results_text"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:gravity="center"-->
+        <!--            android:background="@color/blue_900_dark"-->
+        <!--            android:text="@{movies.message}"-->
+        <!--            app:visibleGone="@{movies.status == Status.SUCCESS &amp;&amp; movies.data.size == 0}"-->
+        <!--            tools:text="Texto de prueba" />-->
 
         <include
             layout="@layout/loading_state"

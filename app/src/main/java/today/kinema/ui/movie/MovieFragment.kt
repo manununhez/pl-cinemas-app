@@ -2,7 +2,6 @@ package today.kinema.ui.movie
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import today.kinema.R
 import today.kinema.databinding.FragmentMovieBinding
 import today.kinema.ui.SharedMovieViewModel
@@ -30,10 +30,6 @@ import today.kinema.vo.Status
  */
 @AndroidEntryPoint
 class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
-    companion object {
-        private val TAG: String? = MovieFragment::class.simpleName
-    }
-
     private lateinit var attributes: Attribute
     private lateinit var binding: FragmentMovieBinding
     private lateinit var movieListAdapter: MovieListAdapter
@@ -83,18 +79,21 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         viewModelShared.loadMovies()
 
-        setupObservers()
         initMoviesRecyclerView()
         initDateTitleRecyclerView()
+
+        setupObservers()
     }
 
     private fun setupObservers() {
         viewModelShared.movies.observe(viewLifecycleOwner, {
-            if (it.status == Status.SUCCESS) {
-                Log.d(TAG, it.toString())
-                movieListAdapter.submitList(it.data)
-            } else if (it.status == Status.ERROR) {
-                movieListAdapter.submitList(listOf())
+            it?.let {
+                if (it.status == Status.SUCCESS) {
+                    Timber.d(it.toString())
+                    movieListAdapter.submitList(it.data)
+                } else if (it.status == Status.ERROR) {
+                    movieListAdapter.submitList(listOf())
+                }
             }
         })
 
@@ -102,13 +101,19 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             if (it.status == Status.SUCCESS) {
                 attributes = it.data!!
                 daysListAdapter.submitList(it.data.days)
+
+                //scroll rv to selected date
+                binding.rvDaysTitle.scrollToPosition(
+                    daysListAdapter.currentList.indexOf(
+                        viewModelShared.currentFilterAttribute.value?.date
+                    )
+                )
             }
         })
 
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
-            binding.toolbar.subtitle = resources.getString(R.string.city_format_toolbar, it.city)
+            binding.tvSubtitle.text = if (it.city.isNotEmpty()) it.city else ""
         })
-
     }
 
     private fun initMoviesRecyclerView() {

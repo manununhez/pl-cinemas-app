@@ -21,10 +21,7 @@ class MovieRepository @Inject constructor(
                 setFilteredAttributes(filterAttribute)
                 //order list based on distance
                 localStorage.setMovies(
-                    orderCinemasByDistance(
-                        getCurrentLocation(),
-                        item
-                    )
+                    orderCinemasByDistance(getCurrentLocation(), item)
                 )
             }
 

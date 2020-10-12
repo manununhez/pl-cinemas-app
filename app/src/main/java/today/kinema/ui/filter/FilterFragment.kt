@@ -84,7 +84,7 @@ class FilterFragment : Fragment() {
                 )
         }
 
-        //scroll rv to select city
+        //scroll rv to selected city
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
             binding.rvFilterCitiesList.scrollToPosition(attributes.cities.indexOf(it.city))
         })

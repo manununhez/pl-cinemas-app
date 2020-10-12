@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+#https://stackoverflow.com/questions/50378810/proguard-causing-runtime-exception-with-android-navigation-component/50378828#50378828
+-keep class * extends androidx.fragment.app.Fragment{}
+
+-keepnames class * extends android.os.Parcelable
+-keepnames class * extends java.io.Serializable

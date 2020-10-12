@@ -14,7 +14,8 @@
 
     <string name="movie_duration" translatable="false">%1$s mins</string>
     <string name="distance_description" translatable="false">(%1$s m)</string>
-    <string name="city_format_toolbar" translatable="false">(%1$s)</string>
+    <string name="distance_description_km" translatable="false">(%1$s km)</string>
+<!--    <string name="city_format_toolbar" translatable="false">%1$s</string>-->
 
     <string name="retry">Retry</string>
     <string name="unknown_error">Unknown Error</string>
@@ -27,7 +28,7 @@
     <string name="menu_item_watchlist">Watchlist</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
-    <string name="empty_movie_list">No movies found for this specific date.</string>
+    <string name="empty_movie_list">No movies found for this specific date yet.</string>
     <string name="empty_watch_movie_list">No movies added to the WatchList.</string>
     <string name="filter_attribute_city">City</string>
     <string name="filter_attribute_cinemas">Cinemas</string>

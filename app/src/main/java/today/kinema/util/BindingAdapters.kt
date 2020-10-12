@@ -18,7 +18,6 @@
 package today.kinema.util
 
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,6 +26,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.elevation.ElevationOverlayProvider
+import timber.log.Timber
 import today.kinema.R
 import java.util.*
 
@@ -41,7 +41,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?, circleCrop: Boolean) {
         val scheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) "https" else "http"
 
         val imgUri = imgUrl.toUri().buildUpon().scheme(scheme).build()
-        Log.d(BindingAdapter::class.java.simpleName, imgUri.toString())
+        Timber.d(imgUri.toString())
         val request = Glide.with(imgView.context).load(imgUri)
         if (circleCrop) request.circleCrop()
 
@@ -83,10 +83,18 @@ fun bindLanguageDescription(view: TextView, str: String) {
 @BindingAdapter("distance")
 fun bindDistance(view: TextView, distance: Float) {
     if (distance.toInt() > 0) {
-        view.text = view.context.resources.getString(
-            R.string.distance_description,
-            distance.toInt().toString()
-        )
+        if (distance.toInt() > 1000) {
+            val distanceKM = distance / 1000;
+            view.text = view.context.resources.getString(
+                R.string.distance_description_km,
+                String.format("%.2f", distanceKM)
+            )
+        } else{
+            view.text = view.context.resources.getString(
+                R.string.distance_description,
+                distance.toInt().toString()
+            )
+        }
     } else {
         view.visibility = View.GONE
     }
