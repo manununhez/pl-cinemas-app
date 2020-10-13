@@ -86,7 +86,11 @@ class FilterFragment : Fragment() {
 
         //scroll rv to selected city
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
-            binding.rvFilterCitiesList.scrollToPosition(attributes.cities.indexOf(it.city))
+            binding.rvFilterCitiesList.scrollToPosition(attributes.cities.indexOf(it.city)) //scroll to selected city
+            if (it.language.isNotEmpty())
+                binding.rvFilterLanguagesList.scrollToPosition(attributes.languages.indexOf(it.language[0])) //scroll to the first select element
+            if (it.cinema.isNotEmpty())
+                binding.rvFilterCinemasList.scrollToPosition(attributes.cinemas.indexOf(it.cinema[0])) //scroll to the first select element
         })
     }
 
