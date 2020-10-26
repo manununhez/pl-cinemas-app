@@ -99,7 +99,7 @@
                 android:scrollbars="vertical"
                 app:hasFixedSize="@{true}"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                app:spanCount="@integer/featured_grid_columns"
+                app:spanCount="@integer/featured_grid_columns_3"
                 tools:listitem="@layout/movie_item" />
         </LinearLayout>
 

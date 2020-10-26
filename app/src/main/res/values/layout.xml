@@ -7,5 +7,5 @@
     <dimen name="grid_1">8dp</dimen>
     <dimen name="grid_1_5">12dp</dimen>
     <dimen name="grid_2">16dp</dimen>
-
+    <dimen name="grid_3">32dp</dimen>
 </resources>
