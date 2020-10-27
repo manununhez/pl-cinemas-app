@@ -3,8 +3,10 @@ package today.kinema.ui.watchlist
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -15,11 +17,12 @@ import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentWatchlistBinding
+import today.kinema.db.WatchlistMovie
 import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Movies
 
 @AndroidEntryPoint
-class WatchlistFragment : Fragment() {
+class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private lateinit var binding: FragmentWatchlistBinding
     private lateinit var watchlistAdapter: WatchlistAdapter
 
@@ -50,7 +53,9 @@ class WatchlistFragment : Fragment() {
                 findNavController().navigateUp()
             }
             toolbar.title = resources.getString(R.string.menu_item_watchlist)
+
         }
+        binding.toolbar.setOnMenuItemClickListener(this)
         return binding.root
     }
 
@@ -61,7 +66,7 @@ class WatchlistFragment : Fragment() {
         view.doOnPreDraw { startPostponedEnterTransition() }
 
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.movies = viewModelShared.watchlist
+        binding.favoriteMovie = viewModelShared.watchlist
 
         initWatchlistRecyclerView()
 
@@ -71,19 +76,38 @@ class WatchlistFragment : Fragment() {
     private fun setupObservers() {
         //Update watchlist
         viewModelShared.watchlist.observe(viewLifecycleOwner, {
-            watchlistAdapter.submitList(it)
+            watchlistAdapter.submitList(updateList(it))
         })
+    }
+
+    private fun updateList(watchlists: List<WatchlistMovie>): List<WatchlistMovie> {
+        if (watchlists.isNotEmpty()) {
+            var dateTitle = watchlists[0].dateTitle
+            watchlists[0].header = true
+
+            for (x in 1 until watchlists.size) {
+                if (watchlists[x].dateTitle == dateTitle)
+                    watchlists[x].header = false
+                else {
+                    watchlists[x].header = true
+                    dateTitle = watchlists[x].dateTitle
+                }
+            }
+        }
+
+        return watchlists
+
     }
 
     private fun initWatchlistRecyclerView() {
         val watchlistITemClickCallback = object :
             WatchlistITemViewClickCallback {
-            override fun setWatchlist(movie: Movies) {
-                viewModelShared.setWatchlist(movie)
+            override fun removeFavoriteMovie(watchlistMovie: WatchlistMovie) {
+                viewModelShared.removeWatchlistMovie(watchlistMovie)
             }
 
-            override fun navigateTo(view: View, movie: Movies) {
-                navigateToMovieDetailsFragment(view, movie)
+            override fun navigateTo(view: View, watchlistMovie: WatchlistMovie) {
+                navigateToMovieDetailsFragment(view, watchlistMovie.movies)
             }
         }
 
@@ -118,5 +142,12 @@ class WatchlistFragment : Fragment() {
         } else {
             findNavController().navigate(WatchlistFragmentDirections.showDetailsMovie(movie))
         }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.sortWatchlistMenu -> viewModelShared.updateWatchListOrder()
+        }
+        return true
     }
 }

@@ -1,7 +1,9 @@
 package today.kinema.di
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -14,6 +16,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import today.kinema.api.CinemaPLService
+import today.kinema.db.WatchlistMovieDao
+import today.kinema.db.KinemaDb
 import today.kinema.db.LocalStorage
 import today.kinema.repository.MovieRepository
 import today.kinema.util.AppExecutors
@@ -26,6 +30,7 @@ import javax.inject.Singleton
 object AppModule {
 
     private const val SHARED_PREFERENCES_NAME = "prefs"
+    private const val DATABASE_NAME = "kinema.db"
 
     private const val CINEMA_URL_PRODUCTION = "https://kinema.today/api/"
     private const val CINEMA_URL_DEVELOPMENT = "http://192.168.1.10:8000/api/"
@@ -64,9 +69,7 @@ object AppModule {
     @Provides
     fun provideAppExecutors() = AppExecutors()
 
-    @Provides
-    fun provideLocalStorage(sharedPreferences: SharedPreferences, gson: Gson) =
-        LocalStorage(sharedPreferences, gson)
+
 
     @Singleton
     @Provides
@@ -76,4 +79,23 @@ object AppModule {
         appExecutors: AppExecutors
     ) =
         MovieRepository(cinemaPLService, localStorage, appExecutors)
+
+    @Singleton
+    @Provides
+    fun provideKinemaDb(app: Application): KinemaDb {
+        return Room
+            .databaseBuilder(app, KinemaDb::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteMovieDao(db: KinemaDb): WatchlistMovieDao {
+        return db.watchlistMovieDao()
+    }
+
+    @Provides
+    fun provideLocalStorage(sharedPreferences: SharedPreferences, gson: Gson, db: KinemaDb) =
+        LocalStorage(sharedPreferences, gson, db)
 }

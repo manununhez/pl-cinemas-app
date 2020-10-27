@@ -16,6 +16,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentDetailsMovieBinding
+import today.kinema.db.WatchlistMovie
 import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Cinema
 import today.kinema.vo.Movies
@@ -28,6 +29,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsMovieBinding
+    private var savedWatchlistMovie: WatchlistMovie? = null
 
     //SharedViewModel
     private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
@@ -101,8 +103,12 @@ class MovieDetailsFragment : Fragment() {
                 }
 
                 override fun setWatchlist(movies: Movies) {
-                    viewModelShared.setWatchlist(movies)
-                    updateWatchList(movies)
+                    val favoriteMovie = WatchlistMovie(movies)
+                    if (savedWatchlistMovie == null) {
+                        viewModelShared.addWatchlistMovie(favoriteMovie)
+                    } else {
+                        viewModelShared.removeWatchlistMovie(favoriteMovie)
+                    }
                 }
             }
 
@@ -112,26 +118,47 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        updateWatchList(moviesArg)
+        val favoriteMovie = WatchlistMovie(moviesArg)
+        viewModelShared.getWatchlistMovie(favoriteMovie).observe(viewLifecycleOwner, {
+            savedWatchlistMovie = it
+            if (it == null) {
+                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    R.drawable.ic_watchlist_add,
+                    0,
+                    0
+                )
+                binding.textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
+            } else {
+                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    R.drawable.ic_watchlist,
+                    0,
+                    0
+                )
+                binding.textWatchlist.text = resources.getString(R.string.watchlist_added)
+            }
+        })
+//        updateWatchList(FavoriteMovie(moviesArg))
 
         initRecyclerView()
 
     }
 
-    private fun updateWatchList(movie: Movies) {
-        //Update watchlist btn
-        viewModelShared.watchlist.observe(viewLifecycleOwner, {
-            binding.run {
-                if (it.contains(movie)) {
-                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist, 0, 0)
-                    textWatchlist.text = resources.getString(R.string.watchlist_added)
-                } else {
-                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist_add, 0, 0)
-                    textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
-                }
-            }
-        })
-    }
+//    private fun updateWatchList(favoriteMovie: FavoriteMovie) {
+//        //Update watchlist btn
+//        viewModelShared.watchlist.observe(viewLifecycleOwner, {
+//            binding.run {
+//                if (it.contains(favoriteMovie)) {
+//                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist_add, 0, 0)
+//                    textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
+//                } else {
+//                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist, 0, 0)
+//                    textWatchlist.text = resources.getString(R.string.watchlist_added)
+//                }
+//            }
+//        })
+//    }
 
     private fun initRecyclerView() {
         val cinemaClickCallback = object :

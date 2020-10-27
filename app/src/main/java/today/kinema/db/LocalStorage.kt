@@ -17,18 +17,21 @@ import javax.inject.Inject
 class LocalStorage @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val gson: Gson,
+    private val db: KinemaDb
 ) {
     companion object {
         private const val SHARED_PREFS_CURRENT_LOCATION = "current_location"
         private const val SHARED_PREFS_MOVIES = "Movies"
-        private const val SHARED_PREFS_WATCHLIST_MOVIES = "Watchlist Movies"
+        private const val SHARED_PREFS_WATCH_LIST_SORT = "sort watch list"
         private const val SHARED_PREFS_ATTRIBUTES = "Attributes"
         private const val SHARED_PREFS_SELECTED_ATTRIBUTES = "Selected attributes"
         private const val DEFAULT_CITY_CODE = "Warszawa"
         private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
     }
 
-
+    /*******************
+     * SharedPreferences
+     *****************/
     fun getMovies(filterAttribute: FilterAttribute): LiveData<List<Movies>> {
         val prefsMovies = sharedPreferences.getString(SHARED_PREFS_MOVIES, "")!!
         val prefsAttrs = getFilteredAttributes() == filterAttribute
@@ -60,25 +63,6 @@ class LocalStorage @Inject constructor(
         val values = gson.toJson(movies)
         val editor = sharedPreferences.edit()
         editor.putString(SHARED_PREFS_MOVIES, values)
-        editor.apply()
-    }
-
-    fun getWatchlistMovies(): List<Movies> {
-        val prefsMovies = sharedPreferences.getString(SHARED_PREFS_WATCHLIST_MOVIES, "")!!
-        return if (prefsMovies.isNotEmpty()) {
-            val type = object : TypeToken<List<Movies>>() {}.type
-            val moviesList: List<Movies> = gson.fromJson(prefsMovies, type)
-
-            moviesList
-        } else {
-            listOf()
-        }
-    }
-
-    fun setWatchlistMovies(movies: List<Movies>) {
-        val values = gson.toJson(movies)
-        val editor = sharedPreferences.edit()
-        editor.putString(SHARED_PREFS_WATCHLIST_MOVIES, values)
         editor.apply()
     }
 
@@ -151,5 +135,33 @@ class LocalStorage @Inject constructor(
         editor.putString(SHARED_PREFS_CURRENT_LOCATION, values)
         editor.apply()
     }
+
+    fun getSortWatchList() = sharedPreferences.getBoolean(
+        SHARED_PREFS_WATCH_LIST_SORT,
+        true
+    )
+
+    fun setSortWatchList(isAsc: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(SHARED_PREFS_WATCH_LIST_SORT, isAsc)
+        editor.apply()
+    }
+
+    /********
+     * DB
+     *******/
+    fun getWatchlistMovies(isAsc: Boolean) = db.watchlistMovieDao().getWatchlistMovies(isAsc)
+
+    suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        db.watchlistMovieDao().insert(watchlistMovie)
+    }
+
+    suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        db.watchlistMovieDao().delete(watchlistMovie)
+    }
+
+    fun getWatchlistMovie(watchlistMovie: WatchlistMovie) =
+        db.watchlistMovieDao().getWatchlistMovie(watchlistMovie.id, watchlistMovie.dateTitle)
+
 
 }

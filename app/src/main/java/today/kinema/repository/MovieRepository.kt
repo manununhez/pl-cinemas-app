@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import today.kinema.api.ApiResponse
 import today.kinema.api.CinemaPLService
 import today.kinema.db.LocalStorage
+import today.kinema.db.WatchlistMovie
 import today.kinema.util.AppExecutors
 import today.kinema.util.LocationUtils.orderCinemasByDistance
 import today.kinema.vo.*
@@ -61,9 +62,23 @@ class MovieRepository @Inject constructor(
         localStorage.setCurrentLocation(currentLocation)
     }
 
-    fun getWatchlist() = localStorage.getWatchlistMovies()
+    fun getWatchlistMovies(isAsc: Boolean) = localStorage.getWatchlistMovies(isAsc)
 
-    fun setWatchlist(movies: List<Movies>) {
-        localStorage.setWatchlistMovies(movies)
+    fun getWatchlistMovie(watchlistMovie: WatchlistMovie) =
+        localStorage.getWatchlistMovie(watchlistMovie)
+
+    suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        localStorage.addWatchlistMovie(watchlistMovie)
     }
+
+    suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        localStorage.deleteWatchlistMovie(watchlistMovie)
+    }
+
+    fun getSortWatchList(): Boolean = localStorage.getSortWatchList()
+
+    fun setWatchListOrder(isAsc: Boolean) {
+        localStorage.setSortWatchList(isAsc)
+    }
+
 }

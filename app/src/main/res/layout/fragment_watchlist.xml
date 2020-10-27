@@ -5,15 +5,15 @@
 
     <data>
 
-        <import type="today.kinema.vo.Movies" />
+        <import type="today.kinema.db.WatchlistMovie" />
 
         <import type="androidx.lifecycle.LiveData" />
 
         <import type="java.util.List" />
 
         <variable
-            name="movies"
-            type="LiveData&lt;List&lt;Movies>>" />
+            name="favoriteMovie"
+            type="LiveData&lt;List&lt;WatchlistMovie>>" />
 
     </data>
 
@@ -30,6 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/watch_movie_list_menu"
             app:navigationIcon="@drawable/ic_back" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -59,7 +60,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:visibleGone="@{movies.empty}">
+            app:visibleGone="@{favoriteMovie.empty}">
 
             <TextView
                 android:id="@+id/empty_list_msg"

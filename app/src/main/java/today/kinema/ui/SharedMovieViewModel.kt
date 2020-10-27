@@ -1,10 +1,9 @@
 package today.kinema.ui
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import today.kinema.db.WatchlistMovie
 import today.kinema.repository.MovieRepository
 import today.kinema.util.AbsentLiveData
 import today.kinema.vo.Coordinate
@@ -17,6 +16,8 @@ class SharedMovieViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _searchMovieQuery = MutableLiveData<CinemaMoviesId>()
+    private val _sortWatchList = MutableLiveData<Boolean>()
+    private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
 
     val movies: LiveData<Resource<List<Movies>>> =
         Transformations.switchMap(_searchMovieQuery) { input ->
@@ -25,19 +26,19 @@ class SharedMovieViewModel @ViewModelInject constructor(
             }
         }
 
-    private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
     val currentFilterAttribute: LiveData<FilterAttribute>
         get() = _currentFilterAttribute
 
-    private val _watchlist = MutableLiveData<List<Movies>>()
-    val watchlist: LiveData<List<Movies>>
-        get() = _watchlist
+    val watchlist: LiveData<List<WatchlistMovie>> =
+        Transformations.switchMap(_sortWatchList) {
+            repository.getWatchlistMovies(it)
+        }
 
     val attributes = repository.loadAttributes()
 
 
     init {
-        _watchlist.value = repository.getWatchlist()
+        _sortWatchList.value = repository.getSortWatchList()
         _currentFilterAttribute.value = repository.getFilteredAttributes()
         _searchMovieQuery.value = CinemaMoviesId(repository.getFilteredAttributes())
     }
@@ -130,23 +131,31 @@ class SharedMovieViewModel @ViewModelInject constructor(
         repository.setCurrentLocation(currentLocation)
     }
 
-    fun setWatchlist(movie: Movies) {
-        val watchlist = _watchlist.value!!.toMutableList()
+    fun getWatchlistMovie(watchlistMovie: WatchlistMovie) =
+        repository.getWatchlistMovie(watchlistMovie)
 
-        if (watchlist.contains(movie))
-            watchlist.remove(movie)
-        else
-            watchlist.add(movie)
+    fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        viewModelScope.launch {
+            repository.addWatchlistMovie(watchlistMovie)
+        }
+    }
 
-        _watchlist.value = watchlist
-        repository.setWatchlist(watchlist)
+    fun removeWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        viewModelScope.launch {
+            repository.deleteWatchlistMovie(watchlistMovie)
+        }
+    }
+
+    fun updateWatchListOrder() {
+        val isAsc: Boolean = !_sortWatchList.value!!
+        _sortWatchList.value = isAsc
+        repository.setWatchListOrder(isAsc)
     }
 
     fun retry() {
         val filterAttribute = _currentFilterAttribute.value!!
 
         _searchMovieQuery.value = CinemaMoviesId(filterAttribute)
-
     }
 
     data class CinemaMoviesId(
