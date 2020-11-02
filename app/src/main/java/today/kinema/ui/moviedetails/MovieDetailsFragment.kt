@@ -16,10 +16,10 @@ import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentDetailsMovieBinding
-import today.kinema.db.WatchlistMovie
 import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Cinema
-import today.kinema.vo.Movies
+import today.kinema.vo.Movie
+import today.kinema.vo.WatchlistMovie
 import kotlin.LazyThreadSafetyMode.NONE
 
 
@@ -38,7 +38,7 @@ class MovieDetailsFragment : Fragment() {
 
     private val params by navArgs<MovieDetailsFragmentArgs>()
     private val moviesArg by lazy(NONE) {
-        params.movies
+        params.movie
     }
 
     override fun onCreateView(
@@ -71,10 +71,10 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            movies = moviesArg
-            duration.text = if (moviesArg.movie.duration == "0") "" else resources.getString(
+            movie = moviesArg
+            duration.text = if (moviesArg.duration == "0") "" else resources.getString(
                 R.string.movie_duration,
-                moviesArg.movie.duration
+                moviesArg.duration
             )
 
             detailsMovieCallback = object : DetailsMovieCallback {
@@ -82,7 +82,7 @@ class MovieDetailsFragment : Fragment() {
                     requireActivity().startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse(moviesArg.movie.trailerUrl)
+                            Uri.parse(moviesArg.trailerUrl)
                         )
                     )
                 }
@@ -102,8 +102,8 @@ class MovieDetailsFragment : Fragment() {
                     }
                 }
 
-                override fun setWatchlist(movies: Movies) {
-                    val favoriteMovie = WatchlistMovie(movies)
+                override fun setWatchlist(movie: Movie) {
+                    val favoriteMovie = WatchlistMovie(movie)
                     if (savedWatchlistMovie == null) {
                         viewModelShared.addWatchlistMovie(favoriteMovie)
                     } else {
@@ -122,43 +122,18 @@ class MovieDetailsFragment : Fragment() {
         viewModelShared.getWatchlistMovie(favoriteMovie).observe(viewLifecycleOwner, {
             savedWatchlistMovie = it
             if (it == null) {
-                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    R.drawable.ic_watchlist_add,
-                    0,
-                    0
-                )
+                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)
                 binding.textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
             } else {
-                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    R.drawable.ic_watchlist,
-                    0,
-                    0
-                )
+                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist, 0, 0)
                 binding.textWatchlist.text = resources.getString(R.string.watchlist_added)
             }
         })
-//        updateWatchList(FavoriteMovie(moviesArg))
 
         initRecyclerView()
 
     }
 
-//    private fun updateWatchList(favoriteMovie: FavoriteMovie) {
-//        //Update watchlist btn
-//        viewModelShared.watchlist.observe(viewLifecycleOwner, {
-//            binding.run {
-//                if (it.contains(favoriteMovie)) {
-//                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist_add, 0, 0)
-//                    textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
-//                } else {
-//                    textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0,  R.drawable.ic_watchlist, 0, 0)
-//                    textWatchlist.text = resources.getString(R.string.watchlist_added)
-//                }
-//            }
-//        })
-//    }
 
     private fun initRecyclerView() {
         val cinemaClickCallback = object :

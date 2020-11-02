@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="today.kinema.db.WatchlistMovie" />
+        <import type="today.kinema.vo.WatchlistMovie" />
 
         <import type="androidx.lifecycle.LiveData" />
 

@@ -18,12 +18,12 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import today.kinema.R
+import today.kinema.data.api.Status
 import today.kinema.databinding.FragmentMovieBinding
 import today.kinema.ui.SharedMovieViewModel
 import today.kinema.ui.common.RetryCallback
 import today.kinema.vo.Attribute
-import today.kinema.vo.Movies
-import today.kinema.vo.Status
+import today.kinema.vo.Movie
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -68,7 +68,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         binding.run {
             lifecycleOwner = viewLifecycleOwner
-            movies = viewModelShared.movies
+            movie = viewModelShared.movies
             retryCallback = object : RetryCallback {
                 override fun retry() {
                     viewModelShared.retry()
@@ -118,7 +118,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun initMoviesRecyclerView() {
         val movieClickCallback = object : MovieViewClickCallback {
-            override fun onClick(view: View, movies: Movies) {
+            override fun onClick(view: View, movies: Movie) {
                 navigateToMovieDetailsFragment(view, movies)
             }
         }
@@ -154,7 +154,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         return true
     }
 
-    private fun navigateToMovieDetailsFragment(view: View, movies: Movies) {
+    private fun navigateToMovieDetailsFragment(view: View, movie: Movie) {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {
@@ -172,11 +172,11 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 view to movieDetailTransitionName
             )
 
-            val action = MovieFragmentDirections.showDetailsMovie(movies)
+            val action = MovieFragmentDirections.showDetailsMovie(movie)
 
             findNavController().navigate(action, extras)
         } else {
-            findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movies))
+            findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movie))
         }
     }
 

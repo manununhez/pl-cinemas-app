@@ -1,9 +1,9 @@
 package today.kinema.ui.moviedetails
 
-import today.kinema.vo.Movies
+import today.kinema.vo.Movie
 
 interface DetailsMovieCallback {
     fun watchTrailer()
     fun expandCollapseDescription()
-    fun setWatchlist(movies: Movies)
+    fun setWatchlist(movie: Movie)
 }

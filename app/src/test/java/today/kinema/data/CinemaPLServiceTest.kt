@@ -1,4 +1,4 @@
-package today.kinema.api
+package today.kinema.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import okhttp3.mockwebserver.MockResponse
@@ -14,6 +14,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import today.kinema.data.api.ApiSuccessResponse
+import today.kinema.data.api.KinemaService
 import today.kinema.util.LiveDataCallAdapterFactory
 import today.kinema.util.TestUtil.createAttributes
 import today.kinema.util.TestUtil.createFilterAttribute
@@ -30,43 +32,43 @@ class CinemaPLServiceTest {
     val mockWebServer = MockWebServer()
 
 
-    private lateinit var cinemaPLService: CinemaPLService
+    private lateinit var kinemaService: KinemaService
 
 
     @Before
     fun setUp() {
-        cinemaPLService = Retrofit.Builder()
+        kinemaService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
-            .create(CinemaPLService::class.java)
+            .create(KinemaService::class.java)
     }
 
     @Test
     fun getMovies() {
         enqueueResponse("movie/movie_example.json")
 
-        val response = (cinemaPLService.searchMovies(createFilterAttribute())
+        val response = (kinemaService.searchMovies(createFilterAttribute())
             .getOrAwaitValue() as ApiSuccessResponse).body
 
         val movies = response.data
         assertThat(movies.size, `is`(2))
 
-        val movie = movies[0].movie
+        val movie = movies[0]
         val movieListTest = createMovies()
-        assertThat(movie.id, `is`(movieListTest[0].movie.id))
-        assertThat(movie.title, `is`(movieListTest[0].movie.title))
-        assertThat(movie.description, `is`(movieListTest[0].movie.description))
-        assertThat(movie.originalLanguage, `is`(movieListTest[0].movie.originalLanguage))
-        assertThat(movie.duration, `is`(movieListTest[0].movie.duration))
-        assertThat(movie.classification, `is`(movieListTest[0].movie.classification))
-        assertThat(movie.genre, `is`(movieListTest[0].movie.genre))
-        assertThat(movie.releaseYear, `is`(movieListTest[0].movie.releaseYear))
-        assertThat(movie.dateTitle, `is`(movieListTest[0].movie.dateTitle))
-        assertThat(movie.city, `is`(movieListTest[0].movie.city))
-        assertThat(movie.trailerUrl, `is`(movieListTest[0].movie.trailerUrl))
-        assertThat(movie.posterUrl, `is`(movieListTest[0].movie.posterUrl))
+        assertThat(movie.id, `is`(movieListTest[0].id))
+        assertThat(movie.title, `is`(movieListTest[0].title))
+        assertThat(movie.description, `is`(movieListTest[0].description))
+        assertThat(movie.originalLanguage, `is`(movieListTest[0].originalLanguage))
+        assertThat(movie.duration, `is`(movieListTest[0].duration))
+        assertThat(movie.classification, `is`(movieListTest[0].classification))
+        assertThat(movie.genre, `is`(movieListTest[0].genre))
+        assertThat(movie.releaseYear, `is`(movieListTest[0].releaseYear))
+        assertThat(movie.dateTitle, `is`(movieListTest[0].dateTitle))
+        assertThat(movie.city, `is`(movieListTest[0].city))
+        assertThat(movie.trailerUrl, `is`(movieListTest[0].trailerUrl))
+        assertThat(movie.posterUrl, `is`(movieListTest[0].posterUrl))
 
 
         val cinemas = movies[0].cinemas
@@ -88,7 +90,7 @@ class CinemaPLServiceTest {
     fun getAttributes() {
         enqueueResponse("attribute/attributes_example.json")
 
-        val response = (cinemaPLService.getAttributes().getOrAwaitValue() as ApiSuccessResponse).body
+        val response = (kinemaService.getAttributes().getOrAwaitValue() as ApiSuccessResponse).body
 
         val attribute = response.data
         assertThat(attribute.cinemas.size, `is`(4))

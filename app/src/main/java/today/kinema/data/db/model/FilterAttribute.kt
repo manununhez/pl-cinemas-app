@@ -1,4 +1,4 @@
-package today.kinema.vo
+package today.kinema.data.db.model
 
 data class FilterAttribute(
     val city: String,

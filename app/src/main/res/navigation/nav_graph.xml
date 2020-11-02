@@ -15,8 +15,8 @@
             app:destination="@id/movieDetailsFragment"
             app:exitAnim="@null" />
         <argument
-            android:name="movies"
-            app:argType="today.kinema.vo.Movies" />
+            android:name="movie"
+            app:argType="today.kinema.vo.Movie" />
         <action
             android:id="@+id/showFilterFragment"
             app:destination="@id/filterFragment" />
@@ -33,8 +33,8 @@
         android:label="@string/details_movie_fragment_label"
         tools:layout="@layout/fragment_details_movie">
         <argument
-            android:name="movies"
-            app:argType="today.kinema.vo.Movies" />
+            android:name="movie"
+            app:argType="today.kinema.vo.Movie" />
     </fragment>
     <fragment
         android:id="@+id/filterFragment"

@@ -6,9 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import today.kinema.databinding.WatchlistItemBinding
 import today.kinema.databinding.WatchlistItemHeaderBinding
-import today.kinema.db.WatchlistMovie
+import today.kinema.vo.WatchlistMovie
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
@@ -16,6 +20,29 @@ private const val ITEM_VIEW_TYPE_ITEM = 1
 class WatchlistAdapter(
     private val watchlistITemClickCallback: WatchlistITemViewClickCallback
 ) : ListAdapter<WatchlistMovie, RecyclerView.ViewHolder>(WatchListDiffCallback()) {
+
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun addHeaderAndSubmitList(watchlists: List<WatchlistMovie>) {
+        adapterScope.launch {
+            if (watchlists.isNotEmpty()) {
+                var dateTitle = watchlists[0].dateTitle
+                watchlists[0].header = true
+
+                for (x in 1 until watchlists.size) {
+                    if (watchlists[x].dateTitle == dateTitle)
+                        watchlists[x].header = false
+                    else {
+                        watchlists[x].header = true
+                        dateTitle = watchlists[x].dateTitle
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(watchlists)
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -57,7 +84,7 @@ class WatchlistAdapter(
 
         fun bind(item: WatchlistMovie, watchlistITemClickCallback: WatchlistITemViewClickCallback) {
             binding.apply {
-                movies = item.movies
+                movie = item.movie
                 ivClose.setOnClickListener {
                     watchlistITemClickCallback.removeFavoriteMovie(item)
                 }
@@ -84,7 +111,7 @@ class WatchlistAdapter(
             binding.apply {
                 dateHeader.text = item.dateTitle
 
-                movies = item.movies
+                movie = item.movie
                 ivClose.setOnClickListener {
                     watchlistITemClickCallback.removeFavoriteMovie(item)
                 }
@@ -103,7 +130,7 @@ class WatchListDiffCallback : DiffUtil.ItemCallback<WatchlistMovie>() {
         (oldItem.id == newItem.id && oldItem.dateTitle == newItem.dateTitle)
 
     override fun areContentsTheSame(oldItem: WatchlistMovie, newItem: WatchlistMovie): Boolean =
-        oldItem.movies == newItem.movies
+        oldItem.movie == newItem.movie
 }
 
 

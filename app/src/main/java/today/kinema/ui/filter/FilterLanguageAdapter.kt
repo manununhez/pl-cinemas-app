@@ -75,7 +75,7 @@ class FilterLanguageAdapter(
             })
 
             binding.apply {
-                location = item
+                this.item = item
                 checkBox.setOnClickListener {
                     languageViewClickCallback.onClick(
                         item,

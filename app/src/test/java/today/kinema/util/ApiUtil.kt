@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import today.kinema.api.ApiResponse
+import today.kinema.data.api.ApiResponse
 
 object ApiUtil {
     fun <T : Any> successCall(data: T) = createCall(Response.success(data))

@@ -3,13 +3,10 @@ package today.kinema.ui
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import today.kinema.db.WatchlistMovie
+import today.kinema.data.api.Resource
 import today.kinema.repository.MovieRepository
 import today.kinema.util.AbsentLiveData
-import today.kinema.vo.Coordinate
-import today.kinema.vo.FilterAttribute
-import today.kinema.vo.Movies
-import today.kinema.vo.Resource
+import today.kinema.vo.*
 
 class SharedMovieViewModel @ViewModelInject constructor(
     private val repository: MovieRepository
@@ -19,7 +16,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
     private val _sortWatchList = MutableLiveData<Boolean>()
     private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
 
-    val movies: LiveData<Resource<List<Movies>>> =
+    val movies: LiveData<Resource<List<Movie>>> =
         Transformations.switchMap(_searchMovieQuery) { input ->
             input.ifExists { fAttr ->
                 repository.loadMovies(fAttr)
@@ -34,7 +31,7 @@ class SharedMovieViewModel @ViewModelInject constructor(
             repository.getWatchlistMovies(it)
         }
 
-    val attributes = repository.loadAttributes()
+    val attributes: LiveData<Resource<Attribute>> = repository.loadAttributes()
 
 
     init {

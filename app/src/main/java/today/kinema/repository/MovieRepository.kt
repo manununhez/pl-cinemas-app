@@ -1,84 +1,91 @@
 package today.kinema.repository
 
 import androidx.lifecycle.LiveData
-import today.kinema.api.ApiResponse
-import today.kinema.api.CinemaPLService
-import today.kinema.db.LocalStorage
-import today.kinema.db.WatchlistMovie
+import today.kinema.data.api.ApiResponse
+import today.kinema.data.api.KinemaDataSource
+import today.kinema.data.api.model.GeneralResponse
+import today.kinema.data.db.RoomDataSource
+import today.kinema.data.toDomainMovie
 import today.kinema.util.AppExecutors
 import today.kinema.util.LocationUtils.orderCinemasByDistance
-import today.kinema.vo.*
+import today.kinema.vo.Coordinate
+import today.kinema.vo.WatchlistMovie
 import javax.inject.Inject
+import today.kinema.data.api.model.Attribute as ServerAttribute
+import today.kinema.data.api.model.Movie as ServerMovie
+import today.kinema.vo.Attribute as DomainAttribute
+import today.kinema.vo.FilterAttribute as DomainFilterAttribute
+import today.kinema.vo.Movie as DomainMovie
 
 class MovieRepository @Inject constructor(
-    private val cinemaPLService: CinemaPLService,
-    private val localStorage: LocalStorage,
+    private val kinemaDataSource: KinemaDataSource,
+    private val roomDataSource: RoomDataSource,
     private val appExecutors: AppExecutors
 ) {
 
-    fun loadMovies(filterAttribute: FilterAttribute) =
-        object : NetworkBoundResource<List<Movies>, List<Movies>>(appExecutors) {
-            override fun saveCallResult(item: List<Movies>) {
-                setFilteredAttributes(filterAttribute)
+    fun loadMovies(filterAttribute: DomainFilterAttribute) =
+        object : NetworkBoundResource<List<DomainMovie>, List<ServerMovie>>(appExecutors) {
+            override fun saveCallResult(item: List<ServerMovie>) {
+                roomDataSource.saveFilteredAttributes(filterAttribute)
                 //order list based on distance
-                localStorage.setMovies(
-                    orderCinemasByDistance(getCurrentLocation(), item)
+                roomDataSource.saveMovies(
+                    orderCinemasByDistance(getCurrentLocation(), item.map { it.toDomainMovie() })
                 )
             }
 
-            override fun shouldFetch(data: List<Movies>?): Boolean =
+            override fun shouldFetch(data: List<DomainMovie>?): Boolean =
                 (data == null || data.isEmpty())
 
-            override fun loadFromDb(): LiveData<List<Movies>> =
-                localStorage.getMovies(filterAttribute)
+            override fun loadFromDb(): LiveData<List<DomainMovie>> =
+                roomDataSource.getMovies(filterAttribute)
 
-            override fun createCall(): LiveData<ApiResponse<GeneralResponse<List<Movies>>>> =
-                cinemaPLService.searchMovies(filterAttribute)
+            override fun createCall(): LiveData<ApiResponse<GeneralResponse<List<ServerMovie>>>> =
+                kinemaDataSource.searchMovies(filterAttribute)
 
         }.asLiveData()
 
     fun loadAttributes() =
-        object : NetworkBoundResource<Attribute, Attribute>(appExecutors) {
-            override fun saveCallResult(item: Attribute) = localStorage.setAttributes(item)
+        object : NetworkBoundResource<DomainAttribute, ServerAttribute>(appExecutors) {
 
-            override fun shouldFetch(data: Attribute?): Boolean =
+            override fun saveCallResult(item: ServerAttribute) {
+                roomDataSource.saveAttributes(item)
+            }
+
+            override fun shouldFetch(data: DomainAttribute?): Boolean =
                 true//(data == null) //TODO change when a storage mechanism is added
 
-            override fun loadFromDb(): LiveData<Attribute> = localStorage.getAttributes()
+            override fun loadFromDb(): LiveData<DomainAttribute> = roomDataSource.getAttributes()
 
-            override fun createCall(): LiveData<ApiResponse<GeneralResponse<Attribute>>> =
-                cinemaPLService.getAttributes()
+            override fun createCall(): LiveData<ApiResponse<GeneralResponse<ServerAttribute>>> =
+                kinemaDataSource.getAttributes()
         }.asLiveData()
 
-    fun getFilteredAttributes() = localStorage.getFilteredAttributes()
+    fun getFilteredAttributes() = roomDataSource.getFilteredAttributes()
 
-    fun setFilteredAttributes(item: FilterAttribute) {
-        localStorage.setFilteredAttributes(item)
-    }
-
-    fun getCurrentLocation() = localStorage.getCurrentLocation()
+    fun getCurrentLocation() = roomDataSource.getCurrentLocation()
 
     fun setCurrentLocation(currentLocation: Coordinate) {
-        localStorage.setCurrentLocation(currentLocation)
+        roomDataSource.saveCurrentLocation(currentLocation)
     }
 
-    fun getWatchlistMovies(isAsc: Boolean) = localStorage.getWatchlistMovies(isAsc)
+    fun getWatchlistMovies(isAsc: Boolean): LiveData<List<WatchlistMovie>> =
+        roomDataSource.getWatchlistMovies(isAsc)
 
-    fun getWatchlistMovie(watchlistMovie: WatchlistMovie) =
-        localStorage.getWatchlistMovie(watchlistMovie)
+    fun getWatchlistMovie(watchlistMovie: WatchlistMovie): LiveData<WatchlistMovie> =
+        roomDataSource.getWatchlistMovie(watchlistMovie)
 
     suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        localStorage.addWatchlistMovie(watchlistMovie)
+        roomDataSource.addWatchlistMovie(watchlistMovie)
     }
 
     suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        localStorage.deleteWatchlistMovie(watchlistMovie)
+        roomDataSource.deleteWatchlistMovie(watchlistMovie)
     }
 
-    fun getSortWatchList(): Boolean = localStorage.getSortWatchList()
+    fun getSortWatchList(): Boolean = roomDataSource.getSortWatchList()
 
     fun setWatchListOrder(isAsc: Boolean) {
-        localStorage.setSortWatchList(isAsc)
+        roomDataSource.saveSortWatchList(isAsc)
     }
 
 }

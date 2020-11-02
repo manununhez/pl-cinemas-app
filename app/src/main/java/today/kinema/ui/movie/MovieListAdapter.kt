@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import today.kinema.databinding.MovieItemBinding
-import today.kinema.vo.Movies
+import today.kinema.vo.Movie
 
 class MovieListAdapter(
     private val movieClickCallback: MovieViewClickCallback
-) : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(Companion) {
+) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(Companion) {
 
     class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    companion object : DiffUtil.ItemCallback<Movies>() {
-        override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean =
+    companion object : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
             oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Movies, newItem: Movies): Boolean =
-            oldItem.movie.id == newItem.movie.id
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+            oldItem.id == newItem.id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -34,7 +34,7 @@ class MovieListAdapter(
         val currentMovie = getItem(position)
 
         holder.binding.apply {
-            movie = currentMovie.movie
+            movie = currentMovie
             movieItemCardView.setOnClickListener {
                 movieClickCallback.onClick(it, currentMovie)
             }
@@ -44,5 +44,5 @@ class MovieListAdapter(
 }
 
 interface MovieViewClickCallback {
-    fun onClick(view: View, movies: Movies)
+    fun onClick(view: View, movies: Movie)
 }

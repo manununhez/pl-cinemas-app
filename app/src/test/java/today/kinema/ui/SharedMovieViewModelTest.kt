@@ -8,8 +8,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import today.kinema.repository.MovieRepository
-import today.kinema.vo.Movies
-import today.kinema.vo.Resource
+import today.kinema.vo.Movie
+import today.kinema.data.api.Resource
 
 @RunWith(MockitoJUnitRunner::class)
 class SharedMovieViewModelTest {
@@ -27,7 +27,7 @@ class SharedMovieViewModelTest {
     private lateinit var repository: MovieRepository
 
     @Mock
-    private lateinit var movieObserver: Observer<Resource<List<Movies>>>
+    private lateinit var movieObserver: Observer<Resource<List<Movie>>>
 
     private lateinit var viewModel: SharedMovieViewModel
 

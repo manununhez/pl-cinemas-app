@@ -17,9 +17,9 @@ import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentWatchlistBinding
-import today.kinema.db.WatchlistMovie
 import today.kinema.ui.SharedMovieViewModel
-import today.kinema.vo.Movies
+import today.kinema.vo.Movie
+import today.kinema.vo.WatchlistMovie
 
 @AndroidEntryPoint
 class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
@@ -76,28 +76,11 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private fun setupObservers() {
         //Update watchlist
         viewModelShared.watchlist.observe(viewLifecycleOwner, {
-            watchlistAdapter.submitList(updateList(it))
+            watchlistAdapter.addHeaderAndSubmitList(it)
         })
     }
 
-    private fun updateList(watchlists: List<WatchlistMovie>): List<WatchlistMovie> {
-        if (watchlists.isNotEmpty()) {
-            var dateTitle = watchlists[0].dateTitle
-            watchlists[0].header = true
 
-            for (x in 1 until watchlists.size) {
-                if (watchlists[x].dateTitle == dateTitle)
-                    watchlists[x].header = false
-                else {
-                    watchlists[x].header = true
-                    dateTitle = watchlists[x].dateTitle
-                }
-            }
-        }
-
-        return watchlists
-
-    }
 
     private fun initWatchlistRecyclerView() {
         val watchlistITemClickCallback = object :
@@ -107,7 +90,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
 
             override fun navigateTo(view: View, watchlistMovie: WatchlistMovie) {
-                navigateToMovieDetailsFragment(view, watchlistMovie.movies)
+                navigateToMovieDetailsFragment(view, watchlistMovie.movie)
             }
         }
 
@@ -119,7 +102,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
-    private fun navigateToMovieDetailsFragment(view: View, movie: Movies) {
+    private fun navigateToMovieDetailsFragment(view: View, movie: Movie) {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {

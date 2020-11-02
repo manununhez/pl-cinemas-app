@@ -2,7 +2,7 @@ package today.kinema.util
 
 
 import androidx.lifecycle.LiveData
-import today.kinema.api.ApiResponse
+import today.kinema.data.api.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback

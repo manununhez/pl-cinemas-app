@@ -75,7 +75,7 @@ class FilterCinemaAdapter(
             })
 
             binding.apply {
-                location = item
+                this.item = item
                 checkBox.setOnClickListener {
                     cinemaViewClickCallback.onClick(
                         item,

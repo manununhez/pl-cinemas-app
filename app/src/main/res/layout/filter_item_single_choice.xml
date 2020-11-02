@@ -5,12 +5,8 @@
 
     <data>
 
-        <import type="android.view.View" />
-
-        <import type="today.kinema.vo.Location" />
-
         <variable
-            name="location"
+            name="item"
             type="String" />
     </data>
 
@@ -20,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:transitionName="@{@string/location_transition_name(location)}"
+        android:transitionName="@{@string/location_transition_name(item)}"
         app:cardCornerRadius="0dp">
 
         <!--title background-->
@@ -37,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{location}"
+            android:text="@{item}"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             tools:text="Location 1" />
     </com.google.android.material.card.MaterialCardView>

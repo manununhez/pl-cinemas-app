@@ -1,12 +1,8 @@
-package today.kinema.vo
+package today.kinema.data.db.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class Attribute(
     val cinemas: List<String>,
     val cities: List<String>,
     val days: List<String>,
     val languages: List<String>
-) : Parcelable
+)

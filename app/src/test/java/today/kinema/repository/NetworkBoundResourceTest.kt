@@ -5,8 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -16,14 +16,14 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.mockito.Mockito.*
 import retrofit2.Response
-import today.kinema.api.ApiResponse
+import today.kinema.data.api.ApiResponse
 import today.kinema.util.ApiUtil.errorCall
 import today.kinema.util.ApiUtil.successCall
 import today.kinema.util.CountingAppExecutors
 import today.kinema.util.InstantAppExecutors
 import today.kinema.util.mock
-import today.kinema.vo.GeneralResponse
-import today.kinema.vo.Resource
+import today.kinema.data.api.model.GeneralResponse
+import today.kinema.data.api.Resource
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
@@ -125,7 +125,8 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
         handleSaveCallResult = {
             saved.set(true)
         }
-        val body = "error".toResponseBody("text/html".toMediaTypeOrNull())
+
+        val body = ResponseBody.create(MediaType.parse("text/html"), "error")
         handleCreateCall = { errorCall(500, body) }
 
         val observer = mock<Observer<Resource<Foo>>>()
@@ -173,7 +174,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
         handleSaveCallResult = {
             saved.set(true)
         }
-        val body = "error".toResponseBody("text/html".toMediaTypeOrNull())
+        val body = ResponseBody.create(MediaType.parse("text/html"), "error")
         val apiResponseLiveData = MutableLiveData<ApiResponse<GeneralResponse<Foo>>>()
         handleCreateCall = { apiResponseLiveData }
 

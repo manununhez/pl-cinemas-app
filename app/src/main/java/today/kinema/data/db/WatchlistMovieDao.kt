@@ -1,7 +1,8 @@
-package today.kinema.db
+package today.kinema.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import today.kinema.data.db.model.WatchlistMovie
 
 
 @Dao
@@ -10,7 +11,8 @@ interface WatchlistMovieDao {
     @Query(
         "SELECT * FROM watchlistMovie ORDER BY " +
                 "CASE WHEN :isAsc = 1 THEN dateTitle END ASC, " +
-                "CASE WHEN :isAsc = 0 THEN dateTitle END DESC"
+                "CASE WHEN :isAsc = 0 THEN dateTitle END DESC," +
+                "title"
     )
     fun getWatchlistMovies(isAsc: Boolean): LiveData<List<WatchlistMovie>>
 

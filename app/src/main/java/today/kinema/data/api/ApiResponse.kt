@@ -1,7 +1,7 @@
-package today.kinema.api
+package today.kinema.data.api
 
 import retrofit2.Response
-import today.kinema.vo.GeneralResponse
+import today.kinema.data.api.model.GeneralResponse
 
 /**
  * Common class used by API responses.

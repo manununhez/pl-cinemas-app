@@ -3,7 +3,7 @@ package today.kinema.util
 import android.location.Location
 import today.kinema.vo.Cinema
 import today.kinema.vo.Coordinate
-import today.kinema.vo.Movies
+import today.kinema.vo.Movie
 
 object LocationUtils {
 
@@ -23,13 +23,13 @@ object LocationUtils {
 
     fun orderCinemasByDistance(
         currentLocation: Coordinate,
-        moviesList: List<Movies>
-    ): List<Movies> {
+        moviesList: List<Movie>
+    ): List<Movie> {
         if (currentLocation.latitude == 0.0 && currentLocation.longitude == 0.0) //LastKnownLocation not found!
             return moviesList
 
-        val tmpMoviesList = mutableListOf<Movies>()
-        for (movieItem: Movies in moviesList) {
+        val tmpMovieList = mutableListOf<Movie>()
+        for (movieItem: Movie in moviesList) {
             //Order cinemas
             for (cinemaItem: Cinema in movieItem.cinemas) {
                 cinemaItem.distance = getDistanceBetweenTwoPoints(
@@ -44,11 +44,11 @@ object LocationUtils {
                 it.distance
             }
 
-            tmpMoviesList.add(Movies(movieItem.movie, cinemasSorted))
+            tmpMovieList.add(Movie(movieItem, cinemasSorted))
 
         }
 
-        return tmpMoviesList.toList()
+        return tmpMovieList.toList()
 
     }
 

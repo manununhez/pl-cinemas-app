@@ -7,8 +7,10 @@
     <string name="description_text_collapsed">Więcej</string> <!-- more -->
     <string name="description_text_expanded">Mniej</string> <!-- less -->
     <string name="where_to_watch">Obejrzyj tutaj</string>
+    <string name="menu_item_sort_movies">Sort movies alphabetically</string>
     <string name="menu_item_filter">Filtruj</string>
     <string name="menu_item_watchlist">Obserwowane</string>
+    <string name="menu_item_sort_watchlist">Sort Watchlist</string>
     <string name="today">Dzisiaj</string>
     <string name="empty_description">Brak opisu</string>
     <string name="empty_movie_list">Nie znaleziono filmów dla wybranej daty</string>

@@ -1,37 +1,52 @@
 package today.kinema.vo
 
 import android.os.Parcelable
-import androidx.room.Entity
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-@Entity
 @Parcelize
 data class Movie(
-    @SerializedName("id")
     val id: String,
-    @SerializedName("title")
     val title: String,
-    @SerializedName("description")
     val description: String,
-    @SerializedName("original_lang")
     val originalLanguage: String,
-    @SerializedName("duration")
     val duration: String,
-    @SerializedName("classification")
     val classification: String,
-    @SerializedName("genre")
     val genre: String,
-    @SerializedName("release_year")
     val releaseYear: String,
-    @SerializedName("date_title")
     val dateTitle: String,
-    @SerializedName("city")
     val city: String,
-    @SerializedName("trailer_url")
     val trailerUrl: String,
-    @SerializedName("poster_url")
-    val posterUrl: String
+    val posterUrl: String,
+    val cinemas: List<Cinema>
+) : Parcelable {
+    constructor(movie: Movie, cinemas: List<Cinema>) : this(
+        movie.id,
+        movie.title,
+        movie.description,
+        movie.originalLanguage,
+        movie.duration,
+        movie.classification,
+        movie.genre,
+        movie.releaseYear,
+        movie.dateTitle,
+        movie.city,
+        movie.trailerUrl,
+        movie.posterUrl,
+        cinemas
+    )
+}
+
+@Parcelize
+data class Cinema(
+    val cinemaId: String,
+    val locationId: String,
+    val locationName: String,
+    val language: String,
+    val latitude: String,
+    val longitude: String,
+    val logoUrl: String,
+    val cinemaPageUrl: String,
+    var distance: Float = 0.0f
 ) : Parcelable
 
 

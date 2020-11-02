@@ -4,13 +4,9 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import today.kinema.api.ApiEmptyResponse
-import today.kinema.api.ApiErrorResponse
-import today.kinema.api.ApiResponse
-import today.kinema.api.ApiSuccessResponse
+import today.kinema.data.api.*
+import today.kinema.data.api.model.GeneralResponse
 import today.kinema.util.AppExecutors
-import today.kinema.vo.GeneralResponse
-import today.kinema.vo.Resource
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.

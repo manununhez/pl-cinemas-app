@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="today.kinema.vo.Movies" />
+        <import type="today.kinema.vo.Movie" />
 
         <import type="today.kinema.ui.moviedetails.DetailsMovieCallback" />
 
@@ -14,8 +14,8 @@
             type="DetailsMovieCallback" />
 
         <variable
-            name="movies"
-            type="Movies" />
+            name="movie"
+            type="Movie" />
 
     </data>
 
@@ -47,7 +47,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
-                    android:onClick="@{() -> detailsMovieCallback.setWatchlist(movies)}"
+                    android:onClick="@{() -> detailsMovieCallback.setWatchlist(movie)}"
                     android:orientation="vertical"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceCaption"
@@ -99,7 +99,7 @@
                     android:contentDescription="@string/a11y_movie_avatar"
                     android:cropToPadding="false"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{movies.movie.posterUrl}"
+                    app:imageUrl="@{movie.posterUrl}"
                     app:layout_constraintStart_toStartOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@id/view"
                     tools:src="@tools:sample/backgrounds/scenic" />
@@ -120,7 +120,7 @@
                     app:layout_constraintEnd_toEndOf="@id/imageView"
                     app:layout_constraintStart_toStartOf="@id/imageView"
                     app:layout_constraintTop_toTopOf="@id/imageView"
-                    app:visibleGone="@{!movies.movie.trailerUrl.empty}"
+                    app:visibleGone="@{!movie.trailerUrl.empty}"
                     tools:src="@drawable/ic_play" />
 
                 <TextView
@@ -133,7 +133,7 @@
                     android:ellipsize="end"
                     android:gravity="start"
                     android:maxLines="2"
-                    android:text="@{movies.movie.title}"
+                    android:text="@{movie.title}"
                     android:textAppearance="?attr/textAppearanceHeadline4"
                     app:layout_constraintEnd_toStartOf="@id/guideline3"
                     app:layout_constraintStart_toStartOf="@id/guideline"
@@ -148,7 +148,7 @@
                     android:layout_marginTop="16dp"
                     android:maxLines="@integer/max_lines_collapsed"
                     android:minLines="@integer/max_lines_collapsed"
-                    android:text="@{movies.movie.description.empty ? @string/empty_description : movies.movie.description}"
+                    android:text="@{movie.description.empty ? @string/empty_description : movie.description}"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:layout_constraintEnd_toStartOf="@id/guideline3"
                     app:layout_constraintHorizontal_bias="0.687"
@@ -161,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{movies.movie.releaseYear}"
+                    android:text="@{movie.releaseYear}"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintStart_toStartOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@id/movieTitle"
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="@{movies.movie.classification}"
+                    android:text="@{movie.classification}"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintBaseline_toBaselineOf="@id/year"
                     app:layout_constraintStart_toEndOf="@id/year"
@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
-                    app:classification="@{movies.movie.genre}"
+                    app:classification="@{movie.genre}"
                     app:layout_constraintBaseline_toBaselineOf="@id/classification"
                     app:layout_constraintStart_toEndOf="@id/classification"
                     tools:text="Genre" />

@@ -10,9 +10,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import today.kinema.api.ApiResponse
-import today.kinema.api.CinemaPLService
-import today.kinema.db.LocalStorage
+import today.kinema.data.api.ApiResponse
+import today.kinema.data.api.KinemaService
+import today.kinema.data.db.RoomDataSource
 import today.kinema.util.AbsentLiveData
 import today.kinema.util.ApiUtil.successCall
 import today.kinema.util.InstantAppExecutors
@@ -21,10 +21,10 @@ import today.kinema.util.TestUtil.createCurrentLocation
 import today.kinema.util.TestUtil.createFilterAttribute
 import today.kinema.util.TestUtil.createMovies
 import today.kinema.util.mock
-import today.kinema.vo.Attribute
-import today.kinema.vo.GeneralResponse
-import today.kinema.vo.Movies
-import today.kinema.vo.Resource
+import today.kinema.data.api.model.Attribute
+import today.kinema.data.api.model.GeneralResponse
+import today.kinema.vo.Movie
+import today.kinema.data.api.Resource
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryTest {
@@ -33,23 +33,23 @@ class MovieRepositoryTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var service: CinemaPLService
+    private lateinit var service: KinemaService
 
     @Mock
-    private lateinit var localStorage: LocalStorage
+    private lateinit var roomDataSource: RoomDataSource
 
     private lateinit var repository: MovieRepository
 
     @Before
     fun setUp() {
-        repository = MovieRepository(service, localStorage, InstantAppExecutors())
+        repository = MovieRepository(service, roomDataSource, InstantAppExecutors())
     }
 
     @Test
     fun loadMovies() {
         val filterAttribute = createFilterAttribute()
         repository.loadMovies(filterAttribute)
-        verify(localStorage).getMovies(filterAttribute)
+        verify(roomDataSource).getMovies(filterAttribute)
     }
 
     @Test
@@ -58,12 +58,12 @@ class MovieRepositoryTest {
         val filterAttribute = createFilterAttribute()
         val movies = createMovies()
         //Prepare DB
-        val dbData = MutableLiveData<List<Movies>>()
+        val dbData = MutableLiveData<List<Movie>>()
         dbData.value = movies
-        `when`(localStorage.getMovies(filterAttribute)).thenReturn(dbData)
+        `when`(roomDataSource.getMovies(filterAttribute)).thenReturn(dbData)
 
         //----Act
-        val observer = mock<Observer<Resource<List<Movies>>>>()
+        val observer = mock<Observer<Resource<List<Movie>>>>()
         repository.loadMovies(filterAttribute).observeForever(observer)
         verifyNoMoreInteractions(service)
         verify(observer).onChanged(Resource.success(movies))
@@ -74,31 +74,31 @@ class MovieRepositoryTest {
         //----Arrange
         val filterAttribute = createFilterAttribute()
         //------
-        `when`(localStorage.getCurrentLocation()).thenReturn(createCurrentLocation())
+        `when`(roomDataSource.getCurrentLocation()).thenReturn(createCurrentLocation())
         //Prepare DB
-        val dbData = MutableLiveData<List<Movies>>()
-        `when`(localStorage.getMovies(filterAttribute)).thenReturn(dbData)
+        val dbData = MutableLiveData<List<Movie>>()
+        `when`(roomDataSource.getMovies(filterAttribute)).thenReturn(dbData)
         //Prepare Service
         val movies = createMovies()
         val call = successCall(GeneralResponse(true, "", movies))
         `when`(service.searchMovies(filterAttribute)).thenReturn(call)
 
         //----Act
-        val observer = mock<Observer<Resource<List<Movies>>>>()
+        val observer = mock<Observer<Resource<List<Movie>>>>()
         repository.loadMovies(filterAttribute).observeForever(observer)
         verifyNoMoreInteractions(service)
         verify(observer).onChanged(Resource.loading(null))
         //DB updated value
-        val updatedDbData = MutableLiveData<List<Movies>>()
-        `when`(localStorage.getMovies(filterAttribute)).thenReturn(updatedDbData)
+        val updatedDbData = MutableLiveData<List<Movie>>()
+        `when`(roomDataSource.getMovies(filterAttribute)).thenReturn(updatedDbData)
 
         //Simulate an update in db value, Empty db data, shouldFetch->true
         dbData.postValue(null)
         //createCall()
         verify(service).searchMovies(filterAttribute)
         //saveCallResult
-        verify(localStorage).setMovies(movies)
-        verify(localStorage).setFilteredAttributes(filterAttribute)
+        verify(roomDataSource).setMovies(movies)
+        verify(roomDataSource).setFilteredAttributes(filterAttribute)
         // send new values to observers
         updatedDbData.postValue(movies)
         verify(observer).onChanged(Resource.success(movies))
@@ -110,13 +110,13 @@ class MovieRepositoryTest {
         //----Arrange
         val filterAttribute = createFilterAttribute()
         //Simulate return empty data from DB
-        `when`(localStorage.getMovies(filterAttribute)).thenReturn(AbsentLiveData.create())
+        `when`(roomDataSource.getMovies(filterAttribute)).thenReturn(AbsentLiveData.create())
         //Prepare Service
-        val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<List<Movies>>>>()
+        val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<List<Movie>>>>()
         `when`(service.searchMovies(filterAttribute)).thenReturn(apiResponse)
 
         //----Act
-        val observer = mock<Observer<Resource<List<Movies>>>>()
+        val observer = mock<Observer<Resource<List<Movie>>>>()
         //Call loadMovies
         repository.loadMovies(filterAttribute).observeForever(observer)
         verify(observer).onChanged(Resource.loading(null))
@@ -133,7 +133,7 @@ class MovieRepositoryTest {
     @Test
     fun loadAttributes() {
         repository.loadAttributes()
-        verify(localStorage).getAttributes()
+        verify(roomDataSource).getAttributes()
     }
 
     @Test
@@ -143,7 +143,7 @@ class MovieRepositoryTest {
         //Prepare DB
         val dbData = MutableLiveData<Attribute>()
         dbData.value = attributes
-        `when`(localStorage.getAttributes()).thenReturn(dbData)
+        `when`(roomDataSource.getAttributes()).thenReturn(dbData)
 
         //Prepare service
         val call = successCall(GeneralResponse(true, "", attributes))
@@ -156,7 +156,7 @@ class MovieRepositoryTest {
         //createCall()
         verify(service).getAttributes()
         //saveCallResult
-        verify(localStorage).setAttributes(attributes)
+        verify(roomDataSource).setAttributes(attributes)
 
         verify(observer).onChanged(Resource.success(attributes))
     }
@@ -165,7 +165,7 @@ class MovieRepositoryTest {
     fun loadAttributes_fromServer_error() {
         //----Arrange
         //Simulate return empty data from DB
-        `when`(localStorage.getAttributes()).thenReturn(AbsentLiveData.create())
+        `when`(roomDataSource.getAttributes()).thenReturn(AbsentLiveData.create())
         //Prepare Service
         val apiResponse = MutableLiveData<ApiResponse<GeneralResponse<Attribute>>>()
         `when`(service.getAttributes()).thenReturn(apiResponse)
@@ -190,10 +190,10 @@ class MovieRepositoryTest {
         val filterAttribute = createFilterAttribute()
 
         repository.setFilteredAttributes(filterAttribute)
-        verify(localStorage).setFilteredAttributes(filterAttribute)
+        verify(roomDataSource).setFilteredAttributes(filterAttribute)
 
         repository.getFilteredAttributes()
-        verify(localStorage).getFilteredAttributes()
+        verify(roomDataSource).getFilteredAttributes()
     }
 
     @Test
@@ -201,10 +201,10 @@ class MovieRepositoryTest {
         val currentLocation = createCurrentLocation()
 
         repository.setCurrentLocation(currentLocation)
-        verify(localStorage).setCurrentLocation(currentLocation)
+        verify(roomDataSource).setCurrentLocation(currentLocation)
 
         repository.getCurrentLocation()
-        verify(localStorage).getCurrentLocation()
+        verify(roomDataSource).getCurrentLocation()
     }
 
 //    @Test

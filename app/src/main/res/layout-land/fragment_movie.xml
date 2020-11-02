@@ -5,11 +5,9 @@
 
     <data>
 
-        <import type="today.kinema.vo.Resource" />
+        <import type="today.kinema.data.api.Resource" />
 
-        <import type="today.kinema.vo.Status" />
-
-        <import type="today.kinema.vo.Movies" />
+        <import type="today.kinema.vo.Movie" />
 
         <import type="androidx.lifecycle.LiveData" />
 
@@ -18,8 +16,8 @@
         <import type="today.kinema.ui.common.RetryCallback" />
 
         <variable
-            name="movies"
-            type="LiveData&lt;Resource&lt;List&lt;Movies>>>" />
+            name="movie"
+            type="LiveData&lt;Resource&lt;List&lt;Movie>>>" />
 
         <variable
             name="retryCallback"
@@ -103,17 +101,6 @@
                 tools:listitem="@layout/movie_item" />
         </LinearLayout>
 
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/no_results_text"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:gravity="center"-->
-        <!--            android:background="@color/blue_900_dark"-->
-        <!--            android:text="@{movies.message}"-->
-        <!--            app:visibleGone="@{movies.status == Status.SUCCESS &amp;&amp; movies.data.size == 0}"-->
-        <!--            tools:text="Texto de prueba" />-->
-
         <include
             layout="@layout/loading_state"
             android:layout_width="match_parent"
@@ -126,8 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:movies="@{movies.data}"
-            app:resource="@{(Resource) movies}"
+            app:resource="@{(Resource) movie}"
             app:retryCallback="@{() -> retryCallback.retry()}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

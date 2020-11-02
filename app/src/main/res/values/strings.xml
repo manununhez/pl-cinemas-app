@@ -24,8 +24,10 @@
     <string name="description_text_collapsed">More</string> <!-- more -->
     <string name="description_text_expanded">Less</string> <!-- less -->
     <string name="where_to_watch">Watch it here</string>
+    <string name="menu_item_sort_movies">Sort movies alphabetically</string>
     <string name="menu_item_filter">Filter</string>
     <string name="menu_item_watchlist">Watchlist</string>
+    <string name="menu_item_sort_watchlist">Sort Watchlist</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
     <string name="empty_movie_list">No movies found for this specific date yet.</string>

@@ -1,9 +1,9 @@
-package today.kinema.api
+package today.kinema.data
 
-import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType
 import okhttp3.Protocol
 import okhttp3.Request
-import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.ResponseBody
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.isA
 import org.hamcrest.MatcherAssert.assertThat
@@ -11,7 +11,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Response
-import today.kinema.vo.GeneralResponse
+import today.kinema.data.api.ApiEmptyResponse
+import today.kinema.data.api.ApiErrorResponse
+import today.kinema.data.api.ApiResponse
+import today.kinema.data.api.ApiSuccessResponse
+import today.kinema.data.api.model.GeneralResponse
 
 private const val MESSAGE_1 = "foo"
 private const val MESSAGE_2 = "foo_error_data"
@@ -80,32 +84,45 @@ class ApiResponseTest {
 
     }
 
-    private fun setupEmptyBodyResponse() = ApiResponse
-        .create(Response.success("")) as ApiEmptyResponse
+    private fun setupEmptyBodyResponse() =
+        ApiResponse.create(Response.success("")) as ApiEmptyResponse
 
-    private fun setupNullBodyResponse() = ApiResponse
-        .create(Response.success(null)) as ApiEmptyResponse
+    private fun setupNullBodyResponse() =
+        ApiResponse.create(Response.success(null)) as ApiEmptyResponse
 
-    private fun setupSuccessResponse() = ApiResponse
-        .create(Response.success(GeneralResponse(true, "", MESSAGE_1))) as ApiSuccessResponse
+    private fun setupSuccessResponse() = ApiResponse.create(
+        Response.success(
+            GeneralResponse(
+                true,
+                "",
+                MESSAGE_1
+            )
+        )
+    ) as ApiSuccessResponse
 
-    private fun setupSuccessFalseResponseEmptyData() = ApiResponse
-        .create(Response.success(GeneralResponse(false, "", MESSAGE_2))) as ApiErrorResponse
+    private fun setupSuccessFalseResponseEmptyData() = ApiResponse.create(
+        Response.success(
+            GeneralResponse(false, "", MESSAGE_2)
+        )
+    ) as ApiErrorResponse
 
-    private fun setupSuccessFalseResponseEmptyMessage() = ApiResponse
-        .create(Response.success(GeneralResponse(false, MESSAGE_5, ""))) as ApiErrorResponse
+    private fun setupSuccessFalseResponseEmptyMessage() = ApiResponse.create(
+        Response.success(
+            GeneralResponse(false, MESSAGE_5, "")
+        )
+    ) as ApiErrorResponse
 
     private fun setupErrorResponseWithCodeNotInRangeAndErrorBody() = ApiResponse.create<String>(
         Response.error(
             400,
-            MESSAGE_3.toResponseBody("application/txt".toMediaType())
+            ResponseBody.create(MediaType.parse("application/txt"), MESSAGE_3)
         )
     ) as ApiErrorResponse<String>
 
     private fun setupErrorResponseWithCodeNotInRangeAndWithEmptyErrorBody(): ApiErrorResponse<String> {
         return ApiResponse.create<String>(
             Response.error(
-                "".toResponseBody("application/txt".toMediaType()),
+                ResponseBody.create(MediaType.parse("application/txt"), ""),
                 okhttp3.Response.Builder() //
                     .code(400)
                     .message(MESSAGE_6)

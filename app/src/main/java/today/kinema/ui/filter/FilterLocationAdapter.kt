@@ -58,7 +58,7 @@ class FilterLocationAdapter(
             })
 
             binding.apply {
-                location = item
+                this.item = item
                 radio.setOnClickListener {
                     locationViewClickCallback.onClick(item)
                 }

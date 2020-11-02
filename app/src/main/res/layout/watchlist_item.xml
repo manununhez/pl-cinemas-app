@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="today.kinema.vo.Movies" />
+        <import type="today.kinema.vo.Movie" />
 
         <variable
-            name="movies"
-            type="Movies" />
+            name="movie"
+            type="Movie" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:transitionName="@{@string/watchlist_item_transition_name(movies.movie.id, movies.movie.dateTitle)}"
+        android:transitionName="@{@string/watchlist_item_transition_name(movie.id, movie.dateTitle)}"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="?attr/colorSecondary"
@@ -39,7 +39,7 @@
                 android:contentDescription="@string/menu_item_watchlist"
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{movies.movie.posterUrl}"
+                app:imageUrl="@{movie.posterUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@{movies.movie.title}"
+                android:text="@{movie.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintEnd_toStartOf="@+id/ivClose"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@{movies.movie.releaseYear}"
+                android:text="@{movie.releaseYear}"
                 android:textAppearance="?attr/textAppearanceSubtitle2"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@id/movieTitle"
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{movies.movie.classification}"
+                android:text="@{movie.classification}"
                 android:textAppearance="?attr/textAppearanceSubtitle2"
                 app:layout_constraintBaseline_toBaselineOf="@id/year"
                 app:layout_constraintStart_toEndOf="@id/year"
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="?attr/textAppearanceSubtitle2"
-                app:classification="@{movies.movie.genre}"
+                app:classification="@{movie.genre}"
                 app:layout_constraintBaseline_toBaselineOf="@id/classification"
                 app:layout_constraintStart_toEndOf="@id/classification"
                 tools:text="Genre" />

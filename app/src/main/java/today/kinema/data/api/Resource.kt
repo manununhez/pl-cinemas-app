@@ -1,6 +1,6 @@
-package today.kinema.vo
+package today.kinema.data.api
 
-import today.kinema.vo.Status.*
+import today.kinema.data.api.Status.*
 
 /**
  * A generic class that holds a value with its loading status.

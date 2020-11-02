@@ -1,5 +1,6 @@
 package today.kinema.util
 
+import today.kinema.data.api.model.Attribute
 import today.kinema.vo.*
 
 object TestUtil {
@@ -26,10 +27,11 @@ object TestUtil {
         "2020-10-01",
         "Warszawa",
         "https://www.youtube.com/watch?v=YoHYAdScBak",
-        "https://media.multikino.pl/uploads/images/films_and_events/after2_dc611831b7.jpg"
+        "https://media.multikino.pl/uploads/images/films_and_events/after2_dc611831b7.jpg",
+        listOf(createCinema())
     )
 
-    fun createMovies() = listOf(Movies(createMovie(), listOf(createCinema())))
+    fun createMovies() = listOf(createMovie())
 
     fun createAttributes() = Attribute(
         listOf(
