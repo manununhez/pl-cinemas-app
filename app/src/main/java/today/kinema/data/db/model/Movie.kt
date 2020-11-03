@@ -3,7 +3,10 @@ package today.kinema.data.db.model
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
-@Entity
+@Entity(
+    primaryKeys = ["id"],
+    tableName = "movies",
+)
 data class Movie(
     @SerializedName("id")
     val id: String,
@@ -52,5 +55,6 @@ data class Cinema(
     @SerializedName("cinema_movie_url")
     val cinemaPageUrl: String
 )
+
 
 

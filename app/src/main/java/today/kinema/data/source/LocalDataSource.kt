@@ -1,6 +1,5 @@
 package today.kinema.data.source
 
-import androidx.lifecycle.LiveData
 import today.kinema.vo.Coordinate
 import today.kinema.vo.FilterAttribute
 import today.kinema.vo.WatchlistMovie
@@ -10,23 +9,29 @@ import today.kinema.vo.Movie as DomainMovie
 
 
 interface LocalDataSource {
-    fun getMovies(filterAttribute: FilterAttribute): LiveData<List<DomainMovie>>
-    fun saveMovies(movies: List<DomainMovie>)
+    suspend fun getMovies(isAsc: Boolean): List<DomainMovie>
+    suspend fun saveMovies(movies: List<DomainMovie>)
 
-    fun getAttributes(): LiveData<DomainAttribute>
+    fun getAttributes(): DomainAttribute?
     fun saveAttributes(item: ServerAttribute)
 
     fun getFilteredAttributes(): FilterAttribute
     fun saveFilteredAttributes(item: FilterAttribute)
 
+    fun getSearchMovieParameters(): FilterAttribute
+    fun saveSearchMovieParameters(item: FilterAttribute)
+
     fun getCurrentLocation(): Coordinate
     fun saveCurrentLocation(currentLocation: Coordinate)
 
-    fun getSortWatchList(): Boolean
-    fun saveSortWatchList(isAsc: Boolean)
+    fun getSortMovieList(): Boolean
+    fun saveSortMovieList(isAsc: Boolean)
 
-    fun getWatchlistMovies(isAsc: Boolean): LiveData<List<WatchlistMovie>>
+    fun getSortWatchMovieList(): Boolean
+    fun saveSortWatchMovieList(isAsc: Boolean)
+
+    suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie>
     suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie)
     suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie)
-    fun getWatchlistMovie(watchlistMovie: WatchlistMovie): LiveData<WatchlistMovie>
+    suspend fun getWatchlistMovie(watchlistMovie: WatchlistMovie): WatchlistMovie?
 }

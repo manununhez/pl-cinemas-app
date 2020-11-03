@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import today.kinema.data.db.model.Movie
 import today.kinema.data.db.model.WatchlistMovie
 
 /**
@@ -13,10 +15,11 @@ import today.kinema.data.db.model.WatchlistMovie
 private const val DATABASE_NAME = "kinema.db"
 
 @Database(
-    entities = [WatchlistMovie::class],
-    version = 1,
+    entities = [WatchlistMovie::class, Movie::class],
+    version = 2,
     exportSchema = false
 )
+@TypeConverters(KinemaTypeConverters::class)
 abstract class KinemaDb : RoomDatabase() {
 
     companion object {
@@ -27,4 +30,5 @@ abstract class KinemaDb : RoomDatabase() {
     }
 
     abstract fun watchlistMovieDao(): WatchlistMovieDao
+    abstract fun movieDao(): MovieDao
 }

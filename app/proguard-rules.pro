@@ -23,6 +23,8 @@
 
 #https://stackoverflow.com/questions/50378810/proguard-causing-runtime-exception-with-android-navigation-component/50378828#50378828
 -keep class * extends androidx.fragment.app.Fragment{}
+#https://stackoverflow.com/questions/42782328/retrofit-2-returns-null-in-release-apk-when-minifyenable-but-ok-in-debug-apk
+-keep class today.kinema.data.api.model.* {*;}
 
 -keepnames class * extends android.os.Parcelable
 -keepnames class * extends java.io.Serializable

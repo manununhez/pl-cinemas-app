@@ -88,7 +88,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
@@ -104,7 +104,7 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.6.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.29.1-alpha'
@@ -121,18 +121,18 @@ dependencies {
     // RETROFIT -- keep this version to work with sdk >= 19
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     //Fused location requires the use of the Google Play SDK
     implementation "com.google.android.gms:play-services-location:17.1.0"
 
     //Multidex
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation "androidx.multidex:multidex:$multidex_version"
 
     // MockWebServer
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.0'
     // Required -- JUnit 4 framework
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     // Mockito framework
     testImplementation 'org.mockito:mockito-core:2.28.2'
 }

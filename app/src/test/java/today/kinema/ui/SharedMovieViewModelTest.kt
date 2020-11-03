@@ -7,7 +7,7 @@ import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import today.kinema.repository.MovieRepository
+import today.kinema.repository.KinemaRepository
 import today.kinema.vo.Movie
 import today.kinema.data.api.Resource
 
@@ -24,7 +24,7 @@ class SharedMovieViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var repository: MovieRepository
+    private lateinit var repository: KinemaRepository
 
     @Mock
     private lateinit var movieObserver: Observer<Resource<List<Movie>>>

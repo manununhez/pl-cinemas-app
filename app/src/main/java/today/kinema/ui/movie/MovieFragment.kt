@@ -9,18 +9,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import today.kinema.R
 import today.kinema.data.api.Status
 import today.kinema.databinding.FragmentMovieBinding
-import today.kinema.ui.SharedMovieViewModel
 import today.kinema.ui.common.RetryCallback
 import today.kinema.vo.Attribute
 import today.kinema.vo.Movie
@@ -36,9 +34,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private lateinit var daysListAdapter: DaysListAdapter
 
     //sharedViewModel - navGraph scope
-    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModelShared: MovieViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,19 +73,22 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
 
-        viewModelShared.loadMovies()
-
+        initializeMovies()
         initMoviesRecyclerView()
         initDateTitleRecyclerView()
 
         setupObservers()
     }
 
+    private fun initializeMovies() {
+        viewModelShared.loadMovies()
+    }
+
     private fun setupObservers() {
         viewModelShared.movies.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.status == Status.SUCCESS) {
-                    Timber.d(it.toString())
+//                    Timber.d(it.toString())
                     movieListAdapter.submitList(it.data)
                 } else if (it.status == Status.ERROR) {
                     movieListAdapter.submitList(listOf())
@@ -99,15 +98,17 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         viewModelShared.attributes.observe(viewLifecycleOwner, {
             if (it.status == Status.SUCCESS) {
-                attributes = it.data!!
-                daysListAdapter.submitList(it.data.days)
+                if (it.data != null) {
+                    attributes = it.data
+                    daysListAdapter.submitList(it.data.days)
 
-                //scroll rv to selected date
-                binding.rvDaysTitle.scrollToPosition(
-                    daysListAdapter.currentList.indexOf(
-                        viewModelShared.currentFilterAttribute.value?.date
+                    //scroll rv to selected date
+                    binding.rvDaysTitle.scrollToPosition(
+                        daysListAdapter.currentList.indexOf(
+                            viewModelShared.currentFilterAttribute.value?.date
+                        )
                     )
-                )
+                }
             }
         })
 
@@ -132,7 +133,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         val dayTitleClickCallback = object : DayTitleViewClickCallback {
             override fun onClick(cardView: View, dateTitle: String) {
                 viewModelShared.setDateMoviesTitle(dateTitle)
-                viewModelShared.loadMovies()
             }
         }
 
@@ -150,6 +150,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         when (item?.itemId) {
             R.id.filterFragmentMenu -> navigateToFilterFragment()
             R.id.watchlistFragmentMenu -> navigateToWatchListFragment()
+            R.id.sortMoviesMenu -> viewModelShared.updateMovieListOrder()
         }
         return true
     }

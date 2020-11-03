@@ -1,6 +1,5 @@
 package today.kinema.data.api
 
-import androidx.lifecycle.LiveData
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,11 +11,11 @@ import today.kinema.data.api.model.Movie
 
 interface KinemaService {
     @POST("movies/search")
-    fun searchMovies(
+    suspend fun searchMovies(
         @Body filterAttribute: FilterAttribute
-    ): LiveData<ApiResponse<GeneralResponse<List<Movie>>>>
+    ): GeneralResponse<List<Movie>>
 
     @GET("attributes")
-    fun getAttributes(): LiveData<ApiResponse<GeneralResponse<Attribute>>>
+     suspend fun getAttributes(): GeneralResponse<Attribute>
 
 }

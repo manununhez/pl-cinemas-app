@@ -84,7 +84,7 @@ fun bindLanguageDescription(view: TextView, str: String) {
 fun bindDistance(view: TextView, distance: Float) {
     if (distance.toInt() > 0) {
         if (distance.toInt() > 1000) {
-            val distanceKM = distance / 1000;
+            val distanceKM = distance / 1000
             view.text = view.context.resources.getString(
                 R.string.distance_description_km,
                 String.format("%.2f", distanceKM)

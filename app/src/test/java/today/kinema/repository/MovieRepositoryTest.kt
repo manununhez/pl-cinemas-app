@@ -15,7 +15,6 @@ import today.kinema.data.api.KinemaService
 import today.kinema.data.db.RoomDataSource
 import today.kinema.util.AbsentLiveData
 import today.kinema.util.ApiUtil.successCall
-import today.kinema.util.InstantAppExecutors
 import today.kinema.util.TestUtil.createAttributes
 import today.kinema.util.TestUtil.createCurrentLocation
 import today.kinema.util.TestUtil.createFilterAttribute
@@ -38,11 +37,11 @@ class MovieRepositoryTest {
     @Mock
     private lateinit var roomDataSource: RoomDataSource
 
-    private lateinit var repository: MovieRepository
+    private lateinit var repository: KinemaRepository
 
     @Before
     fun setUp() {
-        repository = MovieRepository(service, roomDataSource, InstantAppExecutors())
+        repository = KinemaRepository(service, roomDataSource)
     }
 
     @Test

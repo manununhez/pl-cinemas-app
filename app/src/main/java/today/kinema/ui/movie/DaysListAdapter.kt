@@ -21,17 +21,9 @@ class DaysListAdapter(
     private val dayTitleViewClickCallback: DayTitleViewClickCallback,
     private val currentAttributes: LiveData<FilterAttribute>,
     private val viewLifecycleOwner: LifecycleOwner
-) : ListAdapter<String, DaysListAdapter.DaysViewHolder>(Companion) {
+) : ListAdapter<String, DaysListAdapter.DaysViewHolder>(DaysListDiffCallback()) {
 
     class DaysViewHolder(val binding: DayTitleItemBinding) : RecyclerView.ViewHolder(binding.root)
-
-    companion object : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-            oldItem === newItem
-
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
-            oldItem == newItem
-    }
 
     private lateinit var context: Context
 
@@ -93,6 +85,14 @@ class DaysListAdapter(
     private fun formatDateDay(date: String) = DateUtils.dayDateFormat(date)
 
     private fun formatDateMonth(date: String) = DateUtils.monthDateFormat(date)
+}
+
+class DaysListDiffCallback : DiffUtil.ItemCallback<String>() {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+        oldItem === newItem
+
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+        oldItem == newItem
 }
 
 interface DayTitleViewClickCallback {

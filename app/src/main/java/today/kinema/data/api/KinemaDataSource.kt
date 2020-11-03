@@ -1,6 +1,5 @@
 package today.kinema.data.api
 
-import androidx.lifecycle.LiveData
 import today.kinema.data.api.model.Attribute
 import today.kinema.data.api.model.GeneralResponse
 import today.kinema.data.api.model.Movie
@@ -12,11 +11,11 @@ import javax.inject.Inject
 class KinemaDataSource @Inject constructor(
     private val kinemaService: KinemaService
 ) : RemoteDataSource {
-    override fun searchMovies(filterAttribute: FilterAttribute): LiveData<ApiResponse<GeneralResponse<List<Movie>>>> =
-        kinemaService.searchMovies(filterAttribute.toServerFilterAttribute() )
+    override suspend fun searchMovies(filterAttribute: FilterAttribute): GeneralResponse<List<Movie>> =
+        kinemaService.searchMovies(filterAttribute.toServerFilterAttribute())
 
 
-    override fun getAttributes(): LiveData<ApiResponse<GeneralResponse<Attribute>>> =
+    override suspend fun getAttributes(): GeneralResponse<Attribute> =
         kinemaService.getAttributes()
 
 }

@@ -4,6 +4,10 @@
 
     <data>
 
+        <import type="java.util.List" />
+
+        <import type="today.kinema.vo.Movie" />
+
         <import type="today.kinema.data.api.Resource" />
 
         <import type="today.kinema.data.api.Status" />
@@ -30,7 +34,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/default_margin"
-            app:visibleGone="@{resource.data == null}">
+            app:visibleGone="@{resource.data == null || ((List&lt;Movie>) resource.data).isEmpty()}">
 
             <ProgressBar
                 android:id="@+id/progress_bar"

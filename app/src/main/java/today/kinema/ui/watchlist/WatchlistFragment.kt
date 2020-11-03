@@ -9,15 +9,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentWatchlistBinding
-import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
 
@@ -27,9 +26,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private lateinit var watchlistAdapter: WatchlistAdapter
 
     //SharedViewModel
-    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModelShared: WatchlistViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,9 +65,14 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.favoriteMovie = viewModelShared.watchlist
 
+        initWatchlist()
         initWatchlistRecyclerView()
 
         setupObservers()
+    }
+
+    private fun initWatchlist() {
+        viewModelShared.initWatchlist()
     }
 
     private fun setupObservers() {
@@ -79,7 +81,6 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             watchlistAdapter.addHeaderAndSubmitList(it)
         })
     }
-
 
 
     private fun initWatchlistRecyclerView() {
@@ -129,7 +130,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.sortWatchlistMenu -> viewModelShared.updateWatchListOrder()
+            R.id.sortWatchlistMenu -> viewModelShared.updateWatchMovieListOrder()
         }
         return true
     }

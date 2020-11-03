@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentFilterBinding
-import today.kinema.ui.SharedMovieViewModel
 import kotlin.LazyThreadSafetyMode.NONE
 
 
@@ -26,9 +25,7 @@ class FilterFragment : Fragment() {
     }
 
     //SharedViewModel
-    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModelShared: FilterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

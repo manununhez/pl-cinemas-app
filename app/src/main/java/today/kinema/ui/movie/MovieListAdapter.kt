@@ -11,17 +11,9 @@ import today.kinema.vo.Movie
 
 class MovieListAdapter(
     private val movieClickCallback: MovieViewClickCallback
-) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(Companion) {
+) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(MovieListDiffCallback()) {
 
     class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
-
-    companion object : DiffUtil.ItemCallback<Movie>() {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-            oldItem === newItem
-
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-            oldItem.id == newItem.id
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -41,6 +33,14 @@ class MovieListAdapter(
             executePendingBindings()
         }
     }
+}
+
+class  MovieListDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+        (oldItem.id == newItem.id && oldItem.dateTitle == newItem.dateTitle)
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+        oldItem == newItem
 }
 
 interface MovieViewClickCallback {

@@ -48,7 +48,7 @@ class WatchlistAdapter(
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> WatchlistViewHolderHeader.from(parent)
             ITEM_VIEW_TYPE_ITEM -> WatchlistViewHolder.from(parent)
-            else -> throw ClassCastException("Unknown viewType ${viewType}")
+            else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
 

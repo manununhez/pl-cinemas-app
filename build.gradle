@@ -1,12 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        gradle_version = "4.0.2"
+        gradle_version = '4.0.2'
         kotlin_version = '1.4.0'
         nav_version = "2.3.1"
         room_version = "2.2.5"
         retrofit_version = "2.6.0"
         fragment_version = "1.2.5"
+        multidex_version = "2.0.1"
     }
 
     repositories {

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtils {
-    const val datePattern = "yyyy-MM-dd"
+    private const val datePattern = "yyyy-MM-dd"
     private const val weekDayPattern = "EEE"
     private const val dayPattern = "dd"
     private const val monthPattern = "MMM"

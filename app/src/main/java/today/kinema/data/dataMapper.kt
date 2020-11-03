@@ -21,14 +21,14 @@ fun RoomWatchlistMovie.toDomainWatchlistMovie(): DomainWatchlistMovie =
     DomainWatchlistMovie(
         id,
         dateTitle,
-        movie
+        movie.toDomainMovie()
     )
 
 fun DomainWatchlistMovie.toRoomWatchlistMovie(): RoomWatchlistMovie =
     RoomWatchlistMovie(
         id,
         dateTitle,
-        movie,
+        movie.toRoomMovie(),
         movie.title
     )
 
@@ -125,14 +125,6 @@ fun ServerCinema.toDomainCinema(): DomainCinema =
         cinemaPageUrl
     )
 
-fun DomainAttribute.toRoomAttribute(): RoomAttribute =
-    RoomAttribute(
-        cinemas,
-        cities,
-        days,
-        languages
-    )
-
 fun ServerAttribute.toRoomAttribute(): RoomAttribute =
     RoomAttribute(
         cinemas,
@@ -160,11 +152,6 @@ fun DomainFilterAttribute.toServerFilterAttribute(): ServerFilterAttribute =
     )
 
 fun RoomFilterAttribute.toDomainFilterAttribute(): DomainFilterAttribute =
-    DomainFilterAttribute(
-        city, date, cinema, language
-    )
-
-fun ServerFilterAttribute.toDomainFilterAttribute(): DomainFilterAttribute =
     DomainFilterAttribute(
         city, date, cinema, language
     )

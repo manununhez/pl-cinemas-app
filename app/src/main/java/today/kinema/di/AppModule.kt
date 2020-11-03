@@ -15,9 +15,7 @@ import today.kinema.data.api.KinemaDataSource
 import today.kinema.data.api.KinemaService
 import today.kinema.data.db.KinemaDb
 import today.kinema.data.db.RoomDataSource
-import today.kinema.data.db.WatchlistMovieDao
-import today.kinema.repository.MovieRepository
-import today.kinema.util.AppExecutors
+import today.kinema.repository.KinemaRepository
 import javax.inject.Singleton
 
 
@@ -53,30 +51,19 @@ object AppModule {
         )
     }
 
-    @Provides
-    fun provideAppExecutors() = AppExecutors()
-
-
     @Singleton
     @Provides
-    fun provideMovieRepository(
+    fun provideKinemaRepository(
         kinemaDataSource: KinemaDataSource,
-        roomDataSource: RoomDataSource,
-        appExecutors: AppExecutors
+        roomDataSource: RoomDataSource
     ) =
-        MovieRepository(kinemaDataSource, roomDataSource, appExecutors)
+        KinemaRepository(kinemaDataSource, roomDataSource)
 
     @Singleton
     @Provides
     fun provideKinemaDb(app: Application) = KinemaDb.build(app)
 
-    @Singleton
     @Provides
-    fun provideFavoriteMovieDao(db: KinemaDb): WatchlistMovieDao {
-        return db.watchlistMovieDao()
-    }
-
-    @Provides
-    fun provideLocalStorage(sharedPreferences: SharedPreferences, gson: Gson, db: KinemaDb) =
+    fun provideRoomDataSource(sharedPreferences: SharedPreferences, gson: Gson, db: KinemaDb) =
         RoomDataSource(sharedPreferences, gson, db)
 }

@@ -16,11 +16,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import today.kinema.data.api.ApiSuccessResponse
 import today.kinema.data.api.KinemaService
-import today.kinema.util.LiveDataCallAdapterFactory
 import today.kinema.util.TestUtil.createAttributes
 import today.kinema.util.TestUtil.createFilterAttribute
 import today.kinema.util.TestUtil.createMovies
-import today.kinema.util.getOrAwaitValue
 
 @RunWith(JUnit4::class)
 class CinemaPLServiceTest {
@@ -40,7 +38,6 @@ class CinemaPLServiceTest {
         kinemaService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
             .create(KinemaService::class.java)
     }

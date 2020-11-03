@@ -9,14 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.databinding.FragmentDetailsMovieBinding
-import today.kinema.ui.SharedMovieViewModel
 import today.kinema.vo.Cinema
 import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
@@ -32,9 +31,7 @@ class MovieDetailsFragment : Fragment() {
     private var savedWatchlistMovie: WatchlistMovie? = null
 
     //SharedViewModel
-    private val viewModelShared: SharedMovieViewModel by navGraphViewModels(R.id.nav_graph) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModelShared: MovieDetailsViewModel by viewModels()
 
     private val params by navArgs<MovieDetailsFragmentArgs>()
     private val moviesArg by lazy(NONE) {
@@ -118,19 +115,25 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        val favoriteMovie = WatchlistMovie(moviesArg)
-        viewModelShared.getWatchlistMovie(favoriteMovie).observe(viewLifecycleOwner, {
-            savedWatchlistMovie = it
-            if (it == null) {
-                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)
-                binding.textWatchlist.text = resources.getString(R.string.menu_item_watchlist)
-            } else {
-                binding.textWatchlist.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist, 0, 0)
-                binding.textWatchlist.text = resources.getString(R.string.watchlist_added)
-            }
-        })
-
+        getWatchlistMovie()
         initRecyclerView()
+
+    }
+
+    private fun getWatchlistMovie() {
+        viewModelShared.getWatchlistMovie(WatchlistMovie(moviesArg))
+        viewModelShared.watchlist.observe(viewLifecycleOwner) {
+            savedWatchlistMovie = it
+            binding.textWatchlist.apply {
+                text = if (it == null) {
+                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)
+                    resources.getString(R.string.menu_item_watchlist)
+                } else {
+                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist, 0, 0)
+                    resources.getString(R.string.watchlist_added)
+                }
+            }
+        }
 
     }
 

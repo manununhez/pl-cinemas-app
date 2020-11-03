@@ -1,23 +1,21 @@
 package today.kinema.data.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import today.kinema.data.db.model.WatchlistMovie
-
 
 @Dao
 interface WatchlistMovieDao {
 
     @Query(
-        "SELECT * FROM watchlistMovie ORDER BY " +
+        "SELECT * FROM watchlist_movies ORDER BY " +
                 "CASE WHEN :isAsc = 1 THEN dateTitle END ASC, " +
                 "CASE WHEN :isAsc = 0 THEN dateTitle END DESC," +
                 "title"
     )
-    fun getWatchlistMovies(isAsc: Boolean): LiveData<List<WatchlistMovie>>
+    suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie>
 
-    @Query("SELECT * FROM watchlistMovie WHERE id = :id and dateTitle = :dateTitle")
-    fun getWatchlistMovie(id: Int, dateTitle: String): LiveData<WatchlistMovie>
+    @Query("SELECT * FROM watchlist_movies WHERE id = :id and dateTitle = :dateTitle")
+    suspend fun getWatchlistMovie(id: Int, dateTitle: String): WatchlistMovie
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(watchlistMovie: WatchlistMovie)

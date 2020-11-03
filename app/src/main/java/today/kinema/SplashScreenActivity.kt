@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class SplashScreenActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val SPLASH_TIME_OUT = 1000L
     }
 

@@ -1,14 +1,10 @@
 package today.kinema.data.db
 
 import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import today.kinema.data.*
 import today.kinema.data.source.LocalDataSource
-import today.kinema.util.AbsentLiveData
 import today.kinema.util.DateUtils
 import java.util.*
 import javax.inject.Inject
@@ -30,68 +26,32 @@ class RoomDataSource @Inject constructor(
     db: KinemaDb
 ) : LocalDataSource {
     companion object {
-        private const val SHARED_PREFS_CURRENT_LOCATION = "current_location"
-        private const val SHARED_PREFS_MOVIES = "Movies"
-        private const val SHARED_PREFS_WATCH_LIST_SORT = "sort watch list"
-        private const val SHARED_PREFS_ATTRIBUTES = "Attributes"
-        private const val SHARED_PREFS_SELECTED_ATTRIBUTES = "Selected attributes"
-        private const val DEFAULT_CITY_CODE = "Warszawa"
+        private const val SHARED_PREFS_CURRENT_LOCATION = "SHARED_PREFS_CURRENT_LOCATION"
+        private const val SHARED_PREFS_MOVIES_LIST_SORT = "SHARED_PREFS_MOVIES_LIST_SORT"
+        private const val SHARED_PREFS_WATCH_LIST_SORT = "SHARED_PREFS_WATCH_LIST_SORT"
+        private const val SHARED_PREFS_ATTRIBUTES = "SHARED_PREFS_ATTRIBUTES"
+        private const val SHARED_PREFS_FILTERED_ATTRIBUTES = "SHARED_PREFS_FILTERED_ATTRIBUTES"
+        private const val SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES =
+            "SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES"
         private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
+
     }
 
     private val watchlistDao = db.watchlistMovieDao()
+    private val movieDao = db.movieDao()
 
     /*******************
      * SharedPreferences
      *****************/
 
-    override fun getMovies(filterAttribute: DomainFilterAttribute): LiveData<List<DomainMovie>> {
-        val prefsMovie = sharedPreferences.getString(SHARED_PREFS_MOVIES, "")!!
-        val prefsAttrs = getFilteredAttributes() == filterAttribute
-
-        if (prefsMovie.isNotEmpty() && prefsAttrs) {
-            val type = object : TypeToken<List<RoomMovie>>() {}.type
-            val moviesList: List<RoomMovie> = gson.fromJson(prefsMovie, type)
-
-            if (moviesList.isEmpty())
-                return AbsentLiveData.create()
-
-            val formattedDay = DateUtils.dateParse(moviesList[0].dateTitle)
-            val today = DateUtils.today()
-
-            return if (formattedDay.before(today)) {//if we have a date saved older than today, we update to today's date
-                AbsentLiveData.create()
-            } else {
-                val moviesLiveData = MutableLiveData<List<DomainMovie>>()
-                moviesLiveData.value = moviesList.map {
-                    it.toDomainMovie()
-                }
-
-                return moviesLiveData
-            }
-        } else {
-            return AbsentLiveData.create()
-        }
-    }
-
-    override fun saveMovies(movies: List<DomainMovie>) {
-        val roomMovies = movies.map { it.toRoomMovie() }
-        val values = gson.toJson(roomMovies)
-        val editor = sharedPreferences.edit()
-        editor.putString(SHARED_PREFS_MOVIES, values)
-        editor.apply()
-    }
-
-    override fun getAttributes(): LiveData<DomainAttribute> {
+    override fun getAttributes(): DomainAttribute? {
         val prefs: String = sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
         return if (prefs.isNotEmpty()) {
             val type = object : TypeToken<RoomAttribute>() {}.type
             val locationList: RoomAttribute = gson.fromJson(prefs, type)
-            val locationLiveData = MutableLiveData<DomainAttribute>()
-            locationLiveData.value = locationList.toDomainAttribute()
-            locationLiveData
+            locationList.toDomainAttribute()
         } else {
-            AbsentLiveData.create()
+            null
         }
     }
 
@@ -105,10 +65,10 @@ class RoomDataSource @Inject constructor(
 
     override fun getFilteredAttributes(): DomainFilterAttribute {
         val filterAttrDefault =
-            RoomFilterAttribute(DEFAULT_CITY_CODE, DEFAULT_CURRENT_DATE, listOf(), listOf())
+            DomainFilterAttribute().toRoomFilterAttribute()
         val prefsAttributes =
             sharedPreferences.getString(
-                SHARED_PREFS_SELECTED_ATTRIBUTES,
+                SHARED_PREFS_FILTERED_ATTRIBUTES,
                 gson.toJson(filterAttrDefault)
             )
 
@@ -118,22 +78,41 @@ class RoomDataSource @Inject constructor(
         val formattedDay = DateUtils.dateParse(filterAttribute.date)
         val today = DateUtils.today()
 
+        val domainFilteredAttributes = filterAttribute.toDomainFilterAttribute()
         return if (formattedDay.before(today)) { //if we have a date saved older than today, we update to today's date
-            DomainFilterAttribute(
-                filterAttribute.city,
-                DEFAULT_CURRENT_DATE,
-                filterAttribute.cinema,
-                filterAttribute.language
-            )
+            domainFilteredAttributes.date = DEFAULT_CURRENT_DATE
+            domainFilteredAttributes
         } else {
-            filterAttribute.toDomainFilterAttribute()
+            domainFilteredAttributes
         }
     }
 
     override fun saveFilteredAttributes(item: DomainFilterAttribute) {
         val values = gson.toJson(item)
         val editor = sharedPreferences.edit()
-        editor.putString(SHARED_PREFS_SELECTED_ATTRIBUTES, values)
+        editor.putString(SHARED_PREFS_FILTERED_ATTRIBUTES, values)
+        editor.apply()
+    }
+
+    override fun getSearchMovieParameters(): DomainFilterAttribute {
+        val filterAttrDefault =
+            DomainFilterAttribute().toRoomFilterAttribute()
+        val prefsAttributes =
+            sharedPreferences.getString(
+                SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES,
+                gson.toJson(filterAttrDefault)
+            )
+
+        val type = object : TypeToken<RoomFilterAttribute>() {}.type
+        val filterAttribute: RoomFilterAttribute = gson.fromJson(prefsAttributes, type)
+
+        return filterAttribute.toDomainFilterAttribute()
+    }
+
+    override fun saveSearchMovieParameters(item: DomainFilterAttribute) {
+        val values = gson.toJson(item)
+        val editor = sharedPreferences.edit()
+        editor.putString(SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES, values)
         editor.apply()
     }
 
@@ -143,7 +122,7 @@ class RoomDataSource @Inject constructor(
             gson.toJson(RoomCoordinate(0.0, 0.0))
         )
         val type = object : TypeToken<RoomCoordinate>() {}.type
-        val coordinate : RoomCoordinate = gson.fromJson(prefsCoordinate, type)
+        val coordinate: RoomCoordinate = gson.fromJson(prefsCoordinate, type)
         return coordinate.toDomainCoordinate()
     }
 
@@ -154,29 +133,36 @@ class RoomDataSource @Inject constructor(
         editor.apply()
     }
 
-    override fun getSortWatchList() = sharedPreferences.getBoolean(
+    override fun getSortWatchMovieList() = sharedPreferences.getBoolean(
         SHARED_PREFS_WATCH_LIST_SORT,
         true
     )
 
-    override fun saveSortWatchList(isAsc: Boolean) {
+    override fun saveSortWatchMovieList(isAsc: Boolean) {
         val editor = sharedPreferences.edit()
         editor.putBoolean(SHARED_PREFS_WATCH_LIST_SORT, isAsc)
+        editor.apply()
+    }
+
+    override fun getSortMovieList() = sharedPreferences.getBoolean(
+        SHARED_PREFS_MOVIES_LIST_SORT,
+        true
+    )
+
+    override fun saveSortMovieList(isAsc: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(SHARED_PREFS_MOVIES_LIST_SORT, isAsc)
         editor.apply()
     }
 
     /********
      * DB
      *******/
-    override fun getWatchlistMovies(isAsc: Boolean): LiveData<List<DomainWatchlistMovie>> {
-        val watchlistMoviesLiveData: LiveData<List<RoomWatchlistMovie>> =
+    override suspend fun getWatchlistMovies(isAsc: Boolean): List<DomainWatchlistMovie> {
+        val watchlistMoviesLiveData: List<RoomWatchlistMovie> =
             watchlistDao.getWatchlistMovies(isAsc)
-        return Transformations.map(watchlistMoviesLiveData) { list ->
-            list.map {
-                it.toDomainWatchlistMovie().apply {
-                    header = true
-                }
-            }
+        return watchlistMoviesLiveData.map {
+            it.toDomainWatchlistMovie()
         }
     }
 
@@ -188,11 +174,36 @@ class RoomDataSource @Inject constructor(
         watchlistDao.delete(watchlistMovie.toRoomWatchlistMovie())
     }
 
-    override fun getWatchlistMovie(watchlistMovie: DomainWatchlistMovie): LiveData<DomainWatchlistMovie> {
-        val watchlistMovieLiveData: LiveData<RoomWatchlistMovie> =
+    override suspend fun getWatchlistMovie(watchlistMovie: DomainWatchlistMovie): DomainWatchlistMovie? {
+        val watchlistMovieLiveData: RoomWatchlistMovie? =
             watchlistDao.getWatchlistMovie(watchlistMovie.id, watchlistMovie.dateTitle)
-        return Transformations.map(watchlistMovieLiveData) {
-            it?.toDomainWatchlistMovie()
+        return watchlistMovieLiveData?.toDomainWatchlistMovie()
+    }
+
+    override suspend fun getMovies(isAsc: Boolean): List<DomainMovie> {
+        val prefsAttrs = getFilteredAttributes() == getSearchMovieParameters()
+        val movie: RoomMovie? = movieDao.getFirstMovie()
+
+        if (movie != null && prefsAttrs) {
+            val formattedDay = DateUtils.dateParse(movie.dateTitle)
+            val today = DateUtils.today()
+
+            return if (formattedDay.before(today)) {//if we have a date saved older than today, we update to today's date
+                listOf()
+            } else {
+                val moviesList = movieDao.getMovies(isAsc)
+                moviesList.map {
+                    it.toDomainMovie()
+                }
+            }
+        } else {
+            return listOf()
         }
+    }
+
+    override suspend fun saveMovies(movies: List<DomainMovie>) {
+        val roomMovies = movies.map { it.toRoomMovie() }
+        movieDao.clear()
+        movieDao.insertMovies(roomMovies)
     }
 }
