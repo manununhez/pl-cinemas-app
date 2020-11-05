@@ -7,7 +7,7 @@
     <string name="watchlist_fragment_label" translatable="false">fragment_watchlist</string>
 
     <!--    Material transitions names-->
-    <string name="movie_item_transition_name" translatable="false">movie_item_%1$s</string>
+    <string name="movie_item_transition_name" translatable="false">movie_item_%1$s_%2$s</string>
     <string name="watchlist_item_transition_name" translatable="false">watchlist_item_%1$s_%2$s</string>
     <string name="location_transition_name" translatable="false">location_item_%1$s</string>
     <string name="movie_detail_transition_name" translatable="false">movie_detail_transition_name</string>

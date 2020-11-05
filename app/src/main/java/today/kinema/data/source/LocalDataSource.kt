@@ -11,6 +11,7 @@ import today.kinema.vo.Movie as DomainMovie
 interface LocalDataSource {
     suspend fun getMovies(isAsc: Boolean): List<DomainMovie>
     suspend fun saveMovies(movies: List<DomainMovie>)
+    suspend fun isMoviesNotEmpty(isAsc: Boolean) : Boolean
 
     fun getAttributes(): DomainAttribute?
     fun saveAttributes(item: ServerAttribute)

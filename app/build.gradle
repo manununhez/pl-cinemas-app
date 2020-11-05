@@ -135,4 +135,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     // Mockito framework
     testImplementation 'org.mockito:mockito-core:2.28.2'
+    // Module kotlinx-coroutines-test
+    testImplementation "io.mockk:mockk:1.10.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0"
 }

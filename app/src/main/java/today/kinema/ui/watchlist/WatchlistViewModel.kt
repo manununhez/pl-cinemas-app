@@ -21,7 +21,7 @@ class WatchlistViewModel @ViewModelInject constructor(
     fun initWatchlist() {
         viewModelScope.launch {
             _watchlist.value =
-                repository.getWatchlistMovies(repository.getSortWatchMovieList())
+                repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
         }
     }
 
@@ -33,8 +33,8 @@ class WatchlistViewModel @ViewModelInject constructor(
     }
 
     fun updateWatchMovieListOrder() {
-        val isAsc = repository.getSortWatchMovieList()
-        repository.setWatchMovieListOrder(!isAsc)
+        val isAsc = repository.getSortWatchMovieListOrder()
+        repository.updateWatchMovieListOrder(!isAsc)
         initWatchlist()
     }
 

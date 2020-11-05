@@ -1,7 +1,13 @@
 package today.kinema.util
 
 import today.kinema.data.api.model.Attribute
-import today.kinema.vo.*
+import today.kinema.data.api.model.FilterAttribute
+import today.kinema.vo.Cinema
+import today.kinema.vo.Coordinate
+import today.kinema.vo.Movie
+import today.kinema.vo.WatchlistMovie
+import today.kinema.data.api.model.FilterAttribute as ServerFilterAttribute
+import today.kinema.vo.FilterAttribute as DomainFilterAttribute
 
 object TestUtil {
     private fun createCinema() = Cinema(
@@ -58,5 +64,7 @@ object TestUtil {
     fun createFilterAttribute() = FilterAttribute("city1", "date1", listOf(), listOf())
 
     fun createCurrentLocation() = Coordinate(52.185322, 20.991805)
-//    fun createCurrentLocationEmpty() = Coordinate(0.0, 0.0)
+
+    val mockedWatchlist = WatchlistMovie(createMovie())
+
 }

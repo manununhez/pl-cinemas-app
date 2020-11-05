@@ -69,6 +69,6 @@ class FilterViewModel @ViewModelInject constructor(
     }
 
     private fun saveFilteredAttributes() {
-        repository.saveFilteredAttributes(_currentFilterAttribute.value!!)
+        repository.updateFilteredAttributes(_currentFilterAttribute.value!!)
     }
 }

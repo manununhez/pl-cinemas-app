@@ -2,7 +2,6 @@
   "success": true,
   "data": [
     {
-      "movie": {
         "id": 335,
         "title": "After 2",
         "description": "Tessa wciąż nie potrafi wybaczyć i zaufać Hardinowi, po tym co między nimi zaszło. Aby wyleczyć się z namiętności, rzuca się w wir pracy.",
@@ -16,9 +15,8 @@
         "created_at": "2020-09-28T19:20:28.000000Z",
         "updated_at": "2020-09-28T19:23:19.000000Z",
         "date_title": "2020-10-01",
-        "city": "Warszawa"
-      },
-      "cinemas": [
+        "city": "Warszawa",
+        "cinemas": [
         {
           "cinema_id": "1",
           "location_id": "1",
@@ -62,7 +60,6 @@
       ]
     },
     {
-      "movie": {
         "id": 344,
         "title": "Greenland",
         "description": "W przededniu katastrofy tylko nieliczni dostają od władz szansę na ocalenie w tajnych schronach. Żeby ją wykorzystać muszą po drodze stoczyć walkę o przetrwanie w świecie, który ogarnął chaos i panika.",
@@ -76,9 +73,8 @@
         "created_at": "2020-09-28T19:20:37.000000Z",
         "updated_at": "2020-09-28T19:23:19.000000Z",
         "date_title": "2020-10-01",
-        "city": "Warszawa"
-      },
-      "cinemas": [
+        "city": "Warszawa",
+        "cinemas": [
         {
           "cinema_id": "1",
           "location_id": "14",

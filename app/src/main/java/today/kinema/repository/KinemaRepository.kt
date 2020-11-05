@@ -5,7 +5,6 @@ import today.kinema.data.api.Resource
 import today.kinema.data.api.model.GeneralResponse
 import today.kinema.data.db.RoomDataSource
 import today.kinema.data.toDomainMovie
-import today.kinema.util.LocationUtils.orderCinemasByDistance
 import today.kinema.vo.Coordinate
 import today.kinema.vo.WatchlistMovie
 import javax.inject.Inject
@@ -24,25 +23,19 @@ class KinemaRepository @Inject constructor(
         filterAttribute: DomainFilterAttribute,
         isAsc: Boolean
     ): Resource<List<DomainMovie>> {
-        val data: List<DomainMovie> = roomDataSource.getMovies(isAsc)
 
-        if (data.isNotEmpty())//shouldFetch
-            return Resource.success(data)
+        if (roomDataSource.isMoviesNotEmpty(isAsc))//shouldFetch
+            return Resource.success(roomDataSource.getMovies(isAsc))
 
         val result: GeneralResponse<List<ServerMovie>> =
             kinemaDataSource.searchMovies(filterAttribute)
 
         return if (result.success) {
             //SaveData attributes
-            saveSearchMovieParameters(filterAttribute)
-            saveFilteredAttributes(filterAttribute)
+            roomDataSource.saveSearchMovieParameters(filterAttribute)
+            updateFilteredAttributes(filterAttribute)
             //SaveData results
-            //order list based on distance
-            roomDataSource.saveMovies(
-                orderCinemasByDistance(
-                    getCurrentLocation(),
-                    result.data.map { it.toDomainMovie() })
-            )
+            roomDataSource.saveMovies(result.data.map { it.toDomainMovie() })
 
             //loadFromDb
             Resource.success(roomDataSource.getMovies(isAsc))
@@ -53,10 +46,6 @@ class KinemaRepository @Inject constructor(
     }
 
     suspend fun loadAttributes(): Resource<DomainAttribute> {
-        val data: DomainAttribute? = roomDataSource.getAttributes()
-        if (data != null)//shouldFetch
-            return Resource.success(data)
-
         val result: GeneralResponse<ServerAttribute> = kinemaDataSource.getAttributes()
 
         return if (result.success) {
@@ -68,23 +57,6 @@ class KinemaRepository @Inject constructor(
         } else {
             Resource.error(result.message, null)
         }
-
-    }
-
-    fun getFilteredAttributes() = roomDataSource.getFilteredAttributes()
-
-    fun saveFilteredAttributes(filterAttribute: DomainFilterAttribute) {
-        roomDataSource.saveFilteredAttributes(filterAttribute)
-    }
-
-    private fun saveSearchMovieParameters(filterAttribute: DomainFilterAttribute) {
-        roomDataSource.saveSearchMovieParameters(filterAttribute)
-    }
-
-    fun getCurrentLocation() = roomDataSource.getCurrentLocation()
-
-    fun setCurrentLocation(currentLocation: Coordinate) {
-        roomDataSource.saveCurrentLocation(currentLocation)
     }
 
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie> =
@@ -101,13 +73,25 @@ class KinemaRepository @Inject constructor(
         roomDataSource.deleteWatchlistMovie(watchlistMovie)
     }
 
-    fun getSortWatchMovieList(): Boolean = roomDataSource.getSortWatchMovieList()
+    fun getFilteredAttributes(): DomainFilterAttribute = roomDataSource.getFilteredAttributes()
 
-    fun setWatchMovieListOrder(isAsc: Boolean) {
+    fun updateFilteredAttributes(filterAttribute: DomainFilterAttribute) {
+        roomDataSource.saveFilteredAttributes(filterAttribute)
+    }
+
+    fun getCurrentLocation() = roomDataSource.getCurrentLocation()
+
+    fun updateCurrentLocation(currentLocation: Coordinate) {
+        roomDataSource.saveCurrentLocation(currentLocation)
+    }
+
+    fun getSortWatchMovieListOrder(): Boolean = roomDataSource.getSortWatchMovieList()
+
+    fun updateWatchMovieListOrder(isAsc: Boolean) {
         roomDataSource.saveSortWatchMovieList(isAsc)
     }
 
-    fun getSortMovieList(): Boolean = roomDataSource.getSortMovieList()
+    fun getSortMovieListOrder(): Boolean = roomDataSource.getSortMovieList()
 
     fun updateMovieListOrder(isAsc: Boolean) {
         roomDataSource.saveSortMovieList(isAsc)

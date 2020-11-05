@@ -29,12 +29,11 @@ class MovieViewModel @ViewModelInject constructor(
     val attributes: LiveData<Resource<Attribute>>
         get() = _attributes
 
-
     init {
         _currentFilterAttribute.value = repository.getFilteredAttributes()
         initAttributes()
+        loadMovies()
     }
-
 
     private fun initAttributes() {
         viewModelScope.launch {
@@ -44,33 +43,32 @@ class MovieViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun initMovies() {
+    private fun loadMovies() {
         viewModelScope.launch {
             _movies.value = Resource.loading(null)
             _movies.value =
                 repository.loadMovies(
                     _currentFilterAttribute.value!!,
-                    repository.getSortMovieList()
+                    repository.getSortMovieListOrder()
                 )
         }
     }
 
     private fun saveFilteredAttributes() {
-        repository.saveFilteredAttributes(_currentFilterAttribute.value!!)
+        repository.updateFilteredAttributes(_currentFilterAttribute.value!!)
     }
 
-    fun loadMovies() {
+    fun updateMovies() {
         val selectedAttributes = repository.getFilteredAttributes()
         val filterAttribute = _currentFilterAttribute.value!!
 
         if (filterAttribute != selectedAttributes) {
             _currentFilterAttribute.value = selectedAttributes
+            saveFilteredAttributes()
+            loadMovies()
         }
 
-        saveFilteredAttributes()
-        initMovies()
     }
-
 
     fun setDateMoviesTitle(newDate: String) {
         val filterAttribute = _currentFilterAttribute.value!!
@@ -78,16 +76,16 @@ class MovieViewModel @ViewModelInject constructor(
 
         _currentFilterAttribute.value = filterAttribute
         saveFilteredAttributes()
-        initMovies()
+        loadMovies()
     }
 
     fun updateMovieListOrder() {
-        val isAsc = repository.getSortMovieList()
+        val isAsc = repository.getSortMovieListOrder()
         repository.updateMovieListOrder(!isAsc)
-        initMovies()
+        loadMovies()
     }
 
     fun retry() {
-        initMovies()
+        loadMovies()
     }
 }

@@ -27,7 +27,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:transitionName="@{@string/movie_item_transition_name(movie.id)}"
+        android:transitionName="@{@string/movie_item_transition_name(movie.id, movie.dateTitle)}"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="?attr/colorSecondary"

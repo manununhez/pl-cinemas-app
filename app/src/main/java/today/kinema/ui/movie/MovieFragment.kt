@@ -41,6 +41,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
         }
+
+        returnTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
     }
 
     override fun onCreateView(
@@ -81,7 +85,36 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun initializeMovies() {
-        viewModelShared.loadMovies()
+        viewModelShared.updateMovies()
+    }
+
+    private fun initMoviesRecyclerView() {
+        val movieClickCallback = object : MovieViewClickCallback {
+            override fun onClick(view: View, movies: Movie) {
+                navigateToMovieDetailsFragment(view, movies)
+            }
+        }
+
+        movieListAdapter = MovieListAdapter(movieClickCallback)
+
+        binding.movieListGrid.adapter = movieListAdapter
+    }
+
+    private fun initDateTitleRecyclerView() {
+        val dayTitleClickCallback = object : DayTitleViewClickCallback {
+            override fun onClick(cardView: View, dateTitle: String) {
+                viewModelShared.setDateMoviesTitle(dateTitle)
+            }
+        }
+
+        daysListAdapter =
+            DaysListAdapter(
+                dayTitleClickCallback,
+                viewModelShared.currentFilterAttribute,
+                viewLifecycleOwner
+            )
+
+        binding.rvDaysTitle.adapter = daysListAdapter
     }
 
     private fun setupObservers() {
@@ -115,35 +148,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
             binding.tvSubtitle.text = if (it.city.isNotEmpty()) it.city else ""
         })
-    }
-
-    private fun initMoviesRecyclerView() {
-        val movieClickCallback = object : MovieViewClickCallback {
-            override fun onClick(view: View, movies: Movie) {
-                navigateToMovieDetailsFragment(view, movies)
-            }
-        }
-
-        movieListAdapter = MovieListAdapter(movieClickCallback)
-
-        binding.movieListGrid.adapter = movieListAdapter
-    }
-
-    private fun initDateTitleRecyclerView() {
-        val dayTitleClickCallback = object : DayTitleViewClickCallback {
-            override fun onClick(cardView: View, dateTitle: String) {
-                viewModelShared.setDateMoviesTitle(dateTitle)
-            }
-        }
-
-        daysListAdapter =
-            DaysListAdapter(
-                dayTitleClickCallback,
-                viewModelShared.currentFilterAttribute,
-                viewLifecycleOwner
-            )
-
-        binding.rvDaysTitle.adapter = daysListAdapter
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

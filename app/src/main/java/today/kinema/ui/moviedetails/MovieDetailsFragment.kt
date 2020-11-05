@@ -19,7 +19,6 @@ import today.kinema.databinding.FragmentDetailsMovieBinding
 import today.kinema.vo.Cinema
 import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
-import kotlin.LazyThreadSafetyMode.NONE
 
 
 /**
@@ -34,9 +33,7 @@ class MovieDetailsFragment : Fragment() {
     private val viewModelShared: MovieDetailsViewModel by viewModels()
 
     private val params by navArgs<MovieDetailsFragmentArgs>()
-    private val moviesArg by lazy(NONE) {
-        params.movie
-    }
+    private lateinit var moviesArg: Movie
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +64,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        moviesArg = viewModelShared.orderCinemasByDistance(params.movie)
         binding.run {
             movie = moviesArg
             duration.text = if (moviesArg.duration == "0") "" else resources.getString(
@@ -136,7 +134,6 @@ class MovieDetailsFragment : Fragment() {
         }
 
     }
-
 
     private fun initRecyclerView() {
         val cinemaClickCallback = object :

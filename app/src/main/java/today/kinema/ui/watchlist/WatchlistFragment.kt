@@ -113,7 +113,6 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
         }
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val movieDetailTransitionName =
                 resources.getString(R.string.movie_detail_transition_name)

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import today.kinema.repository.KinemaRepository
+import today.kinema.util.LocationUtils
+import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
 
 class MovieDetailsViewModel @ViewModelInject constructor(
@@ -38,4 +40,7 @@ class MovieDetailsViewModel @ViewModelInject constructor(
             getWatchlistMovie(watchlistMovie)
         }
     }
+
+    fun orderCinemasByDistance(movie: Movie) = LocationUtils.orderCinemasByDistance(repository.getCurrentLocation(), movie)
+
 }

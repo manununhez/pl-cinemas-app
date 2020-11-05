@@ -180,6 +180,8 @@ class RoomDataSource @Inject constructor(
         return watchlistMovieLiveData?.toDomainWatchlistMovie()
     }
 
+    override suspend fun isMoviesNotEmpty(isAsc: Boolean) = getMovies(isAsc).isNotEmpty()
+
     override suspend fun getMovies(isAsc: Boolean): List<DomainMovie> {
         val prefsAttrs = getFilteredAttributes() == getSearchMovieParameters()
         val movie: RoomMovie? = movieDao.getFirstMovie()

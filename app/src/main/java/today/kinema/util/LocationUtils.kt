@@ -23,32 +23,26 @@ object LocationUtils {
 
     fun orderCinemasByDistance(
         currentLocation: Coordinate,
-        moviesList: List<Movie>
-    ): List<Movie> {
-        if (currentLocation.latitude == 0.0 && currentLocation.longitude == 0.0) //LastKnownLocation not found!
-            return moviesList
+        movie: Movie
+    ): Movie {
+        if (currentLocation.isEmpty()) //LastKnownLocation not found!
+            return movie
 
-        val tmpMovieList = mutableListOf<Movie>()
-        for (movieItem: Movie in moviesList) {
-            //Order cinemas
-            for (cinemaItem: Cinema in movieItem.cinemas) {
-                cinemaItem.distance = getDistanceBetweenTwoPoints(
-                    currentLocation.latitude,
-                    currentLocation.longitude,
-                    cinemaItem.latitude.toDouble(),
-                    cinemaItem.longitude.toDouble()
-                )
-            }
-
-            val cinemasSorted = movieItem.cinemas.sortedBy {
-                it.distance
-            }
-
-            tmpMovieList.add(Movie(movieItem, cinemasSorted))
-
+        //Order cinemas
+        for (cinemaItem: Cinema in movie.cinemas) {
+            cinemaItem.distance = getDistanceBetweenTwoPoints(
+                currentLocation.latitude,
+                currentLocation.longitude,
+                cinemaItem.latitude.toDouble(),
+                cinemaItem.longitude.toDouble()
+            )
         }
 
-        return tmpMovieList.toList()
+        val cinemasSorted = movie.cinemas.sortedBy {
+            it.distance
+        }
+
+        return Movie(movie, cinemasSorted)
 
     }
 

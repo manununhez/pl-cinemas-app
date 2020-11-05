@@ -10,6 +10,6 @@ class SharedMovieViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     fun setCurrentLocation(currentLocation: Coordinate) {
-        repository.setCurrentLocation(currentLocation)
+        repository.updateCurrentLocation(currentLocation)
     }
 }

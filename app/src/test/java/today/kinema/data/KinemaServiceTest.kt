@@ -1,6 +1,8 @@
 package today.kinema.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
@@ -14,14 +16,13 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import today.kinema.data.api.ApiSuccessResponse
 import today.kinema.data.api.KinemaService
 import today.kinema.util.TestUtil.createAttributes
 import today.kinema.util.TestUtil.createFilterAttribute
 import today.kinema.util.TestUtil.createMovies
 
 @RunWith(JUnit4::class)
-class CinemaPLServiceTest {
+class KinemaServiceTest {
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -42,12 +43,12 @@ class CinemaPLServiceTest {
             .create(KinemaService::class.java)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun getMovies() {
+    fun getMovies() = runBlocking {
         enqueueResponse("movie/movie_example.json")
 
-        val response = (kinemaService.searchMovies(createFilterAttribute())
-            .getOrAwaitValue() as ApiSuccessResponse).body
+        val response = kinemaService.searchMovies(createFilterAttribute())
 
         val movies = response.data
         assertThat(movies.size, `is`(2))
@@ -83,11 +84,12 @@ class CinemaPLServiceTest {
 
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun getAttributes() {
+    fun getAttributes() = runBlocking {
         enqueueResponse("attribute/attributes_example.json")
 
-        val response = (kinemaService.getAttributes().getOrAwaitValue() as ApiSuccessResponse).body
+        val response = kinemaService.getAttributes()
 
         val attribute = response.data
         assertThat(attribute.cinemas.size, `is`(4))
