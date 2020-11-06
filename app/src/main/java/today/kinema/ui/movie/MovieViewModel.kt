@@ -31,15 +31,17 @@ class MovieViewModel @ViewModelInject constructor(
 
     init {
         _currentFilterAttribute.value = repository.getFilteredAttributes()
-        initAttributes()
+        loadAttributes()
         loadMovies()
     }
 
-    private fun initAttributes() {
+    private fun loadAttributes() {
         viewModelScope.launch {
             _attributes.value = Resource.loading(null)
             _attributes.value =
-                repository.loadAttributes()
+                repository.loadAttributes(
+                    _currentFilterAttribute.value!!
+                )
         }
     }
 
@@ -66,6 +68,7 @@ class MovieViewModel @ViewModelInject constructor(
             _currentFilterAttribute.value = selectedAttributes
             saveFilteredAttributes()
             loadMovies()
+            loadAttributes()
         }
 
     }

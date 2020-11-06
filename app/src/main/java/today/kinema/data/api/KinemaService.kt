@@ -1,7 +1,6 @@
 package today.kinema.data.api
 
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 import today.kinema.data.api.model.Attribute
 import today.kinema.data.api.model.FilterAttribute
@@ -15,7 +14,9 @@ interface KinemaService {
         @Body filterAttribute: FilterAttribute
     ): GeneralResponse<List<Movie>>
 
-    @GET("attributes")
-     suspend fun getAttributes(): GeneralResponse<Attribute>
+    @POST("attributes")
+     suspend fun getAttributes(
+        @Body filterAttribute: FilterAttribute
+    ): GeneralResponse<Attribute>
 
 }

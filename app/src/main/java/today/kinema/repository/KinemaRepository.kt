@@ -45,8 +45,8 @@ class KinemaRepository @Inject constructor(
 
     }
 
-    suspend fun loadAttributes(): Resource<DomainAttribute> {
-        val result: GeneralResponse<ServerAttribute> = kinemaDataSource.getAttributes()
+    suspend fun loadAttributes(filterAttribute: DomainFilterAttribute,): Resource<DomainAttribute> {
+        val result: GeneralResponse<ServerAttribute> = kinemaDataSource.getAttributes(filterAttribute)
 
         return if (result.success) {
             //SaveData

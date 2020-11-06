@@ -11,11 +11,12 @@ import today.kinema.data.api.model.GeneralResponse
 import today.kinema.data.db.RoomDataSource
 import today.kinema.data.toDomainAttribute
 import today.kinema.data.toDomainFilterAttribute
+import today.kinema.data.toDomainMovie
 import today.kinema.data.toServerMovie
-import today.kinema.util.TestUtil.createAttributes
-import today.kinema.util.TestUtil.createCurrentLocation
-import today.kinema.util.TestUtil.createFilterAttribute
-import today.kinema.util.TestUtil.createMovies
+import today.kinema.util.TestUtil.mockedAttributes
+import today.kinema.util.TestUtil.mockedCurrentLocation
+import today.kinema.util.TestUtil.mockedFilterAttribute
+import today.kinema.util.TestUtil.mockedMovies
 import today.kinema.util.TestUtil.mockedWatchlist
 import today.kinema.vo.Coordinate
 import today.kinema.vo.Movie
@@ -36,8 +37,8 @@ class KinemaRepositoryTest {
     @Test
     fun `load movies from DB without server call`() {
         //----Arrange
-        val filterAttribute = createFilterAttribute().toDomainFilterAttribute()
-        val movies = createMovies()
+        val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
+        val movies = mockedMovies.map { it.toDomainMovie() }
         val isAsc = true
         //Prepare DB
         coEvery { roomDataSource.isMoviesNotEmpty(isAsc) }.returns(true)
@@ -54,7 +55,7 @@ class KinemaRepositoryTest {
     @Test
     fun `load movies from DB with server call error`() {
         //----Arrange
-        val filterAttribute = createFilterAttribute().toDomainFilterAttribute()
+        val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
         val movies = listOf<Movie>()
         val isAsc = true
         val message = ""
@@ -83,10 +84,10 @@ class KinemaRepositoryTest {
     @Test
     fun `load movies from DB with server call success`() {
         //----Arrange
-        val filterAttribute = createFilterAttribute().toDomainFilterAttribute()
-        val movies = createMovies()
+        val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
+        val movies = mockedMovies.map { it.toDomainMovie() }
         val isAsc = true
-        val successResponse = GeneralResponse(true, "", movies.map { it.toServerMovie() })
+        val successResponse = GeneralResponse(true, "", mockedMovies)
         val expectedResult = Resource.success(movies)
 
         //Prepare DB
@@ -124,21 +125,22 @@ class KinemaRepositoryTest {
     @Test
     fun `load attributes from server success`() {
         //----Arrange
-        val attribute = createAttributes()
+        val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
+        val attribute = mockedAttributes
         val successResponse = GeneralResponse(true, "", attribute)
         val expectedResult = Resource.success(attribute.toDomainAttribute())
         //Prepare DB
-        coEvery { kinemaDataSource.getAttributes() }.returns(successResponse)
+        coEvery { kinemaDataSource.getAttributes(filterAttribute) }.returns(successResponse)
         coEvery { roomDataSource.getAttributes() }.returns(attribute.toDomainAttribute())
         coJustRun { roomDataSource.saveAttributes(attribute) }
 
         //----Act
-        val result = runBlocking { repository.loadAttributes() }
+        val result = runBlocking { repository.loadAttributes(filterAttribute) }
         //I want to make sure mocked.x wasn't called anymore
         coVerify(exactly = 1) {
             roomDataSource.getAttributes()
             roomDataSource.saveAttributes(attribute)
-            kinemaDataSource.getAttributes()
+            kinemaDataSource.getAttributes(filterAttribute)
         }
 
         assertEquals(expectedResult, result)
@@ -147,17 +149,18 @@ class KinemaRepositoryTest {
     @Test
     fun `load attributes from server error`() {
         //----Arrange
-        val attribute = createAttributes()
+        val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
+        val attribute = mockedAttributes
         val successResponse = GeneralResponse(false, "", attribute)
         val expectedResult = Resource.error("", null)
         //Prepare DB
-        coEvery { kinemaDataSource.getAttributes() }.returns(successResponse)
+        coEvery { kinemaDataSource.getAttributes(filterAttribute) }.returns(successResponse)
 
         //----Act
-        val result = runBlocking { repository.loadAttributes() }
+        val result = runBlocking { repository.loadAttributes(filterAttribute) }
         //I want to make sure mocked.x wasn't called anymore
         coVerify(exactly = 1) {
-            kinemaDataSource.getAttributes()
+            kinemaDataSource.getAttributes(filterAttribute)
         }
 
         assertEquals(expectedResult, result)
@@ -166,7 +169,7 @@ class KinemaRepositoryTest {
     @Test
     fun `get filtered attributes`() {
         //Prepare DB
-        coEvery { roomDataSource.getFilteredAttributes() }.returns(createFilterAttribute().toDomainFilterAttribute())
+        coEvery { roomDataSource.getFilteredAttributes() }.returns(mockedFilterAttribute.toDomainFilterAttribute())
 
         repository.getFilteredAttributes()
         coVerify(exactly = 1) { roomDataSource.getFilteredAttributes() }
@@ -174,7 +177,7 @@ class KinemaRepositoryTest {
 
     @Test
     fun `update filtered attributes`() {
-        val data = createFilterAttribute().toDomainFilterAttribute()
+        val data = mockedFilterAttribute.toDomainFilterAttribute()
         //Prepare DB
         coJustRun { roomDataSource.saveFilteredAttributes(data) }
 
@@ -230,7 +233,7 @@ class KinemaRepositoryTest {
 
     @Test
     fun `get current location`() {
-        val data = createCurrentLocation()
+        val data = mockedCurrentLocation
 
         //Prepare DB
         coEvery { roomDataSource.getCurrentLocation() }.returns(data)
@@ -242,7 +245,7 @@ class KinemaRepositoryTest {
 
     @Test
     fun `update current location`() {
-        val data = createCurrentLocation()
+        val data = mockedCurrentLocation
         //Prepare DB
         coJustRun { roomDataSource.saveCurrentLocation(data) }
 

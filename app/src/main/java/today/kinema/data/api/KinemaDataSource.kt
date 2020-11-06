@@ -15,7 +15,7 @@ class KinemaDataSource @Inject constructor(
         kinemaService.searchMovies(filterAttribute.toServerFilterAttribute())
 
 
-    override suspend fun getAttributes(): GeneralResponse<Attribute> =
-        kinemaService.getAttributes()
+    override suspend fun getAttributes(filterAttribute: FilterAttribute): GeneralResponse<Attribute> =
+        kinemaService.getAttributes(filterAttribute.toServerFilterAttribute())
 
 }

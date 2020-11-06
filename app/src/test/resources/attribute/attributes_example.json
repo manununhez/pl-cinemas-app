@@ -15,9 +15,14 @@
       "Czechowice-Dziedzice"
     ],
     "days": [
-      "2020-10-01",
-      "2020-10-02",
-      "2020-10-03"
+      {
+        "date": "2020-11-06",
+        "enable": true
+      },
+      {
+        "date": "2020-11-07",
+        "enable": false
+      }
     ],
     "languages": [
       "angielski"

@@ -7,5 +7,5 @@ import today.kinema.vo.FilterAttribute
 
 interface RemoteDataSource {
     suspend fun searchMovies(filterAttribute: FilterAttribute): GeneralResponse<List<Movie>>
-    suspend fun getAttributes(): GeneralResponse<Attribute>
+    suspend fun getAttributes(filterAttribute: FilterAttribute): GeneralResponse<Attribute>
 }

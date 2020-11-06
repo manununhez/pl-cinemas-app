@@ -33,12 +33,14 @@
                 android:id="@+id/tvBackgroundOVerlay"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.2"
+                android:alpha="0.4"
                 android:background="?attr/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
             <TextView
                 android:id="@+id/tvDayTitle"
@@ -79,6 +81,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvDayTitle"
                 tools:text="SEP" />
 
+            <TextView
+                android:id="@+id/tvBackgroundDisabledOVerlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.4"
+                android:background="@color/gray_disable"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

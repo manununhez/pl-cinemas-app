@@ -2,17 +2,20 @@ package today.kinema.data
 
 import today.kinema.data.api.model.Attribute as ServerAttribute
 import today.kinema.data.api.model.Cinema as ServerCinema
+import today.kinema.data.api.model.Day as ServerDay
 import today.kinema.data.api.model.FilterAttribute as ServerFilterAttribute
 import today.kinema.data.api.model.Movie as ServerMovie
 import today.kinema.data.db.model.Attribute as RoomAttribute
 import today.kinema.data.db.model.Cinema as RoomCinema
 import today.kinema.data.db.model.Coordinate as RoomCoordinate
+import today.kinema.data.db.model.Day as RoomDay
 import today.kinema.data.db.model.FilterAttribute as RoomFilterAttribute
 import today.kinema.data.db.model.Movie as RoomMovie
 import today.kinema.data.db.model.WatchlistMovie as RoomWatchlistMovie
 import today.kinema.vo.Attribute as DomainAttribute
 import today.kinema.vo.Cinema as DomainCinema
 import today.kinema.vo.Coordinate as DomainCoordinate
+import today.kinema.vo.Day as DomainDay
 import today.kinema.vo.FilterAttribute as DomainFilterAttribute
 import today.kinema.vo.Movie as DomainMovie
 import today.kinema.vo.WatchlistMovie as DomainWatchlistMovie
@@ -160,24 +163,41 @@ fun ServerAttribute.toRoomAttribute(): RoomAttribute =
     RoomAttribute(
         cinemas,
         cities,
-        days,
+        days.map { it.toRoomDay() },
         languages
+    )
+
+fun ServerDay.toRoomDay(): RoomDay =
+    RoomDay(
+        date,
+        moviesAvailable
     )
 
 fun ServerAttribute.toDomainAttribute(): DomainAttribute =
     DomainAttribute(
         cinemas,
         cities,
-        days,
+        days.map { it.toDomainDay() },
         languages
+    )
+
+fun ServerDay.toDomainDay(): DomainDay =
+    DomainDay(
+        date,
+        moviesAvailable
     )
 
 fun RoomAttribute.toDomainAttribute(): DomainAttribute =
     DomainAttribute(
         cinemas,
         cities,
-        days,
+        days.map { it.toDomainDay() },
         languages
+    )
+
+fun RoomDay.toDomainDay(): DomainDay =
+    DomainDay(
+        date, moviesAvailable
     )
 
 fun DomainFilterAttribute.toRoomFilterAttribute(): RoomFilterAttribute =

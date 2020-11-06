@@ -17,9 +17,9 @@ import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import today.kinema.data.api.KinemaService
-import today.kinema.util.TestUtil.createAttributes
-import today.kinema.util.TestUtil.createFilterAttribute
-import today.kinema.util.TestUtil.createMovies
+import today.kinema.util.TestUtil.mockedAttributes
+import today.kinema.util.TestUtil.mockedFilterAttribute
+import today.kinema.util.TestUtil.mockedMovies
 
 @RunWith(JUnit4::class)
 class KinemaServiceTest {
@@ -48,13 +48,13 @@ class KinemaServiceTest {
     fun getMovies() = runBlocking {
         enqueueResponse("movie/movie_example.json")
 
-        val response = kinemaService.searchMovies(createFilterAttribute())
+        val response = kinemaService.searchMovies(mockedFilterAttribute)
 
         val movies = response.data
         assertThat(movies.size, `is`(2))
 
         val movie = movies[0]
-        val movieListTest = createMovies()
+        val movieListTest = mockedMovies
         assertThat(movie.id, `is`(movieListTest[0].id))
         assertThat(movie.title, `is`(movieListTest[0].title))
         assertThat(movie.description, `is`(movieListTest[0].description))
@@ -89,15 +89,15 @@ class KinemaServiceTest {
     fun getAttributes() = runBlocking {
         enqueueResponse("attribute/attributes_example.json")
 
-        val response = kinemaService.getAttributes()
+        val response = kinemaService.getAttributes(mockedFilterAttribute)
 
         val attribute = response.data
         assertThat(attribute.cinemas.size, `is`(4))
         assertThat(attribute.cities.size, `is`(5))
-        assertThat(attribute.days.size, `is`(3))
+        assertThat(attribute.days.size, `is`(2))
         assertThat(attribute.languages.size, `is`(1))
 
-        val attributeTest = createAttributes()
+        val attributeTest = mockedAttributes
         assertThat(attribute.cinemas, `is`(attributeTest.cinemas))
         assertThat(attribute.cities, `is`(attributeTest.cities))
         assertThat(attribute.days, `is`(attributeTest.days))

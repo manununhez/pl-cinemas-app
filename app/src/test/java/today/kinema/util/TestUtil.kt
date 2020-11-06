@@ -1,16 +1,12 @@
 package today.kinema.util
 
-import today.kinema.data.api.model.Attribute
-import today.kinema.data.api.model.FilterAttribute
-import today.kinema.vo.Cinema
+import today.kinema.data.api.model.*
+import today.kinema.data.toDomainMovie
 import today.kinema.vo.Coordinate
-import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
-import today.kinema.data.api.model.FilterAttribute as ServerFilterAttribute
-import today.kinema.vo.FilterAttribute as DomainFilterAttribute
 
 object TestUtil {
-    private fun createCinema() = Cinema(
+    private val mockedCinema = Cinema(
         "1",
         "1",
         "Warszawa Złote Tarasy",
@@ -21,7 +17,7 @@ object TestUtil {
         "https://multikino.pl/filmy/after-2"
     )
 
-    private fun createMovie() = Movie(
+    private val mockedMovie = Movie(
         "335",
         "After 2",
         "Tessa wciąż nie potrafi wybaczyć i zaufać Hardinowi, po tym co między nimi zaszło. Aby wyleczyć się z namiętności, rzuca się w wir pracy.",
@@ -34,12 +30,12 @@ object TestUtil {
         "Warszawa",
         "https://www.youtube.com/watch?v=YoHYAdScBak",
         "https://media.multikino.pl/uploads/images/films_and_events/after2_dc611831b7.jpg",
-        listOf(createCinema())
+        listOf(mockedCinema)
     )
 
-    fun createMovies() = listOf(createMovie())
+    val mockedMovies = listOf(mockedMovie)
 
-    fun createAttributes() = Attribute(
+    val mockedAttributes = Attribute(
         listOf(
             "Cinema City",
             "Kino Muranow",
@@ -54,17 +50,16 @@ object TestUtil {
             "Czechowice-Dziedzice"
         ),
         listOf(
-            "2020-10-01",
-            "2020-10-02",
-            "2020-10-03"
+            Day("2020-11-06", true),
+            Day("2020-11-07", false)
         ),
         listOf("angielski")
     )
 
-    fun createFilterAttribute() = FilterAttribute("city1", "date1", listOf(), listOf())
+    val mockedFilterAttribute = FilterAttribute("city1", "date1", listOf(), listOf())
 
-    fun createCurrentLocation() = Coordinate(52.185322, 20.991805)
+    val mockedCurrentLocation = Coordinate(52.185322, 20.991805)
 
-    val mockedWatchlist = WatchlistMovie(createMovie())
+    val mockedWatchlist = WatchlistMovie(mockedMovie.toDomainMovie())
 
 }

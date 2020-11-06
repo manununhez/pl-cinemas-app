@@ -7,6 +7,12 @@ import kotlinx.android.parcel.Parcelize
 data class Attribute(
     val cinemas: List<String>,
     val cities: List<String>,
-    val days: List<String>,
+    val days: List<Day>,
     val languages: List<String>
+) : Parcelable
+
+@Parcelize
+data class Day(
+    val date: String,
+    val moviesAvailable: Boolean
 ) : Parcelable
