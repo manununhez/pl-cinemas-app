@@ -31,11 +31,11 @@ class FilterFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
 
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
     }
 

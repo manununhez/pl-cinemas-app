@@ -51,6 +51,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?, circleCrop: Boolean) {
                 .error(R.drawable.ic_broken_image)
         )
 
+//        request.transform(RoundedCorne)
+
         request.timeout(2000)
         request.into(imgView)
     }

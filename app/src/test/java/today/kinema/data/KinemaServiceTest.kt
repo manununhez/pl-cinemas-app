@@ -45,7 +45,7 @@ class KinemaServiceTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun getMovies() = runBlocking {
+    fun `movies search using filter attributes`() = runBlocking {
         enqueueResponse("movie/movie_example.json")
 
         val response = kinemaService.searchMovies(mockedFilterAttribute)
@@ -86,7 +86,7 @@ class KinemaServiceTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun getAttributes() = runBlocking {
+    fun `get attributes according to filter attributes`() = runBlocking {
         enqueueResponse("attribute/attributes_example.json")
 
         val response = kinemaService.getAttributes(mockedFilterAttribute)

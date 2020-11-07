@@ -11,6 +11,7 @@ import today.kinema.repository.KinemaRepository
 import today.kinema.vo.Attribute
 import today.kinema.vo.FilterAttribute
 import today.kinema.vo.Movie
+import today.kinema.vo.WatchlistMovie
 
 class MovieViewModel @ViewModelInject constructor(
     private val repository: KinemaRepository
@@ -19,18 +20,23 @@ class MovieViewModel @ViewModelInject constructor(
     private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
     private val _movies = MutableLiveData<Resource<List<Movie>>>()
     private val _attributes = MutableLiveData<Resource<Attribute>>()
+    private val _watchlist = MutableLiveData<List<WatchlistMovie>>()
+
+    val watchlist: LiveData<List<WatchlistMovie>>
+        get() = _watchlist
 
     val movies: LiveData<Resource<List<Movie>>>
         get() = _movies
 
     val currentFilterAttribute: LiveData<FilterAttribute>
-        get() =_currentFilterAttribute
+        get() = _currentFilterAttribute
 
     val attributes: LiveData<Resource<Attribute>>
         get() = _attributes
 
     init {
         _currentFilterAttribute.value = repository.getFilteredAttributes()
+        initWatchlist()
         loadAttributes()
         loadMovies()
     }
@@ -70,7 +76,6 @@ class MovieViewModel @ViewModelInject constructor(
             loadMovies()
             loadAttributes()
         }
-
     }
 
     fun setDateMoviesTitle(newDate: String) {
@@ -90,5 +95,20 @@ class MovieViewModel @ViewModelInject constructor(
 
     fun retry() {
         loadMovies()
+    }
+
+    fun initWatchlist() {
+        viewModelScope.launch {
+            _watchlist.value =
+                repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
+        }
+    }
+
+    fun updateWatchlist() {
+        viewModelScope.launch {
+            val list = repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
+            if (_watchlist.value != list)
+                _watchlist.value = list
+        }
     }
 }

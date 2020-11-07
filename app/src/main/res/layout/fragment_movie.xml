@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:logo="@drawable/ic_kinema_logo"
+                app:logo="@drawable/ic_kinema_toolbar"
                 app:menu="@menu/movie_list_menu">
 
                 <TextView

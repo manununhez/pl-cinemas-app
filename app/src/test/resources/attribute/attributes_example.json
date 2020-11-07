@@ -17,11 +17,11 @@
     "days": [
       {
         "date": "2020-11-06",
-        "enable": true
+        "movies_available": true
       },
       {
         "date": "2020-11-07",
-        "enable": false
+        "movies_available": false
       }
     ],
     "languages": [

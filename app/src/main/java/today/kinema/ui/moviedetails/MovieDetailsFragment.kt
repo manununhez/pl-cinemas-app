@@ -48,13 +48,13 @@ class MovieDetailsFragment : Fragment() {
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
             scrimColor = Color.TRANSPARENT
         }
 
         sharedElementReturnTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
             scrimColor = Color.TRANSPARENT
         }
 

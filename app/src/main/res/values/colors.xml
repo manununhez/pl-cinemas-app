@@ -6,7 +6,7 @@
     <color name="cinepl_brown_600">#6d4c41</color><!--Color primary variant (dark)-->
     <color name="cinepl_brown_700">#5d4037</color><!--Color primary variant (light)-->
 
-<color name="gray_disable">#B1B0B0</color>
+    <color name="gray_disable">#B1B0B0</color>
     <color name="cinepl_gray_dark">#121212</color><!--Color surface (dark)-->
     <color name="cinepl_gray_dark_2">#1C1C1C</color><!--Color surface (dark)-->
 
@@ -21,6 +21,7 @@
     <color name="immersive_sys_ui_deep_orange_900">@color/cinepl_deep_orange_900_dark</color>
     <color name="immersive_sys_ui_deep_orange_900_dark">@color/cinepl_red_900_dark</color>
 
+    <color name="cinemapl_orange_400">#f9be64</color>
 
     <color name="deep_purple_100">#e1bee7</color>
     <color name="deep_purple_200">#b39ddb</color>

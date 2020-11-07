@@ -39,11 +39,11 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
 
         returnTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
     }
 
@@ -76,15 +76,19 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
 
-
-        initializeMovies()
+        updateWatchlist()
+        updateMovies()
         initMoviesRecyclerView()
         initDateTitleRecyclerView()
 
         setupObservers()
     }
 
-    private fun initializeMovies() {
+    private fun updateWatchlist(){
+        viewModelShared.updateWatchlist()
+    }
+
+    private fun updateMovies() {
         viewModelShared.updateMovies()
     }
 
@@ -95,7 +99,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
 
-        movieListAdapter = MovieListAdapter(movieClickCallback)
+        movieListAdapter = MovieListAdapter(movieClickCallback, viewModelShared.watchlist, viewLifecycleOwner)
 
         binding.movieListGrid.adapter = movieListAdapter
     }
@@ -163,10 +167,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -189,10 +193,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
 
         val directions = MovieFragmentDirections.showFilterFragment(
@@ -205,10 +209,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
         }
 
         val directions = MovieFragmentDirections.showWatchlistFragment()

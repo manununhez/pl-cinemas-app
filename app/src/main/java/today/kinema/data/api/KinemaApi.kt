@@ -3,6 +3,7 @@ package today.kinema.data.api
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -15,11 +16,11 @@ class KinemaApi @Inject constructor(
 ) {
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BODY))
         .build() //Added interceptor to print level body request/response Retrofit
 
     val service: Retrofit = Retrofit.Builder()
-        .baseUrl(CINEMA_URL_PRODUCTION)
+        .baseUrl(CINEMA_URL_DEVELOPMENT)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()

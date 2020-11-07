@@ -39,12 +39,12 @@ class DaysListAdapter(
     override fun onBindViewHolder(holder: DaysViewHolder, position: Int) {
         val currentDay = getItem(position)
 
-        //TODO trying not to use LiveData here!
         currentAttributes.observe(viewLifecycleOwner, {
-            val typedArray = if (it.date == currentDay.date)
-                context.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary)) else
-                context.obtainStyledAttributes(intArrayOf(R.attr.colorOnSurface)
-            )
+            val typedArray =
+                context.obtainStyledAttributes(
+                    if (it.date == currentDay.date) intArrayOf(R.attr.colorSecondary) else intArrayOf(R.attr.colorOnSurface)
+                )
+
             val colorAttr = typedArray.getColor(0, 0)
 
             holder.binding.apply {
@@ -62,8 +62,10 @@ class DaysListAdapter(
             tvWeekDay.text = formatWeekDay(currentDay.date)
             tvDayTitle.text = formatDateDay(currentDay.date)
             tvMonthTitle.text = formatDateMonth(currentDay.date)
-            tvBackgroundDisabledOVerlay.visibility = if (tvWeekDay.text != context.resources.getString(R.string.today) && !currentDay.moviesAvailable) VISIBLE else GONE
-            dayTitleCardView.isEnabled = if (tvWeekDay.text != context.resources.getString(R.string.today)) currentDay.moviesAvailable else true //we enable todays list of movies, otherwise, we disabled if there are not movies
+            tvBackgroundDisabledOVerlay.visibility =
+                if (tvWeekDay.text != context.resources.getString(R.string.today) && !currentDay.moviesAvailable) VISIBLE else GONE
+            dayTitleCardView.isEnabled =
+                if (tvWeekDay.text != context.resources.getString(R.string.today)) currentDay.moviesAvailable else true //we enable todays list of movies, otherwise, we disabled if there are not movies
 
             dayTitleCardView.setOnClickListener {
                 dayTitleViewClickCallback.onClick(it, currentDay.date)

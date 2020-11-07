@@ -48,7 +48,6 @@ class FilterLocationAdapter(
             locationViewClickCallback: LocationViewClickCallback
         ) {
 
-            //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
                 binding.apply {
                     radio.isChecked = (item == it.city)

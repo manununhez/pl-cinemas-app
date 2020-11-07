@@ -6,18 +6,18 @@
         android:id="@+id/sortMoviesMenu"
         android:icon="@drawable/ic_sort_by_alpha"
         android:title="@string/menu_item_sort_movies"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/watchlistFragmentMenu"
         android:icon="@drawable/ic_watchlist_toolbar"
         android:title="@string/menu_item_watchlist"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/filterFragmentMenu"
         android:icon="@drawable/ic_filter_list"
         android:title="@string/menu_item_filter"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

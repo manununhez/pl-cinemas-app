@@ -58,7 +58,6 @@ class FilterCinemaAdapter(
             viewLifecycleOwner: LifecycleOwner,
             cinemaViewClickCallback: FilterCinemaViewClickCallback
         ) {
-            //TODO trying not to use LiveData here!
             currentAttribute.observe(viewLifecycleOwner, {
                 binding.apply {
                     if (item == context.resources.getString(R.string.select_all) && it.cinema.isEmpty()) { //Select all is checked!, so other options are unchecked

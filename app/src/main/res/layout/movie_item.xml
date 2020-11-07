@@ -28,6 +28,7 @@
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:transitionName="@{@string/movie_item_transition_name(movie.id, movie.dateTitle)}"
+        app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="?attr/colorSecondary"
@@ -37,9 +38,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--title background-->
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/backgroundImageView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/poster_size"
+                android:background="@color/cinemapl_orange_400"
+                android:contentDescription="@string/a11y_movie_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/poster_size"
@@ -51,6 +62,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/backgrounds/scenic" />
+
+            <!--title background-->
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_favorite_filled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView2"

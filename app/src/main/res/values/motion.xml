@@ -16,6 +16,6 @@
 
     <!--Motion-->
 
-    <integer name="reply_motion_duration_large">400</integer>
+    <integer name="kinema_motion_duration_large">400</integer>
 
 </resources>
