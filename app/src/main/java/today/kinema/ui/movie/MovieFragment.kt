@@ -84,7 +84,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         setupObservers()
     }
 
-    private fun updateWatchlist(){
+    private fun updateWatchlist() {
         viewModelShared.updateWatchlist()
     }
 
@@ -99,7 +99,8 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
 
-        movieListAdapter = MovieListAdapter(movieClickCallback, viewModelShared.watchlist, viewLifecycleOwner)
+        movieListAdapter =
+            MovieListAdapter(movieClickCallback, viewModelShared.watchlist, viewLifecycleOwner)
 
         binding.movieListGrid.adapter = movieListAdapter
     }
@@ -135,16 +136,12 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         viewModelShared.attributes.observe(viewLifecycleOwner, {
             if (it.status == Status.SUCCESS) {
-                if (it.data != null) {
-                    attributes = it.data
-                    daysListAdapter.submitList(it.data.days)
+                it.data?.let { data ->
+                    attributes = data
+                    daysListAdapter.submitList(data.days)
 
                     //scroll rv to selected date
-                    binding.rvDaysTitle.scrollToPosition(
-                        daysListAdapter.currentList.indexOf(
-                            viewModelShared.currentFilterAttribute.value?.date
-                        )
-                    )
+                    binding.rvDaysTitle.scrollToPosition(getSelectedDateIndex())
                 }
             }
         })
@@ -152,6 +149,14 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         viewModelShared.currentFilterAttribute.observe(viewLifecycleOwner, {
             binding.tvSubtitle.text = if (it.city.isNotEmpty()) it.city else ""
         })
+    }
+
+    private fun getSelectedDateIndex(): Int {
+        val element = daysListAdapter.currentList.first { day ->
+            day.date == viewModelShared.currentFilterAttribute.value!!.date
+        }
+        return daysListAdapter.currentList.indexOf(element)
+
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
