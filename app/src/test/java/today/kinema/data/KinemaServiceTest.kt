@@ -5,8 +5,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okio.buffer
-import okio.source
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -17,9 +15,11 @@ import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import today.kinema.data.api.KinemaService
+import today.kinema.util.TestUtil.attribute_example_json
 import today.kinema.util.TestUtil.mockedAttributes
 import today.kinema.util.TestUtil.mockedFilterAttribute
 import today.kinema.util.TestUtil.mockedMovies
+import today.kinema.util.TestUtil.movie_example_json
 
 @RunWith(JUnit4::class)
 class KinemaServiceTest {
@@ -46,7 +46,7 @@ class KinemaServiceTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `movies search using filter attributes`() = runBlocking {
-        enqueueResponse("movie/movie_example.json")
+        enqueueResponse(movie_example_json)
 
         val response = kinemaService.searchMovies(mockedFilterAttribute)
 
@@ -54,40 +54,40 @@ class KinemaServiceTest {
         assertThat(movies.size, `is`(2))
 
         val movie = movies[0]
-        val movieListTest = mockedMovies
-        assertThat(movie.id, `is`(movieListTest[0].id))
-        assertThat(movie.title, `is`(movieListTest[0].title))
-        assertThat(movie.description, `is`(movieListTest[0].description))
-        assertThat(movie.originalLanguage, `is`(movieListTest[0].originalLanguage))
-        assertThat(movie.duration, `is`(movieListTest[0].duration))
-        assertThat(movie.classification, `is`(movieListTest[0].classification))
-        assertThat(movie.genre, `is`(movieListTest[0].genre))
-        assertThat(movie.releaseYear, `is`(movieListTest[0].releaseYear))
-        assertThat(movie.dateTitle, `is`(movieListTest[0].dateTitle))
-        assertThat(movie.city, `is`(movieListTest[0].city))
-        assertThat(movie.trailerUrl, `is`(movieListTest[0].trailerUrl))
-        assertThat(movie.posterUrl, `is`(movieListTest[0].posterUrl))
+        val movieListTest = mockedMovies[0]
+        assertThat(movie.id, `is`(movieListTest.id))
+        assertThat(movie.title, `is`(movieListTest.title))
+        assertThat(movie.description, `is`(movieListTest.description))
+        assertThat(movie.originalLanguage, `is`(movieListTest.originalLanguage))
+        assertThat(movie.duration, `is`(movieListTest.duration))
+        assertThat(movie.classification, `is`(movieListTest.classification))
+        assertThat(movie.genre, `is`(movieListTest.genre))
+        assertThat(movie.releaseYear, `is`(movieListTest.releaseYear))
+        assertThat(movie.dateTitle, `is`(movieListTest.dateTitle))
+        assertThat(movie.city, `is`(movieListTest.city))
+        assertThat(movie.trailerUrl, `is`(movieListTest.trailerUrl))
+        assertThat(movie.posterUrl, `is`(movieListTest.posterUrl))
 
 
         val cinemas = movies[0].cinemas
         assertThat(cinemas.size, `is`(4))
 
         val cinema = cinemas[0]
-        assertThat(cinema.cinemaId, `is`(movieListTest[0].cinemas[0].cinemaId))
-        assertThat(cinema.locationId, `is`(movieListTest[0].cinemas[0].locationId))
-        assertThat(cinema.locationName, `is`(movieListTest[0].cinemas[0].locationName))
-        assertThat(cinema.language, `is`(movieListTest[0].cinemas[0].language))
-        assertThat(cinema.latitude, `is`(movieListTest[0].cinemas[0].latitude))
-        assertThat(cinema.longitude, `is`(movieListTest[0].cinemas[0].longitude))
-        assertThat(cinema.logoUrl, `is`(movieListTest[0].cinemas[0].logoUrl))
-        assertThat(cinema.cinemaPageUrl, `is`(movieListTest[0].cinemas[0].cinemaPageUrl))
+        assertThat(cinema.cinemaId, `is`(movieListTest.cinemas[0].cinemaId))
+        assertThat(cinema.locationId, `is`(movieListTest.cinemas[0].locationId))
+        assertThat(cinema.locationName, `is`(movieListTest.cinemas[0].locationName))
+        assertThat(cinema.language, `is`(movieListTest.cinemas[0].language))
+        assertThat(cinema.latitude, `is`(movieListTest.cinemas[0].latitude))
+        assertThat(cinema.longitude, `is`(movieListTest.cinemas[0].longitude))
+        assertThat(cinema.logoUrl, `is`(movieListTest.cinemas[0].logoUrl))
+        assertThat(cinema.cinemaPageUrl, `is`(movieListTest.cinemas[0].cinemaPageUrl))
 
     }
 
     @ExperimentalCoroutinesApi
     @Test
     fun `get attributes according to filter attributes`() = runBlocking {
-        enqueueResponse("attribute/attributes_example.json")
+        enqueueResponse(attribute_example_json)
 
         val response = kinemaService.getAttributes(mockedFilterAttribute)
 
@@ -105,18 +105,13 @@ class KinemaServiceTest {
     }
 
 
-    private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
-        val inputStream = javaClass.classLoader!!
-            .getResourceAsStream(fileName)
-        val source = inputStream.source().buffer()
+    private fun enqueueResponse(filename: String, headers: Map<String, String> = emptyMap()) {
         val mockResponse = MockResponse()
         for ((key, value) in headers) {
             mockResponse.addHeader(key, value)
         }
         mockWebServer.enqueue(
             mockResponse
-                .setBody(source.readString(Charsets.UTF_8))
-//                .setResponseCode(200))
-        )
+                .setBody(filename))
     }
 }
