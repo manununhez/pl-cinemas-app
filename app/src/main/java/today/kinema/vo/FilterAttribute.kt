@@ -1,19 +1,11 @@
 package today.kinema.vo
 
-import today.kinema.util.DateUtils
-import java.util.*
-
 class FilterAttribute(
-    var city: String = DEFAULT_CITY_CODE,
-    var date: String = DEFAULT_CURRENT_DATE,
-    var cinema: List<String> = listOf(),
-    var language: List<String> = listOf()
+    val city: String,
+    val date: String,
+    val cinema: List<String>,
+    val language: List<String>
 ){
-    companion object{
-        private const val DEFAULT_CITY_CODE = "Warszawa"
-        private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -62,7 +62,9 @@ class MovieViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun saveFilteredAttributes() {
+    private fun saveFilteredAttributes(filterAttribute: FilterAttribute) {
+        _currentFilterAttribute.value = filterAttribute
+
         repository.updateFilteredAttributes(_currentFilterAttribute.value!!)
     }
 
@@ -71,8 +73,7 @@ class MovieViewModel @ViewModelInject constructor(
         val filterAttribute = _currentFilterAttribute.value!!
 
         if (filterAttribute != selectedAttributes) {
-            _currentFilterAttribute.value = selectedAttributes
-            saveFilteredAttributes()
+            saveFilteredAttributes(selectedAttributes)
             loadMovies()
             loadAttributes()
         }
@@ -80,10 +81,14 @@ class MovieViewModel @ViewModelInject constructor(
 
     fun setDateMoviesTitle(newDate: String) {
         val filterAttribute = _currentFilterAttribute.value!!
-        filterAttribute.date = newDate
+        val updatedFilterAttribute = FilterAttribute(
+            filterAttribute.city,
+            newDate,
+            filterAttribute.cinema,
+            filterAttribute.language
+        )
 
-        _currentFilterAttribute.value = filterAttribute
-        saveFilteredAttributes()
+        saveFilteredAttributes(updatedFilterAttribute)
         loadMovies()
     }
 

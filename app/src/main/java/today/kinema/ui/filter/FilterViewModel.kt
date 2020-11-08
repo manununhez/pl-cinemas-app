@@ -23,52 +23,63 @@ class FilterViewModel @ViewModelInject constructor(
     fun setMoviesLanguage(filteredLanguage: String, clearSelection: Boolean) {
         val filterAttribute = _currentFilterAttribute.value!!
 
-        if (clearSelection) {
-            filterAttribute.language = listOf()
-        } else {
-
-            val languagesList = filterAttribute.language.toMutableList()
-            if (languagesList.contains(filteredLanguage)) //checkbox
-                languagesList.remove(filteredLanguage) //remove if exists
-            else
-                languagesList.add(filteredLanguage)//append new cinema to the list
-
-            filterAttribute.language = languagesList
-        }
-
-        _currentFilterAttribute.value = filterAttribute
-        saveFilteredAttributes()
+        saveFilteredAttributes(
+            FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                filterAttribute.cinema,
+                updateElementInList(filterAttribute.language, filteredLanguage, clearSelection)
+            )
+        )
     }
 
     fun setMoviesCinemas(filteredCinemas: String, clearSelection: Boolean) {
         val filterAttribute = _currentFilterAttribute.value!!
 
-        if (clearSelection) {
-            filterAttribute.cinema = listOf()
-        } else {
-            val cinemasList = filterAttribute.cinema.toMutableList()
-            if (cinemasList.contains(filteredCinemas)) //checkbox
-                cinemasList.remove(filteredCinemas) //remove if exists
-            else
-                cinemasList.add(filteredCinemas)//append new cinema to the list
-
-            filterAttribute.cinema = cinemasList
-
-        }
-        _currentFilterAttribute.value = filterAttribute
-        saveFilteredAttributes()
+        saveFilteredAttributes(
+            FilterAttribute(
+                filterAttribute.city,
+                filterAttribute.date,
+                updateElementInList(filterAttribute.cinema, filteredCinemas, clearSelection),
+                filterAttribute.language
+            )
+        )
     }
 
     fun setMoviesCity(filteredCityName: String) {
         val filterAttribute = _currentFilterAttribute.value!!
 
-        filterAttribute.city = filteredCityName
-
-        _currentFilterAttribute.value = filterAttribute
-        saveFilteredAttributes()
+        saveFilteredAttributes(
+            FilterAttribute(
+                filteredCityName,
+                filterAttribute.date,
+                filterAttribute.cinema,
+                filterAttribute.language
+            )
+        )
     }
 
-    private fun saveFilteredAttributes() {
-        repository.updateFilteredAttributes(_currentFilterAttribute.value!!)
+    //Open for testing
+    fun updateElementInList(
+        list: List<String>,
+        element: String,
+        clearSelection: Boolean
+    ): List<String> {
+        return if (clearSelection) listOf()
+        else {
+            val mutableList = list.toMutableList()
+            if (mutableList.contains(element)) //checkbox
+                mutableList.remove(element) //remove if exists
+            else
+                mutableList.add(element)//append new cinema to the list
+
+            mutableList
+        }
+    }
+
+    private fun saveFilteredAttributes(filterAttribute: FilterAttribute) {
+        _currentFilterAttribute.value = filterAttribute
+
+        repository.updateFilteredAttributes(filterAttribute)
     }
 }
