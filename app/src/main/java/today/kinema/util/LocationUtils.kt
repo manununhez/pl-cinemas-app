@@ -3,7 +3,6 @@ package today.kinema.util
 import android.location.Location
 import today.kinema.vo.Cinema
 import today.kinema.vo.Coordinate
-import today.kinema.vo.Movie
 
 object LocationUtils {
 
@@ -23,13 +22,13 @@ object LocationUtils {
 
     fun orderCinemasByDistance(
         currentLocation: Coordinate,
-        movie: Movie
-    ): Movie {
+        cinemas: List<Cinema>
+    ): List<Cinema> {
         if (currentLocation.isEmpty()) //LastKnownLocation not found!
-            return movie
+            return cinemas
 
         //Order cinemas
-        for (cinemaItem: Cinema in movie.cinemas) {
+        for (cinemaItem: Cinema in cinemas) {
             cinemaItem.distance = getDistanceBetweenTwoPoints(
                 currentLocation.latitude,
                 currentLocation.longitude,
@@ -38,12 +37,9 @@ object LocationUtils {
             )
         }
 
-        val cinemasSorted = movie.cinemas.sortedBy {
+        return cinemas.sortedBy {
             it.distance
         }
-
-        return Movie(movie, cinemasSorted)
-
     }
 
 

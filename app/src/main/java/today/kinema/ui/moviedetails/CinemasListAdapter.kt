@@ -2,38 +2,42 @@ package today.kinema.ui.moviedetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import today.kinema.databinding.CinemaItemBinding
 import today.kinema.vo.Cinema
 
-class CinemaMovieListAdapter(
-    private val items: List<Cinema>,
+class CinemasListAdapter(
     private val cinemaClickCallback: CinemaViewClickCallback
-) :
-    RecyclerView.Adapter<CinemaMovieListAdapter.ViewHolder>() {
+) : ListAdapter<Cinema, CinemasListAdapter.CinemaViewHolder>(CinemaListDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    class CinemaViewHolder(val binding: CinemaItemBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = CinemaItemBinding.inflate(inflater)
-        return ViewHolder(binding)
+        return CinemaViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(items[position], cinemaClickCallback)
-
-    class ViewHolder(val binding: CinemaItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Cinema, cinemaClickCallback: CinemaViewClickCallback) {
-            binding.apply {
-                cinema = item
-                cinemaItemCardView.setOnClickListener {
-                    cinemaClickCallback.onClick(item)
-                }
-                executePendingBindings()
+    override fun onBindViewHolder(holder: CinemaViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.binding.apply {
+            cinema = item
+            cinemaItemCardView.setOnClickListener {
+                cinemaClickCallback.onClick(item)
             }
+            executePendingBindings()
         }
     }
+}
+
+class CinemaListDiffCallback : DiffUtil.ItemCallback<Cinema>() {
+    override fun areItemsTheSame(oldItem: Cinema, newItem: Cinema): Boolean =
+        (oldItem.cinemaId == newItem.cinemaId)
+
+    override fun areContentsTheSame(oldItem: Cinema, newItem: Cinema): Boolean =
+        oldItem == newItem
 }
 
 interface CinemaViewClickCallback {

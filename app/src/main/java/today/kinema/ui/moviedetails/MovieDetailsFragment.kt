@@ -27,13 +27,13 @@ import today.kinema.vo.WatchlistMovie
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsMovieBinding
+    private lateinit var moviesArg: Movie
+    private lateinit var cinemaListAdapter: CinemasListAdapter
     private var savedWatchlistMovie: WatchlistMovie? = null
 
     //SharedViewModel
     private val viewModelShared: MovieDetailsViewModel by viewModels()
-
     private val params by navArgs<MovieDetailsFragmentArgs>()
-    private lateinit var moviesArg: Movie
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,8 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        moviesArg = viewModelShared.orderCinemasByDistance(params.movie)
+        moviesArg = params.movie
+
         binding.run {
             movie = moviesArg
             duration.text = if (moviesArg.duration == "0") "" else resources.getString(
@@ -98,11 +99,11 @@ class MovieDetailsFragment : Fragment() {
                 }
 
                 override fun setWatchlist(movie: Movie) {
-                    val favoriteMovie = WatchlistMovie(movie)
+                    val watchlistMovie = WatchlistMovie(movie)
                     if (savedWatchlistMovie == null) {
-                        viewModelShared.addWatchlistMovie(favoriteMovie)
+                        viewModelShared.onAddWatchlistBtnClicked(watchlistMovie)
                     } else {
-                        viewModelShared.removeWatchlistMovie(favoriteMovie)
+                        viewModelShared.onRemoveWatchlistBtnClicked(watchlistMovie)
                     }
                 }
             }
@@ -113,13 +114,28 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        getWatchlistMovie()
+
+        reOrderMovieCinemasByDistance(moviesArg.cinemas)
+        refreshWatchlistMovie()
+        setupObservers()
+
         initRecyclerView()
 
     }
 
-    private fun getWatchlistMovie() {
-        viewModelShared.getWatchlistMovie(WatchlistMovie(moviesArg))
+    private fun refreshWatchlistMovie() {
+        viewModelShared.refreshWatchlistMovie(WatchlistMovie(moviesArg))
+    }
+
+    private fun reOrderMovieCinemasByDistance(cinemas: List<Cinema>) {
+        viewModelShared.orderCinemasByDistance(cinemas)
+    }
+
+    private fun setupObservers() {
+        viewModelShared.cinemas.observe(viewLifecycleOwner) {
+            cinemaListAdapter.submitList(it)
+        }
+
         viewModelShared.watchlist.observe(viewLifecycleOwner) {
             savedWatchlistMovie = it
             binding.textWatchlist.apply {
@@ -143,8 +159,8 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-        binding.rvCinemaList.adapter =
-            CinemaMovieListAdapter(moviesArg.cinemas, cinemaClickCallback)
+        cinemaListAdapter = CinemasListAdapter(cinemaClickCallback)
+        binding.rvCinemaList.adapter = cinemaListAdapter
     }
 
     private fun openCinemaPageURL(cinema: Cinema) {
