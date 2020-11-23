@@ -14,8 +14,8 @@ interface WatchlistMovieDao {
     )
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie>
 
-    @Query("SELECT * FROM watchlist_movies WHERE id = :id and dateTitle = :dateTitle")
-    suspend fun getWatchlistMovie(id: Int, dateTitle: String): WatchlistMovie
+    @Query("SELECT count(*) FROM watchlist_movies WHERE id = :id and dateTitle = :dateTitle")
+    suspend fun checkIfWatchMovieExists(id: Int, dateTitle: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(watchlistMovie: WatchlistMovie)

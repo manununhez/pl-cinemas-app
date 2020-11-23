@@ -24,11 +24,12 @@ class FilterViewModel @ViewModelInject constructor(
         val filterAttribute = _currentFilterAttribute.value!!
 
         saveFilteredAttributes(
-            FilterAttribute(
-                filterAttribute.city,
-                filterAttribute.date,
-                filterAttribute.cinema,
-                updateElementInList(filterAttribute.language, filteredLanguage, clearSelection)
+            filterAttribute.copy(
+                language = updateElementInList(
+                    filterAttribute.language,
+                    filteredLanguage,
+                    clearSelection
+                )
             )
         )
     }
@@ -37,11 +38,12 @@ class FilterViewModel @ViewModelInject constructor(
         val filterAttribute = _currentFilterAttribute.value!!
 
         saveFilteredAttributes(
-            FilterAttribute(
-                filterAttribute.city,
-                filterAttribute.date,
-                updateElementInList(filterAttribute.cinema, filteredCinemas, clearSelection),
-                filterAttribute.language
+            filterAttribute.copy(
+                cinema = updateElementInList(
+                    filterAttribute.cinema,
+                    filteredCinemas,
+                    clearSelection
+                )
             )
         )
     }
@@ -50,12 +52,7 @@ class FilterViewModel @ViewModelInject constructor(
         val filterAttribute = _currentFilterAttribute.value!!
 
         saveFilteredAttributes(
-            FilterAttribute(
-                filteredCityName,
-                filterAttribute.date,
-                filterAttribute.cinema,
-                filterAttribute.language
-            )
+            filterAttribute.copy(city = filteredCityName)
         )
     }
 

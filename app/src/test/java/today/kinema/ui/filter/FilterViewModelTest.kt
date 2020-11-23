@@ -19,6 +19,7 @@ import today.kinema.vo.FilterAttribute
 
 @RunWith(MockitoJUnitRunner::class)
 class FilterViewModelTest {
+    //JUnit rule that configures LiveData to execute each task synchronously
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
@@ -47,12 +48,7 @@ class FilterViewModelTest {
 
         val cinemas = mockedFilterAttribute.cinema.toMutableList()
         cinemas.add(cinemaSelected)
-        val updatedFilterAttribute = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            cinemas,
-            filterAttribute.language
-        )
+        val updatedFilterAttribute = filterAttribute.copy(cinema = cinemas)
 
         viewModel.setMoviesCinemas(cinemaSelected, clearSelection)
 
@@ -66,12 +62,7 @@ class FilterViewModelTest {
         val clearSelection = true
         val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
 
-        val updatedFilterAttribute = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            listOf(),
-            filterAttribute.language
-        )
+        val updatedFilterAttribute = filterAttribute.copy(cinema = listOf())
 
         viewModel.setMoviesCinemas("", clearSelection)
 
@@ -88,12 +79,7 @@ class FilterViewModelTest {
         val languages = mockedFilterAttribute.language.toMutableList()
         languages.add(languageSelected)
 
-        val updatedFilterAttribute = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            filterAttribute.cinema,
-            languages
-        )
+        val updatedFilterAttribute =  filterAttribute.copy(language = languages)
 
         viewModel.setMoviesLanguage(languageSelected, clearSelection)
 
@@ -107,12 +93,7 @@ class FilterViewModelTest {
         val clearSelection = true
         val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
 
-        val updatedFilterAttribute = FilterAttribute(
-            filterAttribute.city,
-            filterAttribute.date,
-            filterAttribute.cinema,
-            listOf()
-        )
+        val updatedFilterAttribute = filterAttribute.copy(language = listOf())
 
         viewModel.setMoviesLanguage("", clearSelection)
 
@@ -126,12 +107,7 @@ class FilterViewModelTest {
         val citySelected = "Krakow"
         val filterAttribute = mockedFilterAttribute.toDomainFilterAttribute()
 
-        val updatedFilterAttribute = FilterAttribute(
-            citySelected,
-            filterAttribute.date,
-            filterAttribute.cinema,
-            filterAttribute.language
-        )
+        val updatedFilterAttribute = filterAttribute.copy(city = citySelected)
 
         viewModel.setMoviesCity(citySelected)
 

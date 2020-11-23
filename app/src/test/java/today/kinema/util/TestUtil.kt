@@ -6,7 +6,7 @@ import today.kinema.vo.Coordinate
 import today.kinema.vo.WatchlistMovie
 
 object TestUtil {
-    private val mockedCinema = Cinema(
+    val mockedCinema = Cinema(
         "1",
         "1",
         "Warszawa Złote Tarasy",
@@ -34,6 +34,7 @@ object TestUtil {
     )
 
     val mockedMovies = listOf(mockedMovie)
+    val mockedMovies2 = listOf(mockedMovie.copy(id = "47", dateTitle = "2020-08-06"))
 
     val mockedAttributes = Attribute(
         listOf(
@@ -56,11 +57,35 @@ object TestUtil {
         listOf("angielski")
     )
 
-    val mockedFilterAttribute = FilterAttribute("city1", "date1", listOf("Multikino"), listOf("angielski"))
+    val mockedAttributes2 = Attribute(
+        listOf(
+            "Kino Muranow",
+            "Kinoteka",
+            "Multikino"
+        ),
+        listOf(
+            "Bytom",
+            "Cieszyn",
+            "Czechowice-Dziedzice"
+        ),
+        listOf(
+            Day("2020-11-07", false)
+        ),
+        listOf("angielski")
+    )
+
+    val mockedFilterAttribute =
+        FilterAttribute("city1", "2020-01-06", listOf("Multikino"), listOf("angielski"))
 
     val mockedCurrentLocation = Coordinate(52.185322, 20.991805)
 
-    val mockedWatchlist = WatchlistMovie(mockedMovie.toDomainMovie())
+    val mockedWatchlistMovie = WatchlistMovie(mockedMovie.toDomainMovie())
+    val mockedWatchlistMovieList = listOf(WatchlistMovie(mockedMovie.toDomainMovie()))
+    val mockedWatchlistMovieList2 = listOf(
+        WatchlistMovie(
+            mockedMovie.toDomainMovie().copy(id = "445", dateTitle = "2020-10-05")
+        )
+    )
 
     val movie_example_json = "{\n" +
             "  \"success\": true,\n" +

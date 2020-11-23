@@ -17,8 +17,7 @@ import today.kinema.util.TestUtil.mockedAttributes
 import today.kinema.util.TestUtil.mockedCurrentLocation
 import today.kinema.util.TestUtil.mockedFilterAttribute
 import today.kinema.util.TestUtil.mockedMovies
-import today.kinema.util.TestUtil.mockedWatchlist
-import today.kinema.vo.Coordinate
+import today.kinema.util.TestUtil.mockedWatchlistMovie
 import today.kinema.vo.Movie
 
 class KinemaRepositoryTest {
@@ -95,7 +94,7 @@ class KinemaRepositoryTest {
         coEvery { kinemaDataSource.searchMovies(filterAttribute) }.returns(successResponse)
         coJustRun { roomDataSource.saveSearchMovieParameters(filterAttribute) }
         coJustRun { roomDataSource.saveFilteredAttributes(filterAttribute) }
-        coEvery { roomDataSource.getCurrentLocation() }.returns(Coordinate(0.0, 0.0))
+        coEvery { roomDataSource.getCurrentLocation() }.returns(mockedCurrentLocation)
         coJustRun { roomDataSource.saveMovies(movies) }
         coEvery { roomDataSource.getMovies(isAsc) }.returns(movies)
 
@@ -188,7 +187,7 @@ class KinemaRepositoryTest {
 
     @Test
     fun `get watchlist movies`() {
-        val data = listOf(mockedWatchlist)
+        val data = listOf(mockedWatchlistMovie)
         val isAsc = true
         //Prepare DB
         coEvery { roomDataSource.getWatchlistMovies(isAsc) }.returns(data)
@@ -200,18 +199,18 @@ class KinemaRepositoryTest {
 
     @Test
     fun `get watchlist movie`() {
-        val data = mockedWatchlist
+        val data = mockedWatchlistMovie
         //Prepare DB
-        coEvery { roomDataSource.getWatchlistMovie(data) }.returns(data)
+        coEvery { roomDataSource.checkIfWatchMovieExists(data) }.returns(true)
 
-        runBlocking { repository.getWatchlistMovie(data) }
+        runBlocking { repository.checkIfWatchMovieExists(data) }
 
-        coVerify(exactly = 1) { roomDataSource.getWatchlistMovie(data) }
+        coVerify(exactly = 1) {  roomDataSource.checkIfWatchMovieExists(data) }
     }
 
     @Test
     fun `add watchlist movie`() {
-        val data = mockedWatchlist
+        val data = mockedWatchlistMovie
         //Prepare DB
         coJustRun { roomDataSource.addWatchlistMovie(data) }
 
@@ -222,7 +221,7 @@ class KinemaRepositoryTest {
 
     @Test
     fun `delete watchlist movie`() {
-        val data = mockedWatchlist
+        val data = mockedWatchlistMovie
         //Prepare DB
         coJustRun { roomDataSource.deleteWatchlistMovie(data) }
 

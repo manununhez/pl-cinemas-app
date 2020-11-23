@@ -29,7 +29,7 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsMovieBinding
     private lateinit var moviesArg: Movie
     private lateinit var cinemaListAdapter: CinemasListAdapter
-    private var savedWatchlistMovie: WatchlistMovie? = null
+    private var isCurrentMovieInWatchlist: Boolean = false
 
     //SharedViewModel
     private val viewModelShared: MovieDetailsViewModel by viewModels()
@@ -65,7 +65,6 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         moviesArg = params.movie
-
         binding.run {
             movie = moviesArg
             duration.text = if (moviesArg.duration == "0") "" else resources.getString(
@@ -100,10 +99,10 @@ class MovieDetailsFragment : Fragment() {
 
                 override fun setWatchlist(movie: Movie) {
                     val watchlistMovie = WatchlistMovie(movie)
-                    if (savedWatchlistMovie == null) {
-                        viewModelShared.onAddWatchlistBtnClicked(watchlistMovie)
-                    } else {
+                    if (isCurrentMovieInWatchlist) {
                         viewModelShared.onRemoveWatchlistBtnClicked(watchlistMovie)
+                    } else {
+                        viewModelShared.onAddWatchlistBtnClicked(watchlistMovie)
                     }
                 }
             }
@@ -124,7 +123,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun refreshWatchlistMovie() {
-        viewModelShared.refreshWatchlistMovie(WatchlistMovie(moviesArg))
+        viewModelShared.refreshWatchlist(WatchlistMovie(moviesArg))
     }
 
     private fun reOrderMovieCinemasByDistance(cinemas: List<Cinema>) {
@@ -137,14 +136,14 @@ class MovieDetailsFragment : Fragment() {
         }
 
         viewModelShared.watchlist.observe(viewLifecycleOwner) {
-            savedWatchlistMovie = it
+            isCurrentMovieInWatchlist = it
             binding.textWatchlist.apply {
-                text = if (it == null) {
-                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)
-                    resources.getString(R.string.menu_item_watchlist)
-                } else {
+                text = if (it) {
                     setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist, 0, 0)
                     resources.getString(R.string.watchlist_added)
+                } else {
+                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)
+                    resources.getString(R.string.menu_item_watchlist)
                 }
             }
         }

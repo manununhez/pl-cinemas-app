@@ -72,7 +72,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun initWatchlist() {
-        viewModelShared.initWatchlist()
+        viewModelShared.refreshWatchlist()
     }
 
     private fun setupObservers() {
@@ -87,7 +87,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         val watchlistITemClickCallback = object :
             WatchlistITemViewClickCallback {
             override fun removeFavoriteMovie(watchlistMovie: WatchlistMovie) {
-                viewModelShared.removeWatchlistMovie(watchlistMovie)
+                viewModelShared.onRemoveWatchlistBtnClicked(watchlistMovie)
             }
 
             override fun navigateTo(view: View, watchlistMovie: WatchlistMovie) {
@@ -129,7 +129,7 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.sortWatchlistMenu -> viewModelShared.updateWatchMovieListOrder()
+            R.id.sortWatchlistMenu -> viewModelShared.onSortMovieWatchlistBtnClicked()
         }
         return true
     }

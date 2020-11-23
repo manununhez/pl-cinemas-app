@@ -1,15 +1,14 @@
 package today.kinema.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import today.kinema.repository.KinemaRepository
-import today.kinema.vo.Movie
-import today.kinema.data.api.Resource
+import today.kinema.util.TestUtil.mockedCurrentLocation
 
 @RunWith(MockitoJUnitRunner::class)
 class SharedMovieViewModelTest {
@@ -26,24 +25,17 @@ class SharedMovieViewModelTest {
     @Mock
     private lateinit var repository: KinemaRepository
 
-    @Mock
-    private lateinit var movieObserver: Observer<Resource<List<Movie>>>
-
     private lateinit var viewModel: SharedMovieViewModel
 
     @Before
     fun setUp() {
         viewModel = SharedMovieViewModel(repository)
-        viewModel.movies.observeForever(movieObserver)
     }
 
-//    @Test
-//    fun testNull() {
-//        assertThat(viewModel.movies, notNullValue())
-//        assertThat(viewModel.locations, notNullValue())
-//        verify(repository, never())
-//            .loadMovies(anyString(), anyString())
-//    }
+    @Test
+    fun `setCurrentLocation is called`() {
+       viewModel.setCurrentLocation(mockedCurrentLocation)
+    }
 
 //
 //    @Test

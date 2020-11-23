@@ -108,7 +108,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private fun initDateTitleRecyclerView() {
         val dayTitleClickCallback = object : DayTitleViewClickCallback {
             override fun onClick(cardView: View, dateTitle: String) {
-                viewModelShared.setDateMoviesTitle(dateTitle)
+                viewModelShared.onDateMovieBtnClicked(dateTitle)
             }
         }
 
@@ -163,7 +163,7 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         when (item?.itemId) {
             R.id.filterFragmentMenu -> navigateToFilterFragment()
             R.id.watchlistFragmentMenu -> navigateToWatchListFragment()
-            R.id.sortMoviesMenu -> viewModelShared.updateMovieListOrder()
+            R.id.sortMoviesMenu -> viewModelShared.onSortMovielistBtnClicked()
         }
         return true
     }

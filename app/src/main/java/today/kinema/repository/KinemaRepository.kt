@@ -45,8 +45,9 @@ class KinemaRepository @Inject constructor(
 
     }
 
-    suspend fun loadAttributes(filterAttribute: DomainFilterAttribute,): Resource<DomainAttribute> {
-        val result: GeneralResponse<ServerAttribute> = kinemaDataSource.getAttributes(filterAttribute)
+    suspend fun loadAttributes(filterAttribute: DomainFilterAttribute): Resource<DomainAttribute> {
+        val result: GeneralResponse<ServerAttribute> =
+            kinemaDataSource.getAttributes(filterAttribute)
 
         return if (result.success) {
             //SaveData
@@ -62,8 +63,8 @@ class KinemaRepository @Inject constructor(
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie> =
         roomDataSource.getWatchlistMovies(isAsc)
 
-    suspend fun getWatchlistMovie(watchlistMovie: WatchlistMovie): WatchlistMovie? =
-        roomDataSource.getWatchlistMovie(watchlistMovie)
+    suspend fun checkIfWatchMovieExists(watchlistMovie: WatchlistMovie) =
+        roomDataSource.checkIfWatchMovieExists(watchlistMovie)
 
     suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
         roomDataSource.addWatchlistMovie(watchlistMovie)

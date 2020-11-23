@@ -33,6 +33,7 @@ class RoomDataSource @Inject constructor(
         private const val SHARED_PREFS_FILTERED_ATTRIBUTES = "SHARED_PREFS_FILTERED_ATTRIBUTES"
         private const val SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES =
             "SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES"
+        private const val DEFAULT_CITY_CODE = "Warszawa"
         private val DEFAULT_CURRENT_DATE = DateUtils.dateFormat(Date())
 
     }
@@ -65,7 +66,12 @@ class RoomDataSource @Inject constructor(
 
     override fun getFilteredAttributes(): DomainFilterAttribute {
         val filterAttrDefault =
-            DomainFilterAttribute().toRoomFilterAttribute()
+            DomainFilterAttribute(
+                DEFAULT_CITY_CODE,
+                DEFAULT_CURRENT_DATE,
+                listOf(),
+                listOf()
+            ).toRoomFilterAttribute()
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_FILTERED_ATTRIBUTES,
@@ -80,8 +86,14 @@ class RoomDataSource @Inject constructor(
 
         val domainFilteredAttributes = filterAttribute.toDomainFilterAttribute()
         return if (formattedDay.before(today)) { //if we have a date saved older than today, we update to today's date
-            domainFilteredAttributes.date = DEFAULT_CURRENT_DATE
-            domainFilteredAttributes
+//            DomainFilterAttribute(
+//                domainFilteredAttributes.city,
+//                DEFAULT_CURRENT_DATE,
+//                domainFilteredAttributes.cinema,
+//                domainFilteredAttributes.language
+//            )
+
+            domainFilteredAttributes.copy(date = DEFAULT_CURRENT_DATE)
         } else {
             domainFilteredAttributes
         }
@@ -96,7 +108,12 @@ class RoomDataSource @Inject constructor(
 
     override fun getSearchMovieParameters(): DomainFilterAttribute {
         val filterAttrDefault =
-            DomainFilterAttribute().toRoomFilterAttribute()
+            DomainFilterAttribute(
+                DEFAULT_CITY_CODE,
+                DEFAULT_CURRENT_DATE,
+                listOf(),
+                listOf()
+            ).toRoomFilterAttribute()
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES,
@@ -174,10 +191,10 @@ class RoomDataSource @Inject constructor(
         watchlistDao.delete(watchlistMovie.toRoomWatchlistMovie())
     }
 
-    override suspend fun getWatchlistMovie(watchlistMovie: DomainWatchlistMovie): DomainWatchlistMovie? {
-        val watchlistMovieLiveData: RoomWatchlistMovie? =
-            watchlistDao.getWatchlistMovie(watchlistMovie.id, watchlistMovie.dateTitle)
-        return watchlistMovieLiveData?.toDomainWatchlistMovie()
+    override suspend fun checkIfWatchMovieExists(watchlistMovie: DomainWatchlistMovie): Boolean {
+        val watchlistMovieCount =
+            watchlistDao.checkIfWatchMovieExists(watchlistMovie.id, watchlistMovie.dateTitle)
+        return (watchlistMovieCount > 0)
     }
 
     override suspend fun isMoviesNotEmpty(isAsc: Boolean) = getMovies(isAsc).isNotEmpty()

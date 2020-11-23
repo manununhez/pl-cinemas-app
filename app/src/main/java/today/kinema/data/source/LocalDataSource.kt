@@ -34,5 +34,5 @@ interface LocalDataSource {
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie>
     suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie)
     suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie)
-    suspend fun getWatchlistMovie(watchlistMovie: WatchlistMovie): WatchlistMovie?
+    suspend fun checkIfWatchMovieExists(watchlistMovie: WatchlistMovie): Boolean
 }

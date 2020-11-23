@@ -1,6 +1,5 @@
 package today.kinema.data
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -23,16 +22,10 @@ import today.kinema.util.TestUtil.movie_example_json
 
 @RunWith(JUnit4::class)
 class KinemaServiceTest {
-    @Rule
-    @JvmField
-    val instantExecutorRule = InstantTaskExecutorRule()
-
     @get:Rule
     val mockWebServer = MockWebServer()
 
-
     private lateinit var kinemaService: KinemaService
-
 
     @Before
     fun setUp() {
