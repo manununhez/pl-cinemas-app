@@ -1,9 +1,9 @@
 package today.kinema.repository
 
-import today.kinema.data.api.KinemaDataSource
+import today.kinema.data.api.RemoteDataSourceImpl
 import today.kinema.data.api.Resource
 import today.kinema.data.api.model.GeneralResponse
-import today.kinema.data.db.RoomDataSource
+import today.kinema.data.db.LocalDataSourceImpl
 import today.kinema.data.toDomainMovie
 import today.kinema.vo.Coordinate
 import today.kinema.vo.WatchlistMovie
@@ -15,8 +15,8 @@ import today.kinema.vo.FilterAttribute as DomainFilterAttribute
 import today.kinema.vo.Movie as DomainMovie
 
 class KinemaRepository @Inject constructor(
-    private val kinemaDataSource: KinemaDataSource,
-    private val roomDataSource: RoomDataSource
+    private val remoteDataSourceImpl: RemoteDataSourceImpl,
+    private val localDataSourceImpl: LocalDataSourceImpl
 ) {
 
     suspend fun loadMovies(
@@ -24,21 +24,21 @@ class KinemaRepository @Inject constructor(
         isAsc: Boolean
     ): Resource<List<DomainMovie>> {
 
-        if (roomDataSource.isMoviesNotEmpty(isAsc))//shouldFetch
-            return Resource.success(roomDataSource.getMovies(isAsc))
+        if (localDataSourceImpl.isMoviesNotEmpty(isAsc))//shouldFetch
+            return Resource.success(localDataSourceImpl.getMovies(isAsc))
 
         val result: GeneralResponse<List<ServerMovie>> =
-            kinemaDataSource.searchMovies(filterAttribute)
+            remoteDataSourceImpl.searchMovies(filterAttribute)
 
         return if (result.success) {
             //SaveData attributes
-            roomDataSource.saveSearchMovieParameters(filterAttribute)
+            localDataSourceImpl.saveSearchMovieParameters(filterAttribute)
             updateFilteredAttributes(filterAttribute)
             //SaveData results
-            roomDataSource.saveMovies(result.data.map { it.toDomainMovie() })
+            localDataSourceImpl.saveMovies(result.data.map { it.toDomainMovie() })
 
             //loadFromDb
-            Resource.success(roomDataSource.getMovies(isAsc))
+            Resource.success(localDataSourceImpl.getMovies(isAsc))
         } else {
             Resource.error(result.message, null)
         }
@@ -47,55 +47,55 @@ class KinemaRepository @Inject constructor(
 
     suspend fun loadAttributes(filterAttribute: DomainFilterAttribute): Resource<DomainAttribute> {
         val result: GeneralResponse<ServerAttribute> =
-            kinemaDataSource.getAttributes(filterAttribute)
+            remoteDataSourceImpl.getAttributes(filterAttribute)
 
         return if (result.success) {
             //SaveData
-            roomDataSource.saveAttributes(result.data)
+            localDataSourceImpl.saveAttributes(result.data)
 
             //loadFromDb
-            Resource.success(roomDataSource.getAttributes())
+            Resource.success(localDataSourceImpl.getAttributes())
         } else {
             Resource.error(result.message, null)
         }
     }
 
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie> =
-        roomDataSource.getWatchlistMovies(isAsc)
+        localDataSourceImpl.getWatchlistMovies(isAsc)
 
     suspend fun checkIfWatchMovieExists(watchlistMovie: WatchlistMovie) =
-        roomDataSource.checkIfWatchMovieExists(watchlistMovie)
+        localDataSourceImpl.checkIfWatchMovieExists(watchlistMovie)
 
     suspend fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        roomDataSource.addWatchlistMovie(watchlistMovie)
+        localDataSourceImpl.addWatchlistMovie(watchlistMovie)
     }
 
     suspend fun deleteWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        roomDataSource.deleteWatchlistMovie(watchlistMovie)
+        localDataSourceImpl.deleteWatchlistMovie(watchlistMovie)
     }
 
-    fun getFilteredAttributes(): DomainFilterAttribute = roomDataSource.getFilteredAttributes()
+    fun getFilteredAttributes(): DomainFilterAttribute = localDataSourceImpl.getFilteredAttributes()
 
     fun updateFilteredAttributes(filterAttribute: DomainFilterAttribute) {
-        roomDataSource.saveFilteredAttributes(filterAttribute)
+        localDataSourceImpl.saveFilteredAttributes(filterAttribute)
     }
 
-    fun getCurrentLocation() = roomDataSource.getCurrentLocation()
+    fun getCurrentLocation() = localDataSourceImpl.getCurrentLocation()
 
     fun updateCurrentLocation(currentLocation: Coordinate) {
-        roomDataSource.saveCurrentLocation(currentLocation)
+        localDataSourceImpl.saveCurrentLocation(currentLocation)
     }
 
-    fun getSortWatchMovieListOrder(): Boolean = roomDataSource.getSortWatchMovieList()
+    fun getSortWatchMovieListOrder(): Boolean = localDataSourceImpl.getSortWatchMovieList()
 
     fun updateWatchMovieListOrder(isAsc: Boolean) {
-        roomDataSource.saveSortWatchMovieList(isAsc)
+        localDataSourceImpl.saveSortWatchMovieList(isAsc)
     }
 
-    fun getSortMovieListOrder(): Boolean = roomDataSource.getSortMovieList()
+    fun getSortMovieListOrder(): Boolean = localDataSourceImpl.getSortMovieList()
 
     fun updateMovieListOrder(isAsc: Boolean) {
-        roomDataSource.saveSortMovieList(isAsc)
+        localDataSourceImpl.saveSortMovieList(isAsc)
     }
 
 }

@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import today.kinema.data.api.KinemaApi
-import today.kinema.data.api.KinemaDataSource
+import today.kinema.data.api.RemoteDataSourceImpl
 import today.kinema.data.api.KinemaService
 import javax.inject.Singleton
 
@@ -28,6 +28,6 @@ object RemoDataSourceModule {
     )
 
     @Provides
-    fun provideKinemaDataSource(kinemaService: KinemaService): KinemaDataSource =
-        KinemaDataSource(kinemaService)
+    fun provideKinemaDataSource(kinemaService: KinemaService): RemoteDataSourceImpl =
+        RemoteDataSourceImpl(kinemaService)
 }

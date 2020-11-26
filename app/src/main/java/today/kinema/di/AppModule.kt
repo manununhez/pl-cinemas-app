@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import today.kinema.data.api.KinemaDataSource
-import today.kinema.data.db.RoomDataSource
+import today.kinema.data.api.RemoteDataSourceImpl
+import today.kinema.data.db.LocalDataSourceImpl
 import today.kinema.repository.KinemaRepository
 import javax.inject.Singleton
 
@@ -18,10 +18,10 @@ object AppModule {
     @Singleton
     @Provides
     fun provideKinemaRepository(
-        kinemaDataSource: KinemaDataSource,
-        roomDataSource: RoomDataSource
+        remoteDataSourceImpl: RemoteDataSourceImpl,
+        localDataSourceImpl: LocalDataSourceImpl
     ) =
-        KinemaRepository(kinemaDataSource, roomDataSource)
+        KinemaRepository(remoteDataSourceImpl, localDataSourceImpl)
 
     /**
      * Since all of our dispatchers share the same type, CoroutineDispatcher,  we need

@@ -10,7 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import today.kinema.data.db.KinemaDb
-import today.kinema.data.db.RoomDataSource
+import today.kinema.data.db.LocalDataSourceImpl
+import today.kinema.data.db.SharedPreferencesDB
 import javax.inject.Singleton
 
 
@@ -24,8 +25,12 @@ object LocalDataSourceModule {
     fun provideKinemaDb(app: Application) = KinemaDb.build(app)
 
     @Provides
-    fun provideRoomDataSource(sharedPreferences: SharedPreferences, gson: Gson, db: KinemaDb) =
-        RoomDataSource(sharedPreferences, gson, db)
+    fun provideRoomDataSource(sharedPreferencesDB: SharedPreferencesDB, db: KinemaDb) =
+        LocalDataSourceImpl(sharedPreferencesDB, db.watchlistMovieDao(), db.movieDao())
+
+    @Provides
+    fun provideSharedPreferencesDB(sharedPreferences: SharedPreferences, gson: Gson) =
+        SharedPreferencesDB(sharedPreferences, gson)
 
     @Provides
     fun provideSharedPreferences(

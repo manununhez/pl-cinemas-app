@@ -5,10 +5,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import today.kinema.data.api.KinemaDataSource
+import today.kinema.data.api.RemoteDataSourceImpl
 import today.kinema.data.api.Resource
 import today.kinema.data.api.model.GeneralResponse
-import today.kinema.data.db.RoomDataSource
+import today.kinema.data.db.LocalDataSourceImpl
 import today.kinema.data.toDomainAttribute
 import today.kinema.data.toDomainFilterAttribute
 import today.kinema.data.toDomainMovie
@@ -22,9 +22,9 @@ import today.kinema.vo.Movie
 
 class KinemaRepositoryTest {
 
-    private val kinemaDataSource = mockk<KinemaDataSource>()
+    private val kinemaDataSource = mockk<RemoteDataSourceImpl>()
 
-    private val roomDataSource = mockk<RoomDataSource>()
+    private val roomDataSource = mockk<LocalDataSourceImpl>()
 
     private lateinit var repository: KinemaRepository
 

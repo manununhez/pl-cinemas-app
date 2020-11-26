@@ -1,7 +1,5 @@
 package today.kinema.data.db
 
-import android.content.SharedPreferences
-import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -17,22 +15,22 @@ import today.kinema.util.TestUtil.mockedWatchlistMovie
 class RoomDataSourceTest {
 
     @Mock
-    private lateinit var sharedPreferences: SharedPreferences
-
-    @Mock
-    private lateinit var gson: Gson
+    private lateinit var sharedPreferencesDB: SharedPreferencesDB
 
     @Mock
     private lateinit var watchlistDao: WatchlistMovieDao
 
     @Mock
-    private lateinit var db: KinemaDb
+    private lateinit var watchlistMovieDao: WatchlistMovieDao
 
-    private lateinit var roomDataSource: RoomDataSource
+    @Mock
+    private lateinit var movieDao: MovieDao
+
+    private lateinit var localDataSourceImpl: LocalDataSourceImpl
 
     @Before
     fun setup() {
-        roomDataSource = RoomDataSource(sharedPreferences, gson, db)
+        localDataSourceImpl = LocalDataSourceImpl(sharedPreferencesDB, watchlistMovieDao, movieDao)
     }
 
     @Test

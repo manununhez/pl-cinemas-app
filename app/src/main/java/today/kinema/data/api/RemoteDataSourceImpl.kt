@@ -8,7 +8,7 @@ import today.kinema.data.toServerFilterAttribute
 import today.kinema.vo.FilterAttribute
 import javax.inject.Inject
 
-class KinemaDataSource @Inject constructor(
+class RemoteDataSourceImpl @Inject constructor(
     private val kinemaService: KinemaService
 ) : RemoteDataSource {
     override suspend fun searchMovies(filterAttribute: FilterAttribute): GeneralResponse<List<Movie>> =
