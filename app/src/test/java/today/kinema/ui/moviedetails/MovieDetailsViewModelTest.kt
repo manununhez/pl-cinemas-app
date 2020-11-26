@@ -17,7 +17,6 @@ import today.kinema.repository.KinemaRepository
 import today.kinema.util.TestUtil.mockedCinema
 import today.kinema.util.TestUtil.mockedCurrentLocation
 import today.kinema.util.TestUtil.mockedWatchlistMovie
-import today.kinema.vo.Coordinate
 
 @ExperimentalCoroutinesApi
 class MovieDetailsViewModelTest {
@@ -74,7 +73,7 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun orderCinemasByDistance(){
+    fun `order Cinemas By Distance`(){
         val cinemalist = listOf(
             mockedCinema.toDomainCinema().copy(distance = 15.0F),
             mockedCinema.toDomainCinema().copy(distance = 125.0F),

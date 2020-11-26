@@ -15,11 +15,8 @@ object KinemaTypeConverters {
      ***********/
     @TypeConverter
     @JvmStatic //fix this: https://stackoverflow.com/questions/51438926/typeconverter-has-private-access-in-typeconverter-error-with-room-in-android
-    fun toMovie(data: String?): Movie? {
+    fun toMovie(data: String?): Movie? = gson.fromJson<Movie>(data, Movie::class.java)
 
-        val type = object : TypeToken<Movie>() {}.type
-        return gson.fromJson<Movie>(data, type)
-    }
 
     @TypeConverter
     @JvmStatic
@@ -41,6 +38,23 @@ object KinemaTypeConverters {
     @TypeConverter
     @JvmStatic
     fun fromCinemas(cinemas: List<Cinema>): String {
+        return gson.toJson(cinemas)
+    }
+
+    /*****************
+     * FilterAttribute
+     ****************/
+    @TypeConverter
+    @JvmStatic //fix this: https://stackoverflow.com/questions/51438926/typeconverter-has-private-access-in-typeconverter-error-with-room-in-android
+    fun toCinemaListString(data: String): List<String> {
+
+        val type = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(data, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromCinemasString(cinemas: List<String>): String {
         return gson.toJson(cinemas)
     }
 

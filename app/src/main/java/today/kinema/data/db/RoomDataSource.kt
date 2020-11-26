@@ -2,7 +2,6 @@ package today.kinema.data.db
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import today.kinema.data.*
 import today.kinema.data.source.LocalDataSource
 import today.kinema.util.DateUtils
@@ -40,6 +39,12 @@ class RoomDataSource @Inject constructor(
 
     private val watchlistDao = db.watchlistMovieDao()
     private val movieDao = db.movieDao()
+    private val defaultFilterAttribute = DomainFilterAttribute(
+        DEFAULT_CITY_CODE,
+        DEFAULT_CURRENT_DATE,
+        listOf(),
+        listOf()
+    ).toRoomFilterAttribute()
 
     /*******************
      * SharedPreferences
@@ -48,8 +53,7 @@ class RoomDataSource @Inject constructor(
     override fun getAttributes(): DomainAttribute? {
         val prefs: String = sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
         return if (prefs.isNotEmpty()) {
-            val type = object : TypeToken<RoomAttribute>() {}.type
-            val locationList: RoomAttribute = gson.fromJson(prefs, type)
+            val locationList: RoomAttribute = gson.fromJson(prefs, RoomAttribute::class.java)
             locationList.toDomainAttribute()
         } else {
             null
@@ -65,34 +69,20 @@ class RoomDataSource @Inject constructor(
     }
 
     override fun getFilteredAttributes(): DomainFilterAttribute {
-        val filterAttrDefault =
-            DomainFilterAttribute(
-                DEFAULT_CITY_CODE,
-                DEFAULT_CURRENT_DATE,
-                listOf(),
-                listOf()
-            ).toRoomFilterAttribute()
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_FILTERED_ATTRIBUTES,
-                gson.toJson(filterAttrDefault)
+                gson.toJson(defaultFilterAttribute)
             )
 
-        val type = object : TypeToken<RoomFilterAttribute>() {}.type
-        val filterAttribute: RoomFilterAttribute = gson.fromJson(prefsAttributes, type)
+        val filterAttribute: RoomFilterAttribute =
+            gson.fromJson(prefsAttributes, RoomFilterAttribute::class.java)
 
         val formattedDay = DateUtils.dateParse(filterAttribute.date)
         val today = DateUtils.today()
 
         val domainFilteredAttributes = filterAttribute.toDomainFilterAttribute()
         return if (formattedDay.before(today)) { //if we have a date saved older than today, we update to today's date
-//            DomainFilterAttribute(
-//                domainFilteredAttributes.city,
-//                DEFAULT_CURRENT_DATE,
-//                domainFilteredAttributes.cinema,
-//                domainFilteredAttributes.language
-//            )
-
             domainFilteredAttributes.copy(date = DEFAULT_CURRENT_DATE)
         } else {
             domainFilteredAttributes
@@ -107,21 +97,14 @@ class RoomDataSource @Inject constructor(
     }
 
     override fun getSearchMovieParameters(): DomainFilterAttribute {
-        val filterAttrDefault =
-            DomainFilterAttribute(
-                DEFAULT_CITY_CODE,
-                DEFAULT_CURRENT_DATE,
-                listOf(),
-                listOf()
-            ).toRoomFilterAttribute()
         val prefsAttributes =
             sharedPreferences.getString(
                 SHARED_PREFS_SEARCH_MOVIE_ATTRIBUTES,
-                gson.toJson(filterAttrDefault)
+                gson.toJson(defaultFilterAttribute)
             )
 
-        val type = object : TypeToken<RoomFilterAttribute>() {}.type
-        val filterAttribute: RoomFilterAttribute = gson.fromJson(prefsAttributes, type)
+        val filterAttribute: RoomFilterAttribute =
+            gson.fromJson(prefsAttributes, RoomFilterAttribute::class.java)
 
         return filterAttribute.toDomainFilterAttribute()
     }
@@ -138,8 +121,7 @@ class RoomDataSource @Inject constructor(
             SHARED_PREFS_CURRENT_LOCATION,
             gson.toJson(RoomCoordinate(0.0, 0.0))
         )
-        val type = object : TypeToken<RoomCoordinate>() {}.type
-        val coordinate: RoomCoordinate = gson.fromJson(prefsCoordinate, type)
+        val coordinate: RoomCoordinate = gson.fromJson(prefsCoordinate, RoomCoordinate::class.java)
         return coordinate.toDomainCoordinate()
     }
 

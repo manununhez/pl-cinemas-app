@@ -79,7 +79,7 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `on Date Movie Btn Clicked`() {
+    fun `on Date Movie Btn Clicked and movies list from date selected is fetched`() {
         val newDate = "2020-10-25"
         val mockedFilterAttrModified =
             mockedFilterAttribute.toDomainFilterAttribute().copy(date = newDate)
@@ -98,7 +98,7 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `on Sort Movie list Btn Clicked`() {
+    fun `on Sort Movie list Btn Clicked and movies list is reorder by movie title asc-desc`() {
         val movieReturnSuccess = Resource.success(mockedMovies2.map { it.toDomainMovie() })
         val sortMovieOrderAfterClicked = !sortMovieListOrder
 
@@ -120,7 +120,7 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `movies list not updated 'cause filter values are the same`() {
+    fun `movies list not updated 'cause filter attributes values are the same`() {
         val movieReturnSuccess = Resource.success(mockedMovies2.map { it.toDomainMovie() })
 
 
@@ -147,7 +147,7 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `movies list updated 'cause filter values are not the same`() {
+    fun `movies list updated 'cause filter attributes values are not the same`() {
         val newDate = "2020-10-25"
         val mockedFilterAttrModified =
             mockedFilterAttribute.toDomainFilterAttribute().copy(date = newDate)

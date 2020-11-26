@@ -1,4 +1,4 @@
-package today.kinema.data
+package today.kinema.data.api
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -13,7 +13,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import today.kinema.data.api.KinemaService
 import today.kinema.util.TestUtil.attribute_example_json
 import today.kinema.util.TestUtil.mockedAttributes
 import today.kinema.util.TestUtil.mockedFilterAttribute
