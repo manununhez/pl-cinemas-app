@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import today.kinema.data.api.Resource
+import today.kinema.di.IoDispatcher
 import today.kinema.di.MainDispatcher
 import today.kinema.repository.KinemaRepository
 import today.kinema.vo.Attribute
@@ -51,21 +52,19 @@ class MovieViewModel @ViewModelInject constructor(
     private fun loadAttributes() {
         viewModelScope.launch(mainDispatcher) {
             _attributes.value = Resource.loading(null)
-            _attributes.value =
-                repository.loadAttributes(
-                    _currentFilterAttribute.value!!
-                )
+            _attributes.value = repository.loadAttributes(
+                _currentFilterAttribute.value!!
+            )
         }
     }
 
     private fun refreshMovieList() {
         viewModelScope.launch(mainDispatcher) {
             _movies.value = Resource.loading(null)
-            _movies.value =
-                repository.loadMovies(
-                    _currentFilterAttribute.value!!,
-                    _sortOrderList.value!!
-                )
+            _movies.value = repository.loadMovies(
+                _currentFilterAttribute.value!!,
+                _sortOrderList.value!!
+            )
         }
     }
 
@@ -127,6 +126,7 @@ class MovieViewModel @ViewModelInject constructor(
     }
 
     fun retry() {
+        loadAttributes()
         refreshMovieList()
     }
 }

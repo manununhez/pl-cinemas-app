@@ -19,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import today.kinema.R
 import today.kinema.data.api.Status
 import today.kinema.databinding.FragmentMovieBinding
-import today.kinema.ui.common.RetryCallback
 import today.kinema.vo.Attribute
 import today.kinema.vo.Movie
 
@@ -39,11 +38,11 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_short).toLong()
         }
 
         returnTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_short).toLong()
         }
     }
 
@@ -126,7 +125,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         viewModelShared.movies.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.status == Status.SUCCESS) {
-//                    Timber.d(it.toString())
                     movieListAdapter.submitList(it.data)
                 } else if (it.status == Status.ERROR) {
                     movieListAdapter.submitList(listOf())
@@ -172,10 +170,10 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         // Set exit and reenter transitions here as opposed to in onCreate because these transitions
         // will be set and overwritten on HomeFragment for other navigation actions.
         exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_short).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.kinema_motion_duration_short).toLong()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

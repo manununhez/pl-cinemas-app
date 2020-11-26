@@ -17,5 +17,6 @@
     <!--Motion-->
 
     <integer name="kinema_motion_duration_large">400</integer>
+    <integer name="kinema_motion_duration_short">200</integer>
 
 </resources>

@@ -37,30 +37,22 @@ class MovieDetailsViewModel @ViewModelInject constructor(
         get() = _cinemas
 
     fun onAddWatchlistBtnClicked(watchlistMovie: WatchlistMovie) {
-        addWatchlistMovie(watchlistMovie)
-        refreshWatchlist(watchlistMovie)
+        viewModelScope.launch(defaultDispatcher) {
+            repository.addWatchlistMovie(watchlistMovie)
+            refreshWatchlist(watchlistMovie)
+        }
     }
 
     fun onRemoveWatchlistBtnClicked(watchlistMovie: WatchlistMovie) {
-        removeWatchlistMovie(watchlistMovie)
-        refreshWatchlist(watchlistMovie)
+        viewModelScope.launch(defaultDispatcher) {
+            repository.deleteWatchlistMovie(watchlistMovie)
+            refreshWatchlist(watchlistMovie)
+        }
     }
 
     fun refreshWatchlist(watchlistMovie: WatchlistMovie) {
         viewModelScope.launch(mainDispatcher) {
             _watchlist.value = repository.checkIfWatchMovieExists(watchlistMovie)
-        }
-    }
-
-    private fun addWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        viewModelScope.launch(defaultDispatcher) {
-            repository.addWatchlistMovie(watchlistMovie)
-        }
-    }
-
-    private fun removeWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        viewModelScope.launch(defaultDispatcher) {
-            repository.deleteWatchlistMovie(watchlistMovie)
         }
     }
 

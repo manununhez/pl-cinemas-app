@@ -13,7 +13,7 @@
 
         <import type="java.util.List" />
 
-        <import type="today.kinema.ui.common.RetryCallback" />
+        <import type="today.kinema.ui.movie.RetryCallback" />
 
         <variable
             name="movie"

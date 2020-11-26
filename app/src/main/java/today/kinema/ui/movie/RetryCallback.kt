@@ -1,4 +1,4 @@
-package today.kinema.ui.common
+package today.kinema.ui.movie
 
 /**
  * Generic interface for retry buttons.

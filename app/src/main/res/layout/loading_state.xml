@@ -12,7 +12,7 @@
 
         <import type="today.kinema.data.api.Status" />
 
-        <import type="today.kinema.ui.common.RetryCallback" />
+        <import type="today.kinema.ui.movie.RetryCallback" />
 
         <variable
             name="resource"

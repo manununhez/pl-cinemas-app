@@ -6,8 +6,6 @@ import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 import today.kinema.data.toDomainFilterAttribute
 import today.kinema.data.toDomainMovie
 import today.kinema.data.toRoomFilterAttribute
@@ -19,8 +17,6 @@ import today.kinema.vo.Movie
 import java.util.*
 import today.kinema.data.db.model.Movie as RoomMovie
 
-
-@RunWith(MockitoJUnitRunner::class)
 class LocalDataSourceImplTest {
 
     private var sharedPreferencesDB = mockk<SharedPreferencesDB>()
@@ -114,7 +110,7 @@ class LocalDataSourceImplTest {
         val moviesTodayReturn = mockedMovies.map { it.copy(dateTitle = today).toRoomMovie() }
         val moviesExpectedReturn = mockedMovies.map { it.copy(dateTitle = today).toDomainMovie() }
         val filterAttrsToday = mockedFilterAttribute.copy(date = today).toRoomFilterAttribute()
-        
+
         coEvery { sharedPreferencesDB.getFilteredAttributes() }.returns(filterAttrsToday)
         coEvery { sharedPreferencesDB.getSearchMovieParameters() }.returns(filterAttrsToday)
         coEvery { movieDao.getMovies(isAsc) }.returns(moviesTodayReturn)
@@ -123,5 +119,4 @@ class LocalDataSourceImplTest {
 
         assertEquals(moviesExpectedReturn, result)
     }
-
 }

@@ -18,45 +18,63 @@ class KinemaRepository @Inject constructor(
     private val remoteDataSourceImpl: RemoteDataSourceImpl,
     private val localDataSourceImpl: LocalDataSourceImpl
 ) {
-
     suspend fun loadMovies(
         filterAttribute: DomainFilterAttribute,
         isAsc: Boolean
     ): Resource<List<DomainMovie>> {
+        //return from cache
+        try {
+            val isMoviesNotEmpty = localDataSourceImpl.isMoviesNotEmpty(isAsc)
+            if (isMoviesNotEmpty)//shouldFetch
+                return Resource.success(localDataSourceImpl.getMovies(isAsc))
+        } catch (throwable: Throwable) {
+            return Resource.error(throwable.localizedMessage, null)
+        }
 
-        if (localDataSourceImpl.isMoviesNotEmpty(isAsc))//shouldFetch
-            return Resource.success(localDataSourceImpl.getMovies(isAsc))
+        //fetch new data
+        try {
+            val result: GeneralResponse<List<ServerMovie>> =
+                remoteDataSourceImpl.searchMovies(filterAttribute)
 
-        val result: GeneralResponse<List<ServerMovie>> =
-            remoteDataSourceImpl.searchMovies(filterAttribute)
+            return if (result.success) {
+                //SaveData attributes
+                localDataSourceImpl.saveSearchMovieParameters(filterAttribute)
+                updateFilteredAttributes(filterAttribute)
+                //SaveData results
+                localDataSourceImpl.saveMovies(result.data.map { it.toDomainMovie() })
 
-        return if (result.success) {
-            //SaveData attributes
-            localDataSourceImpl.saveSearchMovieParameters(filterAttribute)
-            updateFilteredAttributes(filterAttribute)
-            //SaveData results
-            localDataSourceImpl.saveMovies(result.data.map { it.toDomainMovie() })
-
-            //loadFromDb
-            Resource.success(localDataSourceImpl.getMovies(isAsc))
-        } else {
-            Resource.error(result.message, null)
+                //loadFromDb
+                Resource.success(localDataSourceImpl.getMovies(isAsc))
+            } else {
+                Resource.error(result.message, null)
+            }
+        } catch (throwable: Throwable) {
+            return Resource.error(throwable.localizedMessage, null)
         }
 
     }
 
     suspend fun loadAttributes(filterAttribute: DomainFilterAttribute): Resource<DomainAttribute> {
-        val result: GeneralResponse<ServerAttribute> =
-            remoteDataSourceImpl.getAttributes(filterAttribute)
+        //fetch new data
+        try {
+            val result: GeneralResponse<ServerAttribute> =
+                remoteDataSourceImpl.getAttributes(filterAttribute)
 
-        return if (result.success) {
-            //SaveData
-            localDataSourceImpl.saveAttributes(result.data)
+            return if (result.success) {
+                //SaveData
+                localDataSourceImpl.saveAttributes(result.data)
 
-            //loadFromDb
-            Resource.success(localDataSourceImpl.getAttributes())
-        } else {
-            Resource.error(result.message, null)
+                //loadFromDb
+                return Resource.success(localDataSourceImpl.getAttributes())
+            } else {
+                Resource.error(result.message, null)
+            }
+        } catch (throwable: Throwable) {
+            //in case of error, we try to show cache data is available
+            val savedAttributes = localDataSourceImpl.getAttributes()
+            return if (savedAttributes == null)
+                Resource.error(throwable.localizedMessage, null)
+            else Resource.success(savedAttributes)
         }
     }
 
