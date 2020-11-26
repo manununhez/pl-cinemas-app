@@ -111,6 +111,26 @@ fun ServerMovie.toDomainMovie(): DomainMovie =
         }
     )
 
+fun ServerMovie.toRoomMovie(): RoomMovie =
+    RoomMovie(
+        id,
+        title,
+        description,
+        originalLanguage,
+        duration,
+        classification,
+        genre,
+        releaseYear,
+        dateTitle,
+        city,
+        trailerUrl,
+        posterUrl,
+        cinemas.map {
+            it.toRoomCinema()
+        }
+    )
+
+
 fun DomainCinema.toRoomCinema(): RoomCinema =
     RoomCinema(
         cinemaId,
@@ -158,6 +178,19 @@ fun ServerCinema.toDomainCinema(): DomainCinema =
         logoUrl,
         cinemaPageUrl
     )
+
+fun ServerCinema.toRoomCinema(): RoomCinema =
+    RoomCinema(
+        cinemaId,
+        locationId,
+        locationName,
+        language,
+        latitude,
+        longitude,
+        logoUrl,
+        cinemaPageUrl
+    )
+
 
 fun ServerAttribute.toRoomAttribute(): RoomAttribute =
     RoomAttribute(
@@ -220,5 +253,13 @@ fun ServerFilterAttribute.toDomainFilterAttribute(): DomainFilterAttribute =
         city, date, cinema, language
     )
 
+fun ServerFilterAttribute.toRoomFilterAttribute(): RoomFilterAttribute =
+    RoomFilterAttribute(
+        city, date, cinema, language
+    )
+
 fun RoomCoordinate.toDomainCoordinate(): DomainCoordinate =
     DomainCoordinate(latitude, longitude)
+
+fun DomainCoordinate.toDomainCoordinate(): RoomCoordinate =
+    RoomCoordinate(latitude, longitude)

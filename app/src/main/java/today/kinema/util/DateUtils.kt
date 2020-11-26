@@ -38,4 +38,19 @@ object DateUtils {
             .replace(".", "")
 
     fun today(): Date = dateParse(simpleDateFormat(datePattern).format(Date()))
+
+    fun getDaysAgo(daysAgo: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -daysAgo)
+
+        return dateFormat(calendar.time)
+    }
+
+    fun getComingDays(comingDays: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, comingDays)
+
+        return dateFormat(calendar.time)
+    }
+
 }

@@ -110,8 +110,8 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun isMoviesNotEmpty(isAsc: Boolean) = getMovies(isAsc).isNotEmpty()
 
     override suspend fun getMovies(isAsc: Boolean): List<DomainMovie> {
-        val prefsAttrs = getFilteredAttributes() == getSearchMovieParameters()
         val moviesList = movieDao.getMovies(isAsc)
+        val prefsAttrs = getFilteredAttributes() == getSearchMovieParameters()
 
         if (moviesList.isEmpty() || !prefsAttrs) return listOf()
 
@@ -125,7 +125,6 @@ class LocalDataSourceImpl @Inject constructor(
                 it.toDomainMovie()
             }
         }
-
     }
 
     override suspend fun saveMovies(movies: List<DomainMovie>) {
