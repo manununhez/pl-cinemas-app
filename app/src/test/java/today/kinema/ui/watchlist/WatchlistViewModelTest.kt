@@ -34,7 +34,7 @@ class WatchlistViewModelTest {
     @Before
     fun setUp() {
         coEvery {repository.getSortWatchMovieListOrder() }.returns(true)
-        viewModel = WatchlistViewModel(testDispatcher, testDispatcher, repository)
+        viewModel = WatchlistViewModel(testDispatcher, testDispatcher, testDispatcher, repository)
     }
 
     @Test

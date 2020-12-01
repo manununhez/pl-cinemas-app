@@ -1,58 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/MovieFragment">
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/nav_graph"-->
+<!--    app:startDestination="@id/MovieFragment">-->
 
-    <fragment
-        android:id="@+id/MovieFragment"
-        android:name="today.kinema.ui.movie.MovieFragment"
-        android:label="@string/movie_fragment_label"
-        tools:layout="@layout/fragment_movie">
-        <action
-            android:id="@+id/showDetailsMovie"
-            app:destination="@id/movieDetailsFragment"
-            app:exitAnim="@null" />
-        <argument
-            android:name="movie"
-            app:argType="today.kinema.vo.Movie" />
-        <action
-            android:id="@+id/showFilterFragment"
-            app:destination="@id/filterFragment" />
-        <argument
-            android:name="attributes"
-            app:argType="today.kinema.vo.Attribute" />
-        <action
-            android:id="@+id/showWatchlistFragment"
-            app:destination="@id/watchlistFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/movieDetailsFragment"
-        android:name="today.kinema.ui.moviedetails.MovieDetailsFragment"
-        android:label="@string/details_movie_fragment_label"
-        tools:layout="@layout/fragment_details_movie">
-        <argument
-            android:name="movie"
-            app:argType="today.kinema.vo.Movie" />
-    </fragment>
-    <fragment
-        android:id="@+id/filterFragment"
-        android:name="today.kinema.ui.filter.FilterFragment"
-        android:label="@string/filter_fragment_label"
-        tools:layout="@layout/fragment_filter">
-        <argument
-            android:name="attributes"
-            app:argType="today.kinema.vo.Attribute" />
-    </fragment>
-    <fragment
-        android:id="@+id/watchlistFragment"
-        android:name="today.kinema.ui.watchlist.WatchlistFragment"
-        android:label="@string/watchlist_fragment_label"
-        tools:layout="@layout/fragment_watchlist" >
-        <action
-            android:id="@+id/showDetailsMovie"
-            app:destination="@id/movieDetailsFragment"
-            app:exitAnim="@null" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/MovieFragment"-->
+<!--        android:name="today.kinema.ui.movie.MovieFragment"-->
+<!--        android:label="@string/movie_fragment_label"-->
+<!--        tools:layout="@layout/fragment_movie">-->
+<!--        <action-->
+<!--            android:id="@+id/showDetailsMovie"-->
+<!--            app:destination="@id/movieDetailsFragment"-->
+<!--            app:exitAnim="@null" />-->
+<!--        <argument-->
+<!--            android:name="movie"-->
+<!--            app:argType="today.kinema.vo.Movie" />-->
+<!--        <action-->
+<!--            android:id="@+id/showFilterFragment"-->
+<!--            app:destination="@id/filterFragment" />-->
+<!--        <argument-->
+<!--            android:name="attributes"-->
+<!--            app:argType="today.kinema.vo.Attribute" />-->
+<!--        <action-->
+<!--            android:id="@+id/showWatchlistFragment"-->
+<!--            app:destination="@id/watchlistFragment" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/movieDetailsFragment"-->
+<!--        android:name="today.kinema.ui.moviedetails.MovieDetailsFragment"-->
+<!--        android:label="@string/details_movie_fragment_label"-->
+<!--        tools:layout="@layout/fragment_details_movie">-->
+<!--        <argument-->
+<!--            android:name="movie"-->
+<!--            app:argType="today.kinema.vo.Movie" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/filterFragment"-->
+<!--        android:name="today.kinema.ui.filter.FilterFragment"-->
+<!--        android:label="@string/filter_fragment_label"-->
+<!--        tools:layout="@layout/fragment_filter">-->
+<!--        <argument-->
+<!--            android:name="attributes"-->
+<!--            app:argType="today.kinema.vo.Attribute" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/watchlistFragment"-->
+<!--        android:name="today.kinema.ui.watchlist.WatchlistFragment"-->
+<!--        android:label="@string/watchlist_fragment_label"-->
+<!--        tools:layout="@layout/fragment_watchlist" >-->
+<!--        <action-->
+<!--            android:id="@+id/showDetailsMovie"-->
+<!--            app:destination="@id/movieDetailsFragment"-->
+<!--            app:exitAnim="@null" />-->
+<!--    </fragment>-->
 </navigation>

@@ -6,65 +6,61 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import today.kinema.databinding.FilterItemSingleChoiceBinding
 import today.kinema.vo.FilterAttribute
 
 
 class FilterLocationAdapter(
-    private val items: List<String>,
     private val currentAttribute: LiveData<FilterAttribute>,
     private val lifecycleOwner: LifecycleOwner,
     private val locationViewClickCallback: LocationViewClickCallback
-) :
-    RecyclerView.Adapter<FilterLocationAdapter.ViewHolder>() {
+) : ListAdapter<String, FilterLocationAdapter.FilterLocationViewHolder>(
+    FilterLocationListDiffCallback()
+) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    class FilterLocationViewHolder(val binding: FilterItemSingleChoiceBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterLocationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = FilterItemSingleChoiceBinding.inflate(
             inflater,
             parent,
             false
         ) //use this to use LinearLayoutManager instead of StaggeredGridLayoutManager
-        return ViewHolder(binding)
+        return FilterLocationViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun onBindViewHolder(holder: FilterLocationViewHolder, position: Int) {
+        val currentItem = getItem(position)
+        val binding = holder.binding
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(
-            items[position],
-            currentAttribute,
-            lifecycleOwner,
-            locationViewClickCallback
-        )
-
-    class ViewHolder(val binding: FilterItemSingleChoiceBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            item: String,
-            currentAttribute: LiveData<FilterAttribute>,
-            viewLifecycleOwner: LifecycleOwner,
-            locationViewClickCallback: LocationViewClickCallback
-        ) {
-
-            currentAttribute.observe(viewLifecycleOwner, {
-                binding.apply {
-                    radio.isChecked = (item == it.city)
-
-                    tvBackgroundOVerlay.visibility = if (radio.isChecked) VISIBLE else GONE
-                }
-            })
-
+        currentAttribute.observe(lifecycleOwner, {
             binding.apply {
-                this.item = item
-                radio.setOnClickListener {
-                    locationViewClickCallback.onClick(item)
-                }
-                executePendingBindings()
+                radio.isChecked = (currentItem == it.city)
+                tvBackgroundOVerlay.visibility = if (radio.isChecked) VISIBLE else GONE
             }
+        })
+
+        binding.apply {
+            item = currentItem
+            radio.setOnClickListener {
+                locationViewClickCallback.onClick(currentItem)
+            }
+            executePendingBindings()
         }
     }
+}
+
+class FilterLocationListDiffCallback : DiffUtil.ItemCallback<String>() {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+        oldItem == newItem
+
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+        oldItem == newItem
 }
 
 interface LocationViewClickCallback {

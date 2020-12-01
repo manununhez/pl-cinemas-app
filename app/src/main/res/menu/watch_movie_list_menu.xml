@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/sortWatchlistMenu"
-        android:icon="@drawable/ic_sort"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/menu_item_sort_watchlist"
         app:showAsAction="ifRoom" />
 

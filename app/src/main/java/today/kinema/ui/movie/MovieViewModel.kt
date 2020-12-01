@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import today.kinema.data.api.Resource
 import today.kinema.di.IoDispatcher
 import today.kinema.di.MainDispatcher
@@ -17,6 +18,7 @@ import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
 
 class MovieViewModel @ViewModelInject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     private val repository: KinemaRepository
 ) : ViewModel() {
@@ -61,10 +63,12 @@ class MovieViewModel @ViewModelInject constructor(
     private fun refreshMovieList() {
         viewModelScope.launch(mainDispatcher) {
             _movies.value = Resource.loading(null)
-            _movies.value = repository.loadMovies(
-                _currentFilterAttribute.value!!,
-                _sortOrderList.value!!
-            )
+            _movies.value = withContext(ioDispatcher) {
+                repository.loadMovies(
+                    _currentFilterAttribute.value!!,
+                    _sortOrderList.value!!
+                )
+            }
         }
     }
 
@@ -76,8 +80,9 @@ class MovieViewModel @ViewModelInject constructor(
 
     private fun initWatchlist() {
         viewModelScope.launch(mainDispatcher) {
-            _watchlist.value =
+            _watchlist.value = withContext(ioDispatcher) {
                 repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
+            }
         }
     }
 
@@ -119,7 +124,8 @@ class MovieViewModel @ViewModelInject constructor(
 
     fun updateWatchlist() {
         viewModelScope.launch(mainDispatcher) {
-            val list = repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
+            val list =
+                withContext(ioDispatcher) { repository.getWatchlistMovies(repository.getSortWatchMovieListOrder()) }
             if (_watchlist.value != list)
                 _watchlist.value = list
         }

@@ -30,43 +30,55 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:logo="@drawable/ic_kinema_toolbar"
             app:menu="@menu/watch_movie_list_menu"
-            app:navigationIcon="@drawable/ic_back" />
+            app:title="@string/watchlist_title"
+            app:titleMarginStart="@dimen/grid_2" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWatchlist"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            android:paddingHorizontal="@dimen/grid_2"
+            android:paddingVertical="@dimen/grid_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:itemCount="4"
-            tools:listitem="@layout/watchlist_item" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/default_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:visibleGone="@{favoriteMovie.empty}">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWatchlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:itemCount="4"
+                tools:listitem="@layout/watchlist_item" />
 
-            <TextView
-                android:id="@+id/empty_list_msg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_watch_movie_list" />
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleGone="@{favoriteMovie.empty}">
+
+                <TextView
+                    android:id="@+id/empty_list_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_watch_movie_list" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

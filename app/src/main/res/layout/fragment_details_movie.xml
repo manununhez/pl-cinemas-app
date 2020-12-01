@@ -55,7 +55,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/year"
                     app:layout_constraintTop_toBottomOf="@+id/movieTitle"
-                    tools:drawableTop="@drawable/ic_watchlist"
+                    tools:drawableTop="@drawable/ic_watchlist_btn"
                     tools:text="Watchlist" />
 
                 <androidx.appcompat.widget.Toolbar
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
-                    android:background="?attr/colorPrimary"
+                    android:background="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
-                    android:background="?attr/colorPrimary"
+                    android:background="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expandCollapseOption" />

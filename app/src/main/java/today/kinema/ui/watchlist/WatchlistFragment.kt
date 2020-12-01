@@ -45,13 +45,14 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentWatchlistBinding.inflate(inflater, container, false).apply {
-            toolbar.setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-            toolbar.title = resources.getString(R.string.menu_item_watchlist)
+        binding = FragmentWatchlistBinding.inflate(inflater, container, false)
+//            .apply {
+//            toolbar.setNavigationOnClickListener {
+//                findNavController().navigateUp()
+//            }
+//            toolbar.title = resources.getString(R.string.watchlist_title)
 
-        }
+//        }
         binding.toolbar.setOnMenuItemClickListener(this)
         return binding.root
     }

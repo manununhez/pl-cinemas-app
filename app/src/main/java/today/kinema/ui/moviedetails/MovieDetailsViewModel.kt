@@ -52,7 +52,8 @@ class MovieDetailsViewModel @ViewModelInject constructor(
 
     fun refreshWatchlist(watchlistMovie: WatchlistMovie) {
         viewModelScope.launch(mainDispatcher) {
-            _watchlist.value = repository.checkIfWatchMovieExists(watchlistMovie)
+            _watchlist.value =
+                withContext(ioDispatcher) { repository.checkIfWatchMovieExists(watchlistMovie) }
         }
     }
 

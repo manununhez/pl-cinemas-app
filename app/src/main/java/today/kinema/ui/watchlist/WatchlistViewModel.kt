@@ -7,13 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import today.kinema.di.DefaultDispatcher
+import today.kinema.di.IoDispatcher
 import today.kinema.di.MainDispatcher
 import today.kinema.repository.KinemaRepository
 import today.kinema.vo.WatchlistMovie
 
 class WatchlistViewModel @ViewModelInject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     private val repository: KinemaRepository
 ) : ViewModel() {
@@ -33,7 +36,7 @@ class WatchlistViewModel @ViewModelInject constructor(
     fun refreshWatchlist() {
         viewModelScope.launch(mainDispatcher) {
             val isAsc = _sortOrderList.value!!
-            val list = repository.getWatchlistMovies(isAsc)
+            val list = withContext(ioDispatcher) { repository.getWatchlistMovies(isAsc) }
             _watchlist.value = list
         }
     }

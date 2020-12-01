@@ -9,7 +9,11 @@
     <string name="where_to_watch">Obejrzyj tutaj</string>
     <string name="menu_item_sort_movies">Sort movies alphabetically</string>
     <string name="menu_item_filter">Filtruj</string>
+    <string name="movie_details_title">Details</string>
+    <string name="filter_title">Filtruj</string>
+    <string name="menu_item_home">Home</string>
     <string name="menu_item_watchlist">Obserwowane</string>
+    <string name="watchlist_title">Obserwowane</string>
     <string name="menu_item_sort_watchlist">Sort Watchlist</string>
     <string name="today">Dzisiaj</string>
     <string name="empty_description">Brak opisu</string>

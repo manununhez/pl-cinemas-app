@@ -78,6 +78,8 @@ class KinemaRepository @Inject constructor(
         }
     }
 
+    fun getAttributes() = localDataSourceImpl.getAttributes()
+
     suspend fun getWatchlistMovies(isAsc: Boolean): List<WatchlistMovie> =
         localDataSourceImpl.getWatchlistMovies(isAsc)
 

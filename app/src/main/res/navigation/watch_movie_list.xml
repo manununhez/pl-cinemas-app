@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_watch_movie_list"
+    app:startDestination="@id/watchlist_dest">
+
+    <fragment
+        android:id="@+id/watchlist_dest"
+        android:name="today.kinema.ui.watchlist.WatchlistFragment"
+        android:label="@string/menu_item_watchlist"
+        tools:layout="@layout/fragment_watchlist">
+        <action
+            android:id="@+id/showDetailsMovie"
+            app:destination="@id/movie_details_dest"
+            app:exitAnim="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/movie_details_dest"
+        android:name="today.kinema.ui.moviedetails.MovieDetailsFragment"
+        android:label="MovieDetailsFragment"
+        tools:layout="@layout/fragment_details_movie">
+        <argument
+            android:name="movie"
+            app:argType="today.kinema.vo.Movie" />
+    </fragment>
+</navigation>

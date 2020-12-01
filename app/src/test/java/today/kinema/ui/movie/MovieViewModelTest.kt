@@ -61,7 +61,7 @@ class MovieViewModelTest {
             Resource.success(mockedMovies.map { it.toDomainMovie() })
         )
 
-        viewModel = MovieViewModel(testDispatcher, repository)
+        viewModel = MovieViewModel(testDispatcher, testDispatcher, repository)
     }
 
     @Test

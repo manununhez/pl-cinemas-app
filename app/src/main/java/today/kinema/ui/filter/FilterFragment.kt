@@ -6,23 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import today.kinema.R
 import today.kinema.databinding.FragmentFilterBinding
-import kotlin.LazyThreadSafetyMode.NONE
+import today.kinema.vo.Attribute
 
 
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
-
-    private val params by navArgs<FilterFragmentArgs>()
-    private val attributes by lazy(NONE) {
-        params.attributes
-    }
+    private lateinit var attributes: Attribute
+    private lateinit var filterLocationAdapter: FilterLocationAdapter
+    private lateinit var filterLanguageAdapter: FilterLanguageAdapter
+    private lateinit var filterCinemaAdapter: FilterCinemaAdapter
 
     //SharedViewModel
     private val viewModelShared: FilterViewModel by viewModels()
@@ -44,22 +42,36 @@ class FilterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentFilterBinding.inflate(inflater, container, false).apply {
-            toolbar.setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-            toolbar.title = resources.getString(R.string.menu_item_filter)
-
-        }
+        binding = FragmentFilterBinding.inflate(inflater, container, false)
+//            .apply {
+//            toolbar.setNavigationOnClickListener {
+//                findNavController().navigateUp()
+//            }
+//            toolbar.title = resources.getString(R.string.filter_title)
+//
+//        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
 
-        initFilterCitiesRecyclerView()
+        setupObserver()
+
         initFilterCinemasRecyclerView()
+        initFilterCitiesRecyclerView()
         initFilterLanguagesRecyclerView()
+
+    }
+
+    private fun setupObserver() {
+        viewModelShared.attributes.observe(viewLifecycleOwner, {
+            Timber.d("Update adapters!")
+            attributes = it
+            filterLocationAdapter.submitList(it.cities)
+            filterCinemaAdapter.submitList(it.cinemas)
+            filterLanguageAdapter.submitList(it.languages)
+        })
     }
 
     private fun initFilterCitiesRecyclerView() {
@@ -70,15 +82,15 @@ class FilterFragment : Fragment() {
             }
         }
 
+        filterLocationAdapter = FilterLocationAdapter(
+            viewModelShared.currentFilterAttribute,
+            viewLifecycleOwner,
+            filterClickCallback
+        )
+
         binding.rvFilterCitiesList.apply {
             setHasFixedSize(true)
-            adapter =
-                FilterLocationAdapter(
-                    attributes.cities,
-                    viewModelShared.currentFilterAttribute,
-                    viewLifecycleOwner,
-                    filterClickCallback
-                )
+            adapter = filterLocationAdapter
         }
 
         //scroll rv to selected city
@@ -99,15 +111,15 @@ class FilterFragment : Fragment() {
             }
         }
 
+        filterCinemaAdapter = FilterCinemaAdapter(
+            viewModelShared.currentFilterAttribute,
+            viewLifecycleOwner,
+            filterCinemaClickCallback
+        )
+
         binding.rvFilterCinemasList.apply {
             setHasFixedSize(true)
-            adapter =
-                FilterCinemaAdapter(
-                    attributes.cinemas,
-                    viewModelShared.currentFilterAttribute,
-                    viewLifecycleOwner,
-                    filterCinemaClickCallback
-                )
+            adapter = filterCinemaAdapter
         }
 
     }
@@ -120,16 +132,15 @@ class FilterFragment : Fragment() {
             }
         }
 
+        filterLanguageAdapter = FilterLanguageAdapter(
+            viewModelShared.currentFilterAttribute,
+            viewLifecycleOwner,
+            filterLanguageClickCallback
+        )
+
         binding.rvFilterLanguagesList.apply {
             setHasFixedSize(true)
-
-            adapter =
-                FilterLanguageAdapter(
-                    attributes.languages,
-                    viewModelShared.currentFilterAttribute,
-                    viewLifecycleOwner,
-                    filterLanguageClickCallback
-                )
+            adapter = filterLanguageAdapter
         }
 
     }

@@ -7,23 +7,29 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import today.kinema.ui.SharedMovieViewModel
+import today.kinema.util.setupWithNavController
 import today.kinema.vo.Coordinate
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     }
+
     /**
      * Provides the entry point to the Fused Location Provider API.
      */
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var currentNavController: LiveData<NavController>? = null
 
     private val sharedMovieViewModel: SharedMovieViewModel by viewModels()
 
@@ -32,9 +38,78 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Now that BottomNavigationBar has restored its instance state
+        // and its selectedItemId, we can proceed with setting up the
+        // BottomNavigationBar with Navigation
+        setupBottomNavigationBar()
+    }
+
+    /**
+     * Navigation Component and multiple nav graphs
+     * Called on first creation and when restoring state.
+     */
+    private fun setupBottomNavigationBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+
+        val navGraphIds =
+            listOf(R.navigation.home, R.navigation.watch_movie_list, R.navigation.filter)
+        // Setup the bottom navigation view with a list of navigation graphs
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
+        )
+
+//         Whenever the selected controller changes.
+        controller.observe(this, { navController ->
+//            setupActionBarWithNavController(this, navController)
+
+            // Hide bottom nav on screens which don't require it
+//            lifecycleScope.launchWhenResumed {
+//                navController.addOnDestinationChangedListener { _, destination, _ ->
+//                    when (destination.id) {
+//                        R.id.movie_details_dest -> bottomNavigationView.visibility = View.GONE
+//                        else -> bottomNavigationView.visibility = View.VISIBLE
+//                    }
+//                }
+//            }
+        })
+
+        currentNavController = controller
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
+    }
+
+//    private fun setupBottomNavigationBar() {
+//        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        val navController = navHostFragment.navController
+//
+//        bottomNav.setupWithNavController(navController)
+//
+//        // Hide bottom nav on screens which don't require it
+//        lifecycleScope.launchWhenResumed {
+//            navController.addOnDestinationChangedListener { _, destination, _ ->
+//                when (destination.id) {
+//                    R.id.movieDetailsFragment -> bottomNav.visibility = View.GONE
+//                    else -> bottomNav.visibility = View.VISIBLE
+//                }
+//            }
+//        }
+//    }
 
     override fun onStart() {
         super.onStart()
@@ -91,7 +166,8 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            )) {
+            )
+        ) {
             // Provide an additional rationale to the user. This would happen if the user denied the
             // request previously, but didn't check the "Don't ask again" checkbox.
             Timber.i("Displaying permission rationale to provide additional context.")
@@ -102,7 +178,7 @@ class MainActivity : AppCompatActivity() {
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
-            Timber.i( "Requesting permission")
+            Timber.i("Requesting permission")
             startLocationPermissionRequest()
         }
     }
@@ -115,7 +191,7 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Timber.i( "onRequestPermissionResult")
+        Timber.i("onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             when {
                 // If user interaction was interrupted, the permission request is cancelled and you

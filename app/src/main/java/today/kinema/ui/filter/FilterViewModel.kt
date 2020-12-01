@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import today.kinema.repository.KinemaRepository
+import today.kinema.vo.Attribute
 import today.kinema.vo.FilterAttribute
 
 class FilterViewModel @ViewModelInject constructor(
@@ -12,12 +13,17 @@ class FilterViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _currentFilterAttribute = MutableLiveData<FilterAttribute>()
+    private val _attributes = MutableLiveData<Attribute>()
 
     val currentFilterAttribute: LiveData<FilterAttribute>
         get() = _currentFilterAttribute
 
+    val attributes: LiveData<Attribute>
+        get() = _attributes
+
     init {
         _currentFilterAttribute.value = repository.getFilteredAttributes()
+        _attributes.value = repository.getAttributes()
     }
 
     fun setMoviesLanguage(filteredLanguage: String, clearSelection: Boolean) {

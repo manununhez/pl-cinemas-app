@@ -159,8 +159,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.filterFragmentMenu -> navigateToFilterFragment()
-            R.id.watchlistFragmentMenu -> navigateToWatchListFragment()
             R.id.sortMoviesMenu -> viewModelShared.onSortMovielistBtnClicked()
         }
         return true
@@ -190,35 +188,5 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         } else {
             findNavController().navigate(MovieFragmentDirections.showDetailsMovie(movie))
         }
-    }
-
-    private fun navigateToFilterFragment() {
-        // Set exit and reenter transitions here as opposed to in onCreate because these transitions
-        // will be set and overwritten on HomeFragment for other navigation actions.
-        exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
-        }
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
-        }
-
-        val directions = MovieFragmentDirections.showFilterFragment(
-            attributes
-        )
-        findNavController().navigate(directions)
-    }
-
-    private fun navigateToWatchListFragment() {
-        // Set exit and reenter transitions here as opposed to in onCreate because these transitions
-        // will be set and overwritten on HomeFragment for other navigation actions.
-        exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
-        }
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.kinema_motion_duration_large).toLong()
-        }
-
-        val directions = MovieFragmentDirections.showWatchlistFragment()
-        findNavController().navigate(directions)
     }
 }

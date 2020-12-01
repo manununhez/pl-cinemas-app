@@ -32,18 +32,15 @@
                 android:id="@+id/imageView4"
                 android:layout_width="80dp"
                 android:layout_height="120dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/menu_item_watchlist"
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{movie.posterUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/backgrounds/scenic" />
+                tools:src="@tools:sample/backgrounds/scenic"
+                android:contentDescription="movie poster" />
 
 
             <TextView
@@ -51,6 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@{movie.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"

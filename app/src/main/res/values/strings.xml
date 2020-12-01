@@ -26,7 +26,11 @@
     <string name="where_to_watch">Watch it here</string>
     <string name="menu_item_sort_movies">Sort movies alphabetically</string>
     <string name="menu_item_filter">Filter</string>
+    <string name="menu_item_home">Home</string>
     <string name="menu_item_watchlist">Watchlist</string>
+    <string name="movie_details_title">Details</string>
+    <string name="filter_title">Filter</string>
+    <string name="watchlist_title">Watchlist</string>
     <string name="menu_item_sort_watchlist">Sort Watchlist</string>
     <string name="today">Today</string>
     <string name="empty_description">No description provided.</string>
@@ -37,5 +41,8 @@
     <string name="filter_attribute_languages">Languages</string>
     <string name="select_all">Select All</string>
     <string name="watchlist_added">Added</string>
+    <string name="movie_home" translatable="false">MovieHomeDest</string>
+    <string name="filter_home" translatable="false">FilterHomeDest</string>
+    <string name="watchlist_home" translatable="false">WatchlistHomeDest</string>
 
 </resources>

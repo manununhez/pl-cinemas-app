@@ -16,4 +16,11 @@ data class WatchlistMovie(
     val movie: Movie,
     @SerializedName("title")
     val title: String
-)
+){
+    constructor(movie: Movie) : this(
+        Integer.parseInt(movie.id),
+        movie.dateTitle,
+        movie,
+        movie.title
+    )
+}

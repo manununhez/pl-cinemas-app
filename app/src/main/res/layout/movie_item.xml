@@ -79,7 +79,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:alpha="0.7"
-                android:theme="@style/ThemeOverlay.CinePL.Metropolis"
                 app:elevationOverlay="@{@dimen/card_elevation}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
