@@ -142,7 +142,7 @@ class MovieDetailsFragment : Fragment() {
             isCurrentMovieInWatchlist = it
             binding.textWatchlist.apply {
                 text = if (it) {
-                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_btn, 0, 0)
+                    setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist, 0, 0)
                     resources.getString(R.string.watchlist_added)
                 } else {
                     setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_watchlist_add, 0, 0)

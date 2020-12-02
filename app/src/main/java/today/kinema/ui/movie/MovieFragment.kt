@@ -1,12 +1,12 @@
 package today.kinema.ui.movie
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +26,7 @@ import today.kinema.vo.Movie
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @AndroidEntryPoint
-class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
+class MovieFragment : Fragment() {
     private lateinit var attributes: Attribute
     private lateinit var binding: FragmentMovieBinding
     private lateinit var movieListAdapter: MovieListAdapter
@@ -52,11 +52,33 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     ): View? {
 
         binding = FragmentMovieBinding.inflate(inflater, container, false)
-        binding.toolbar.setOnMenuItemClickListener(this)
+
+        setupToolbar()
 
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.move)
         return binding.root
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.apply {
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> { // Night mode is not active, we're using the light theme
+                    logo = getDrawable(requireContext(), R.drawable.ic_kinema_logo)
+                }
+                Configuration.UI_MODE_NIGHT_YES -> { // Night mode is active, we're using dark theme
+                    logo = getDrawable(requireContext(), R.drawable.ic_kinema_logo_dark)
+                }
+            }
+            setOnMenuItemClickListener {
+                when (it?.itemId) {
+                    R.id.sortMoviesMenu -> viewModelShared.onSortMovielistBtnClicked()
+                }
+                true
+            }
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -155,13 +177,6 @@ class MovieFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
         return daysListAdapter.currentList.indexOf(element)
 
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.sortMoviesMenu -> viewModelShared.onSortMovielistBtnClicked()
-        }
-        return true
     }
 
     private fun navigateToMovieDetailsFragment(view: View, movie: Movie) {

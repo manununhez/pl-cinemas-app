@@ -41,7 +41,7 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/grid_1"
                 app:visibleGone="@{resource.status == Status.LOADING}" />
 
             <Button

@@ -42,29 +42,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--title background-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/textView2"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:textAllCaps="true"-->
-            <!--                app:background="?android:attr/textColorPrimary"-->
-            <!--                app:elevationOverlay="@{@dimen/card_elevation}"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintHorizontal_bias="0.0"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
-
             <TextView
                 android:id="@+id/tVCinemaLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/grid_1"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{cinema.locationName}"
                 android:textAppearance="?attr/textAppearanceOverline"
+                android:textColor="?attr/colorOnSurface"
                 app:layout_constraintBottom_toTopOf="@+id/textViewDistance"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -80,6 +67,7 @@
                 android:padding="@dimen/grid_1"
                 android:textAllCaps="true"
                 android:textAppearance="?attr/textAppearanceSubtitle2"
+                android:textColor="?attr/colorOnSurface"
                 app:languageDescription="@{cinema.language}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,9 +78,10 @@
                 android:id="@+id/textViewDistance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/grid_1"
                 android:gravity="center_horizontal"
                 android:textAppearance="?attr/textAppearanceOverline"
+                android:textColor="?attr/colorOnSurface"
                 app:distance="@{cinema.distance}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

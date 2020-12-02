@@ -24,9 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingHorizontal="@dimen/grid_0_5"
-        android:paddingTop="@dimen/grid_1">
+        android:fillViewport="true">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -43,7 +41,7 @@
                     android:id="@+id/textWatchlist"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/grid_3"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -55,7 +53,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/year"
                     app:layout_constraintTop_toBottomOf="@+id/movieTitle"
-                    tools:drawableTop="@drawable/ic_watchlist_btn"
+                    tools:drawableTop="@drawable/ic_watchlist"
                     tools:text="Watchlist" />
 
                 <androidx.appcompat.widget.Toolbar
@@ -73,7 +71,7 @@
                     android:id="@+id/view"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/grid_1"
                     android:background="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -84,7 +82,7 @@
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:background="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +92,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="@dimen/detail_poster_size_width"
                     android:layout_height="@dimen/detail_poster_size_height"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/a11y_movie_avatar"
                     android:cropToPadding="false"
@@ -128,13 +126,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:autoSizeTextType="uniform"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:maxLines="2"
                     android:text="@{movie.title}"
                     android:textAppearance="?attr/textAppearanceHeadline4"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintEnd_toStartOf="@id/guideline3"
                     app:layout_constraintStart_toStartOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -144,12 +143,13 @@
                     android:id="@+id/movieDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="@dimen/grid_2"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:maxLines="@integer/max_lines_collapsed"
                     android:minLines="@integer/max_lines_collapsed"
                     android:text="@{movie.description.empty ? @string/empty_description : movie.description}"
                     android:textAppearance="?attr/textAppearanceBody1"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintEnd_toStartOf="@id/guideline3"
                     app:layout_constraintHorizontal_bias="0.687"
                     app:layout_constraintStart_toEndOf="@id/imageView"
@@ -160,9 +160,10 @@
                     android:id="@+id/year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/grid_1"
                     android:text="@{movie.releaseYear}"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@id/movieTitle"
                     tools:text="2020" />
@@ -171,9 +172,10 @@
                     android:id="@+id/classification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/grid_1"
                     android:text="@{movie.classification}"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintBaseline_toBaselineOf="@id/year"
                     app:layout_constraintStart_toEndOf="@id/year"
                     tools:text="15+" />
@@ -182,8 +184,9 @@
                     android:id="@+id/genre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/grid_1"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
+                    android:textColor="?attr/colorOnSurface"
                     app:classification="@{movie.genre}"
                     app:layout_constraintBaseline_toBaselineOf="@id/classification"
                     app:layout_constraintStart_toEndOf="@id/classification"
@@ -193,8 +196,9 @@
                     android:id="@+id/duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/grid_1"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintBaseline_toBaselineOf="@id/genre"
                     app:layout_constraintStart_toEndOf="@id/genre"
                     tools:text="2h 13m" />
@@ -216,7 +220,7 @@
                     android:id="@+id/rv_cinema_list"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:clipToPadding="false"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
@@ -231,7 +235,7 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     android:text="@string/where_to_watch"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="?attr/colorOnBackground"
@@ -244,9 +248,9 @@
                     android:id="@+id/guideline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/grid_2"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp"
+                    app:layout_constraintGuide_begin="@dimen/grid_2"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -255,7 +259,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_end="16dp" />
+                    app:layout_constraintGuide_end="@dimen/grid_2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.core.widget.NestedScrollView>

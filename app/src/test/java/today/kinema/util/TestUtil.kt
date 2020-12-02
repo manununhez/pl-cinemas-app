@@ -87,7 +87,7 @@ object TestUtil {
         )
     )
 
-    val movie_example_json = "{\n" +
+    const val movie_example_json = "{\n" +
             "  \"success\": true,\n" +
             "  \"data\": [\n" +
             "    {\n" +
@@ -180,7 +180,7 @@ object TestUtil {
             "  \"message\": \"movies retrieved successfully.\"\n" +
             "}"
 
-    val attribute_example_json = "{\n" +
+    const val attribute_example_json = "{\n" +
             "  \"success\": true,\n" +
             "  \"data\": {\n" +
             "    \"cinemas\": [\n" +

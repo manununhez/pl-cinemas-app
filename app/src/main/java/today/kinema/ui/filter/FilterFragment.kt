@@ -1,9 +1,11 @@
 package today.kinema.ui.filter
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.transition.MaterialSharedAxis
@@ -43,14 +45,36 @@ class FilterFragment : Fragment() {
     ): View? {
 
         binding = FragmentFilterBinding.inflate(inflater, container, false)
-//            .apply {
-//            toolbar.setNavigationOnClickListener {
+
+        setupToolbar()
+
+        return binding.root
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.apply {
+            title = resources.getString(R.string.filter_title)
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> { // Night mode is not active, we're using the light theme
+                    logo =
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_kinema_toolbar
+                        )
+                }
+                Configuration.UI_MODE_NIGHT_YES -> { // Night mode is active, we're using dark theme
+                    logo = AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_kinema_toolbar_dark
+                    )
+                }
+            }
+
+//            setNavigationOnClickListener {
 //                findNavController().navigateUp()
 //            }
-//            toolbar.title = resources.getString(R.string.filter_title)
-//
-//        }
-        return binding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

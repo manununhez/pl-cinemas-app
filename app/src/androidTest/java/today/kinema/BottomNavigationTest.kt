@@ -224,7 +224,7 @@ private fun assertDeeperSecondScreen() {
 
 private fun assertDeeperFirstScreen() {
     onView(withId(R.id.toolbar))
-        .check(matches(hasDescendant(withText(R.string.movie_details_title))));
+        .check(matches(hasDescendant(withText(R.string.movie_details_title))))
 }
 
 private fun openFirstScreen() {
@@ -244,7 +244,7 @@ private fun openThirdScreen() {
 
 private fun assertThirdScreen() {
     onView(withId(R.id.toolbar))
-        .check(matches(hasDescendant(withText(R.string.filter_title))));
+        .check(matches(hasDescendant(withText(R.string.filter_title))))
 
 }
 

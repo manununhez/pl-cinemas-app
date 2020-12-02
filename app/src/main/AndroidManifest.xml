@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--networkSecurityConfig fix error: "HTTP FAILED: java.net.UnknownServiceException: CLEARTEXT communication to 192.168.1.10 not permitted by network security policy"-->
+    <!--networkSecurityConfig fix error: "HTTP FAILED: java.net.UnknownServiceException: CLEARTEXT communication to 192.168.1.10 not permitted by network security policy"-->
     <application
         android:name=".CinemaPLApplication"
         android:allowBackup="true"
@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CinePL.Metropolis">
-        <activity android:name=".SplashScreenActivity">
+        <activity
+            android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,9 +27,5 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

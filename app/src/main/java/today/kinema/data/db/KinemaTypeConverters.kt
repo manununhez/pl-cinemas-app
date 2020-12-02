@@ -15,7 +15,7 @@ object KinemaTypeConverters {
      ***********/
     @TypeConverter
     @JvmStatic //fix this: https://stackoverflow.com/questions/51438926/typeconverter-has-private-access-in-typeconverter-error-with-room-in-android
-    fun toMovie(data: String?): Movie? = gson.fromJson<Movie>(data, Movie::class.java)
+    fun toMovie(data: String?): Movie? = gson.fromJson(data, Movie::class.java)
 
 
     @TypeConverter

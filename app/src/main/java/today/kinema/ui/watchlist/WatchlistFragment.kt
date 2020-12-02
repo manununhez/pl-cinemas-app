@@ -1,12 +1,12 @@
 package today.kinema.ui.watchlist
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +21,7 @@ import today.kinema.vo.Movie
 import today.kinema.vo.WatchlistMovie
 
 @AndroidEntryPoint
-class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
+class WatchlistFragment : Fragment() {
     private lateinit var binding: FragmentWatchlistBinding
     private lateinit var watchlistAdapter: WatchlistAdapter
 
@@ -46,15 +46,42 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     ): View? {
 
         binding = FragmentWatchlistBinding.inflate(inflater, container, false)
-//            .apply {
-//            toolbar.setNavigationOnClickListener {
+
+        setupToolbar()
+
+        return binding.root
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.apply {
+            title = resources.getString(R.string.watchlist_title)
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> { // Night mode is not active, we're using the light theme
+                    logo =
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_kinema_toolbar
+                        )
+                }
+                Configuration.UI_MODE_NIGHT_YES -> { // Night mode is active, we're using dark theme
+                    logo = AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_kinema_toolbar_dark
+                    )
+                }
+            }
+            setOnMenuItemClickListener {
+                when (it?.itemId) {
+                    R.id.sortWatchlistMenu -> viewModelShared.onSortMovieWatchlistBtnClicked()
+                }
+                true
+            }
+
+//            setNavigationOnClickListener {
 //                findNavController().navigateUp()
 //            }
-//            toolbar.title = resources.getString(R.string.watchlist_title)
-
-//        }
-        binding.toolbar.setOnMenuItemClickListener(this)
-        return binding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -126,12 +153,5 @@ class WatchlistFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         } else {
             findNavController().navigate(WatchlistFragmentDirections.showDetailsMovie(movie))
         }
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.sortWatchlistMenu -> viewModelShared.onSortMovieWatchlistBtnClicked()
-        }
-        return true
     }
 }

@@ -35,6 +35,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.CinePL.Metropolis"
             app:liftOnScroll="true"
             app:liftOnScrollTargetViewId="@id/movie_list_grid">
 
@@ -44,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:logo="@drawable/ic_kinema_toolbar"
-                app:menu="@menu/movie_list_menu">
+                app:menu="@menu/movie_list_menu"
+                tools:logo="@drawable/ic_kinema_toolbar">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,10 +109,10 @@
             layout="@layout/loading_state"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/grid_1"
+            android:layout_marginTop="@dimen/grid_1"
+            android:layout_marginEnd="@dimen/grid_1"
+            android:layout_marginBottom="@dimen/grid_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

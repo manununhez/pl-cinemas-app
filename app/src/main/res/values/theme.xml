@@ -47,15 +47,15 @@
 
 
     <style name="CinePL.Metropolis">
-        <item name="colorPrimary">@color/white_50</item> <!--toolbar-->
-        <item name="colorPrimaryVariant">@color/white_50</item> <!--toolbar-->
+        <item name="colorPrimary">@color/deep_purple_600</item> <!--toolbar-->
+        <item name="colorPrimaryVariant">@color/deep_purple_800</item> <!--toolbar-->
         <item name="colorSecondary">@color/deep_purple_600</item>
         <item name="colorSecondaryVariant">@color/deep_purple_800</item>
         <item name="android:colorBackground">@color/white_50</item>
         <item name="colorSurface">@color/white_50</item>
-        <item name="colorOnPrimary">@color/deep_purple_800</item>
-        <item name="colorOnSecondary">@color/deep_purple_800</item>
-        <item name="colorOnSurface">@color/deep_purple_800</item>
+        <item name="colorOnPrimary">@color/white_50</item>
+<!--        <item name="colorOnSecondary">@color/deep_purple_800</item>-->
+        <item name="colorOnSurface">@color/cinepl_gray_dark</item>
         <item name="colorOnBackground">@color/deep_purple_800</item>
         <!--Platform attributes-->
         <item name="android:navigationBarColor" tools:ignore="NewApi">@color/immersive_sys_ui_deep_pruple_900</item>
@@ -63,9 +63,15 @@
     </style>
 
     <style name="ThemeOverlay.CinePL.Metropolis" parent="@style/ThemeOverlay.MaterialComponents.Dark">
-        <item name="colorSecondary">@color/blue_200</item>
-        <item name="colorSecondaryVariant">@color/blue_700</item>
+        <item name="colorPrimary">@color/white_50</item> <!--toolbar-->
+        <item name="colorPrimaryVariant">@color/white_50</item> <!--toolbar-->
+        <item name="colorSecondary">@color/deep_purple_600</item>
+        <item name="colorSecondaryVariant">@color/deep_purple_800</item>
         <item name="colorSurface">@color/deep_purple_800</item>
+        <item name="colorOnSurface">@color/cinepl_gray_dark</item>
+        <item name="colorOnPrimary">@color/deep_purple_600</item>
+    </style>
+    <style name="ThemeOverlay.CinePL.Metropolis.BottomNavigation" parent="ThemeOverlay.CinePL.Metropolis">
         <item name="colorOnSurface">@color/white_50</item>
     </style>
 </resources>

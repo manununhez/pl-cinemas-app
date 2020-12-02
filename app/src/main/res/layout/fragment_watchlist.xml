@@ -30,10 +30,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:logo="@drawable/ic_kinema_toolbar"
             app:menu="@menu/watch_movie_list_menu"
-            app:title="@string/watchlist_title"
-            app:titleMarginStart="@dimen/grid_2" />
+            app:titleMarginStart="@dimen/grid_2"
+            tools:logo="@drawable/ic_kinema_toolbar"
+            tools:title="@string/watchlist_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
