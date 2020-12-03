@@ -20,7 +20,7 @@ class KinemaApi @Inject constructor(
         .build() //Added interceptor to print level body request/response Retrofit
 
     val service: Retrofit = Retrofit.Builder()
-        .baseUrl(CINEMA_URL_DEVELOPMENT)
+        .baseUrl(CINEMA_URL_PRODUCTION)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()
