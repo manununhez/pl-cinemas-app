@@ -44,32 +44,46 @@ class MovieViewModel @ViewModelInject constructor(
         get() = _attributes
 
     init {
-        _sortOrderList.value = repository.getSortMovieListOrder()
-        _currentFilterAttribute.value = repository.getFilteredAttributes()
+        initSortOrderlist()
+        initFilterAttribute()
         initWatchlist()
-        loadAttributes()
+        refreshAttributes()
         refreshMovieList()
     }
 
-    private fun loadAttributes() {
+    private fun initSortOrderlist() {
+        _sortOrderList.value = repository.getSortMovieListOrder()
+    }
+
+    private fun initFilterAttribute() {
+        _currentFilterAttribute.value = repository.getFilteredAttributes()
+    }
+
+    private fun refreshAttributes() {
         viewModelScope.launch(mainDispatcher) {
             _attributes.value = Resource.loading(null)
-            _attributes.value = repository.loadAttributes(
-                _currentFilterAttribute.value!!
-            )
+            _attributes.value = loadAttributes()
         }
+    }
+
+    private suspend fun loadAttributes() = withContext(ioDispatcher) {
+        repository.loadAttributes(
+            _currentFilterAttribute.value!!
+        )
     }
 
     private fun refreshMovieList() {
         viewModelScope.launch(mainDispatcher) {
             _movies.value = Resource.loading(null)
-            _movies.value = withContext(ioDispatcher) {
-                repository.loadMovies(
-                    _currentFilterAttribute.value!!,
-                    _sortOrderList.value!!
-                )
-            }
+            _movies.value = loadMovies()
         }
+    }
+
+    private suspend fun loadMovies() = withContext(ioDispatcher) {
+        repository.loadMovies(
+            _currentFilterAttribute.value!!,
+            _sortOrderList.value!!
+        )
     }
 
     private fun saveFilteredAttributes(filterAttribute: FilterAttribute) {
@@ -80,10 +94,12 @@ class MovieViewModel @ViewModelInject constructor(
 
     private fun initWatchlist() {
         viewModelScope.launch(mainDispatcher) {
-            _watchlist.value = withContext(ioDispatcher) {
-                repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
-            }
+            _watchlist.value = getWatchlistMovies()
         }
+    }
+
+    private suspend fun getWatchlistMovies() = withContext(ioDispatcher) {
+        repository.getWatchlistMovies(repository.getSortWatchMovieListOrder())
     }
 
     private fun setDateMoviesTitle(newDate: String) {
@@ -118,21 +134,20 @@ class MovieViewModel @ViewModelInject constructor(
         if (filterAttribute != selectedAttributes) {
             saveFilteredAttributes(selectedAttributes)
             refreshMovieList()
-            loadAttributes()
+            refreshAttributes()
         }
     }
 
     fun updateWatchlist() {
         viewModelScope.launch(mainDispatcher) {
-            val list =
-                withContext(ioDispatcher) { repository.getWatchlistMovies(repository.getSortWatchMovieListOrder()) }
+            val list = getWatchlistMovies()
             if (_watchlist.value != list)
                 _watchlist.value = list
         }
     }
 
     fun retry() {
-        loadAttributes()
+        refreshAttributes()
         refreshMovieList()
     }
 }

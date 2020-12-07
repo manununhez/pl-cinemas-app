@@ -92,25 +92,6 @@ class MainActivity : AppCompatActivity() {
         return currentNavController?.value?.navigateUp() ?: false
     }
 
-//    private fun setupBottomNavigationBar() {
-//        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-//        val navHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        val navController = navHostFragment.navController
-//
-//        bottomNav.setupWithNavController(navController)
-//
-//        // Hide bottom nav on screens which don't require it
-//        lifecycleScope.launchWhenResumed {
-//            navController.addOnDestinationChangedListener { _, destination, _ ->
-//                when (destination.id) {
-//                    R.id.movieDetailsFragment -> bottomNav.visibility = View.GONE
-//                    else -> bottomNav.visibility = View.VISIBLE
-//                }
-//            }
-//        }
-//    }
-
     override fun onStart() {
         super.onStart()
 

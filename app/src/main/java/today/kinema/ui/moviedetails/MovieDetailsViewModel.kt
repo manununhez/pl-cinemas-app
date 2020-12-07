@@ -36,6 +36,11 @@ class MovieDetailsViewModel @ViewModelInject constructor(
     val cinemas: LiveData<List<Cinema>>
         get() = _cinemas
 
+    private suspend fun checkIfWatchMovieExists(watchlistMovie: WatchlistMovie) =
+        withContext(ioDispatcher) {
+            repository.checkIfWatchMovieExists(watchlistMovie)
+        }
+
     fun onAddWatchlistBtnClicked(watchlistMovie: WatchlistMovie) {
         viewModelScope.launch(defaultDispatcher) {
             repository.addWatchlistMovie(watchlistMovie)
@@ -52,8 +57,7 @@ class MovieDetailsViewModel @ViewModelInject constructor(
 
     fun refreshWatchlist(watchlistMovie: WatchlistMovie) {
         viewModelScope.launch(mainDispatcher) {
-            _watchlist.value =
-                withContext(ioDispatcher) { repository.checkIfWatchMovieExists(watchlistMovie) }
+            _watchlist.value = checkIfWatchMovieExists(watchlistMovie)
         }
     }
 
@@ -62,12 +66,10 @@ class MovieDetailsViewModel @ViewModelInject constructor(
      */
     fun orderCinemasByDistance(cinemas: List<Cinema>) {
         viewModelScope.launch(ioDispatcher) {
-            withContext(ioDispatcher) {
-                LocationUtils.orderCinemasByDistance(
-                    repository.getCurrentLocation(),
-                    cinemas
-                )
-            }.let {
+            LocationUtils.orderCinemasByDistance(
+                repository.getCurrentLocation(),
+                cinemas
+            ).let {
                 withContext(mainDispatcher) {
                     _cinemas.value = it
                 }

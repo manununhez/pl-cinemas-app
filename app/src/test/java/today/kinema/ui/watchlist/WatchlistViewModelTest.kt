@@ -96,7 +96,7 @@ class WatchlistViewModelTest {
         }
 
         assertEquals(resultWatchlistDesc, viewModel.watchlist.value)
-        assertEquals(false, viewModel.sortOrderList.value)
+        assertEquals(false, viewModel.sortOrderWatchList.value)
 
 
         // 2nd time clicked
@@ -109,7 +109,7 @@ class WatchlistViewModelTest {
         }
 
         assertEquals(resultWatchlistAsc, viewModel.watchlist.value)
-        assertEquals(true, viewModel.sortOrderList.value)
+        assertEquals(true, viewModel.sortOrderWatchList.value)
 
     }
 }

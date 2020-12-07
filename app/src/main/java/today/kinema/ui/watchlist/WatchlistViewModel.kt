@@ -25,19 +25,33 @@ class WatchlistViewModel @ViewModelInject constructor(
     val watchlist: LiveData<List<WatchlistMovie>>
         get() = _watchlist
 
-    private val _sortOrderList = MutableLiveData<Boolean>()
-    val sortOrderList: LiveData<Boolean>
-        get() = _sortOrderList
+    private val _sortOrderWatchList = MutableLiveData<Boolean>()
+    val sortOrderWatchList: LiveData<Boolean>
+        get() = _sortOrderWatchList
 
     init {
-        _sortOrderList.value = repository.getSortWatchMovieListOrder()
+        initSortOrderWatchlist()
+    }
+
+    private fun initSortOrderWatchlist() {
+        viewModelScope.launch(mainDispatcher) {
+            _sortOrderWatchList.value = repository.getSortWatchMovieListOrder()
+        }
+    }
+
+    private suspend fun getWatchlistMovies() = withContext(ioDispatcher) {
+        repository.getWatchlistMovies(_sortOrderWatchList.value!!)
+    }
+
+    private fun removeWatchlistMovie(watchlistMovie: WatchlistMovie) {
+        viewModelScope.launch(defaultDispatcher) {
+            repository.deleteWatchlistMovie(watchlistMovie)
+        }
     }
 
     fun refreshWatchlist() {
         viewModelScope.launch(mainDispatcher) {
-            val isAsc = _sortOrderList.value!!
-            val list = withContext(ioDispatcher) { repository.getWatchlistMovies(isAsc) }
-            _watchlist.value = list
+            _watchlist.value = getWatchlistMovies()
         }
     }
 
@@ -51,15 +65,9 @@ class WatchlistViewModel @ViewModelInject constructor(
         refreshWatchlist()
     }
 
-    private fun removeWatchlistMovie(watchlistMovie: WatchlistMovie) {
-        viewModelScope.launch(defaultDispatcher) {
-            repository.deleteWatchlistMovie(watchlistMovie)
-        }
-    }
-
     fun updateWatchMovieListOrder() {
         val isAsc = !repository.getSortWatchMovieListOrder()
-        _sortOrderList.value = isAsc
+        _sortOrderWatchList.value = isAsc
         repository.updateWatchMovieListOrder(isAsc)
     }
 
