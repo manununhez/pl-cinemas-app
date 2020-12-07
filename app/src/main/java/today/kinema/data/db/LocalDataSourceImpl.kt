@@ -4,7 +4,6 @@ import today.kinema.data.*
 import today.kinema.data.db.SharedPreferencesDB.Companion.DEFAULT_CURRENT_DATE
 import today.kinema.data.source.LocalDataSource
 import today.kinema.util.DateUtils
-import today.kinema.vo.Attribute
 import today.kinema.vo.Coordinate
 import today.kinema.vo.FilterAttribute
 import javax.inject.Inject
@@ -23,11 +22,7 @@ class LocalDataSourceImpl @Inject constructor(
      * SharedPreferences
      *****************/
 
-    override fun getAttributes(): Attribute? {
-        val attributes = sharedPreferencesDB.getAttributes() ?: return null
-
-        return attributes.toDomainAttribute()
-    }
+    override fun getAttributes() = sharedPreferencesDB.getAttributes()?.toDomainAttribute()
 
     override fun saveAttributes(item: ServerAttribute) {
         sharedPreferencesDB.saveAttributes(item.toRoomAttribute())
@@ -51,20 +46,15 @@ class LocalDataSourceImpl @Inject constructor(
         sharedPreferencesDB.saveFilteredAttributes(item.toRoomFilterAttribute())
     }
 
-    override fun getSearchMovieParameters(): FilterAttribute {
-        val filterAttribute = sharedPreferencesDB.getSearchMovieParameters()
-
-        return filterAttribute.toDomainFilterAttribute()
-    }
+    override fun getSearchMovieParameters() =
+        sharedPreferencesDB.getSearchMovieParameters().toDomainFilterAttribute()
 
     override fun saveSearchMovieParameters(item: FilterAttribute) {
         sharedPreferencesDB.saveSearchMovieParameters(item.toRoomFilterAttribute())
     }
 
-    override fun getCurrentLocation(): Coordinate {
-        val coordinate = sharedPreferencesDB.getCurrentLocation()
-        return coordinate.toDomainCoordinate()
-    }
+    override fun getCurrentLocation() =
+        sharedPreferencesDB.getCurrentLocation().toDomainCoordinate()
 
     override fun saveCurrentLocation(currentLocation: Coordinate) {
         sharedPreferencesDB.saveCurrentLocation(currentLocation.toDomainCoordinate())
@@ -101,11 +91,8 @@ class LocalDataSourceImpl @Inject constructor(
         watchlistDao.delete(watchlistMovie.toRoomWatchlistMovie())
     }
 
-    override suspend fun checkIfWatchMovieExists(watchlistMovie: DomainWatchlistMovie): Boolean {
-        val watchlistMovieCount =
-            watchlistDao.checkIfWatchMovieExists(watchlistMovie.id, watchlistMovie.dateTitle)
-        return (watchlistMovieCount > 0)
-    }
+    override suspend fun checkIfWatchMovieExists(watchlistMovie: DomainWatchlistMovie) =
+        watchlistDao.checkIfWatchMovieExists(watchlistMovie.id, watchlistMovie.dateTitle) > 0
 
     override suspend fun isMoviesNotEmpty(isAsc: Boolean) = getMovies(isAsc).isNotEmpty()
 

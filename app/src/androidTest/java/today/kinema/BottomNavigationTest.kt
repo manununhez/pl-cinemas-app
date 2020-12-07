@@ -102,41 +102,6 @@ class BottomNavigationTest {
         // Assert it maintained the back stack
         assertDeeperSecondScreen()
     }
-//    @Test
-//    fun scrollToItemBelowFold_checkItsText() {
-//        openSecondScreen()
-//
-//        // First, scroll to the position that needs to be matched and click on it.
-//        onView(withId(R.id.rvWatchlist))
-//            .perform(
-//                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-//                    0,
-//                    click()
-//                )
-//            )
-//
-////        // Match the text in an item below the fold and check that it's displayed.
-////        val itemElementText = "9QE8kN31"
-////        onView(withText(itemElementText)).check(matches(isDisplayed()))
-//
-//        assertMovieDetailsScreen()
-//
-//    }
-//
-//    @Test
-//    fun bottomNavView_registerBackRegister() {
-//        openThirdScreen()
-//
-//        pressBack() // This is handled in a especial way in code.
-//
-//        openThirdScreen()
-//
-//        onView(withContentDescription(R.string.sign_up))
-//            .perform(click())
-//
-//        // Assert it maintained the back stack
-//        assertDeeperThirdScreen()
-//    }
 
     @Test
     fun bottomNavView_watchlistBackWatchlistAndMovieDetails() {
@@ -203,14 +168,8 @@ class BottomNavigationTest {
 }
 
 private fun assertSecondScreen() {
-//    onView(allOf(withText(R.string.watchlist_title)))
-//        .check(matches(isDisplayed()))
-
     onView(withId(R.id.toolbar))
         .check(matches(hasDescendant(withText(R.string.watchlist_title))))
-//    onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
-//        .check(matches(withText("Watchlist")))
-
 }
 
 private fun openSecondScreen() {

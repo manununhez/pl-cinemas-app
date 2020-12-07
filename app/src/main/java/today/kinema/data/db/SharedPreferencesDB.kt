@@ -42,9 +42,9 @@ class SharedPreferencesDB @Inject constructor(
 
     fun getAttributes(): RoomAttribute? {
         val prefs: String = sharedPreferences.getString(SHARED_PREFS_ATTRIBUTES, "")!!
-        if (prefs.isEmpty()) return null
-
-        return gson.fromJson(prefs, RoomAttribute::class.java)
+        return if (prefs.isEmpty())
+            null
+        else gson.fromJson(prefs, RoomAttribute::class.java)
     }
 
     fun saveAttributes(item: RoomAttribute) {

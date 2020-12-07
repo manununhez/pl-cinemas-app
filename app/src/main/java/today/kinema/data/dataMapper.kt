@@ -24,7 +24,8 @@ fun RoomWatchlistMovie.toDomainWatchlistMovie(): DomainWatchlistMovie =
     DomainWatchlistMovie(
         id,
         dateTitle,
-        movie.toDomainMovie()
+        movie.toDomainMovie(),
+        movie.title
     )
 
 fun DomainWatchlistMovie.toRoomWatchlistMovie(): RoomWatchlistMovie =

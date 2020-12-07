@@ -70,6 +70,7 @@ class MovieDetailsFragment : Fragment() {
         moviesArg = params.movie
         binding.run {
             movie = moviesArg
+
             duration.text = if (moviesArg.duration == "0") "" else resources.getString(
                 R.string.movie_duration,
                 moviesArg.duration

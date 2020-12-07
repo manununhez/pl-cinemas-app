@@ -90,8 +90,10 @@ class WatchlistFragment : Fragment() {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
 
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.favoriteMovie = viewModelShared.watchlist
+        binding.run {
+            lifecycleOwner = viewLifecycleOwner
+            favoriteMovie = viewModelShared.watchlist
+        }
 
         initWatchlist()
         initWatchlistRecyclerView()

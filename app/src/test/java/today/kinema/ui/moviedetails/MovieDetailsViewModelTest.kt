@@ -17,6 +17,7 @@ import today.kinema.repository.KinemaRepository
 import today.kinema.util.TestUtil.mockedCinema
 import today.kinema.util.TestUtil.mockedCurrentLocation
 import today.kinema.util.TestUtil.mockedWatchlistMovie
+import today.kinema.vo.Cinema
 
 @ExperimentalCoroutinesApi
 class MovieDetailsViewModelTest {
@@ -35,7 +36,8 @@ class MovieDetailsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = MovieDetailsViewModel(testDispatcher, testDispatcher, testDispatcher, repository)
+        viewModel =
+            MovieDetailsViewModel(testDispatcher, testDispatcher, testDispatcher, repository)
     }
 
 
@@ -55,6 +57,7 @@ class MovieDetailsViewModelTest {
 
         assertEquals(false, viewModel.watchlist.value)
     }
+
     @Test
     fun `onAddWatchlistBtnClicked_add item to watchlist and refresh watchlist`() {
         val itemWatchlist = mockedWatchlistMovie
@@ -73,19 +76,27 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun `order Cinemas By Distance`(){
-        val cinemalist = listOf(
-            mockedCinema.toDomainCinema().copy(distance = 15.0F),
-            mockedCinema.toDomainCinema().copy(distance = 125.0F),
-            mockedCinema.toDomainCinema().copy(distance = 1.0F),
-            mockedCinema.toDomainCinema().copy(distance = 55.0F))
+    fun `order Cinemas By Distance`() {
+        val cinemalist = mutableListOf<Cinema>()
+        val cinema = mockedCinema.toDomainCinema()
+        cinema.distance = 15.0F
+        cinemalist.add(cinema)
+        cinema.distance = 125.0F
+        cinemalist.add(cinema)
+        cinema.distance = 1.0F
+        cinemalist.add(cinema)
+        cinema.distance = 55.0F
+        cinemalist.add(cinema)
 
-        val cinemalistOrdered = listOf(
-            mockedCinema.toDomainCinema().copy(distance = 1.0F),
-            mockedCinema.toDomainCinema().copy(distance = 15.0F),
-            mockedCinema.toDomainCinema().copy(distance = 55.0F),
-            mockedCinema.toDomainCinema().copy(distance = 125.0F))
-
+        val cinemalistOrdered = mutableListOf<Cinema>()
+        cinema.distance = 1.0F
+        cinemalistOrdered.add(cinema)
+        cinema.distance = 15.0F
+        cinemalistOrdered.add(cinema)
+        cinema.distance = 55.0F
+        cinemalistOrdered.add(cinema)
+        cinema.distance = 125.0F
+        cinemalistOrdered.add(cinema)
 
         coEvery { repository.getCurrentLocation() }.returns(mockedCurrentLocation)
 
